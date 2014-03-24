@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: post
+# key: post
+# --
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+TITLE: $1
+#+BEGIN_HTML
+---
+title: {{{title}}}
+layout: ${2:post}
+---
+#+END_HTML
+$0

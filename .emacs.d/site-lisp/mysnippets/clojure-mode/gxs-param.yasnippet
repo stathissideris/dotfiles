@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: gxs-param
+# key: gxs-param
+# --
+{:Name "$1"
+  :Caption "$2"
+  :Description "$3"
+  :DataType "${4:$$(yas/choose-value '("string" "number" "date"))}"
+  :Values "$5"
+  :ValuesDelimiter "$6"
+  :Default "$7"
+  :IsEditableYN "${8:$$(yas/choose-value '("Y" "N"))}"
+  :IsRequiredYN "${9:$$(yas/choose-value '("Y" "N"))}"
+  :AllowMultiSelectYN "${10:$$(yas/choose-value '("Y" "N"))}"}

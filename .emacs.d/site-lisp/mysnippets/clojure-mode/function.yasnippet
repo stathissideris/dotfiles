@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: function
+# key: fun
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+(defn ${1:name} [& props]
+  ${2:body}
+  (gxs.core/display-data [{:status "OK"}]))
