@@ -5,12 +5,13 @@
         clj-refactor
         yasnippet))
 
-(require 'package)
+;;(require 'package)
 
 (setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-        ("marmalade" . "http://marmalade-repo.org/packages/")
-        ;;("melpa" . "http://melpa.milkbox.net/packages/")
+      '(
+        ;;       '(("gnu" . "http://elpa.gnu.org/packages/")
+        ;;         ("marmalade" . "http://marmalade-repo.org/packages/")
+        ("melpa" . "http://melpa.milkbox.net/packages/")
         ))
 (package-initialize)
 
@@ -127,7 +128,7 @@
 (setq color-theme-is-global t)
 (color-theme-gnome2)
 
-(cua-mode t)
+;(cua-mode t)
 (ido-mode t)
 
 ;;;; looks
@@ -145,9 +146,9 @@
 (column-number-mode t)
 (setq inhibit-splash-screen t)
 
-;;  (setq CUA-mode-normal-cursor-color "red")
-(setq CUA-mode-overwrite-cursor-color "blue")
-(setq CUA-mode-read-only-cursor-color "green")
+;; (setq CUA-mode-normal-cursor-color "red")
+;; (setq CUA-mode-overwrite-cursor-color "blue")
+;; (setq CUA-mode-read-only-cursor-color "green")
 
 
 ;;line numbers
@@ -327,7 +328,7 @@
 (global-set-key [f5] `refresh-file)
 (global-set-key [f6] `mark-whole-buffer)
 
-(setq cua-keep-region-after-copy t)
+;; (setq cua-keep-region-after-copy t)
 (delete-selection-mode 0)
 (setq make-backup-files nil) ;;no backups!
 (setq auto-save-default nil) ; stop creating those #autosave# files
@@ -788,7 +789,6 @@ by using nxml's indentation rules."
  '(case-fold-search t)
  '(cider-repl-display-in-current-window t)
  '(column-number-mode t)
- '(cua-mode t nil (cua-base))
  '(current-language-environment "UTF-8")
  '(default-input-method "rfc1345")
  '(global-font-lock-mode t nil (font-lock))

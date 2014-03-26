@@ -10,4 +10,5 @@
                       '[[vinyasa.pull pull]
                         [alex-and-georges.debug-repl debug-repl]
                         [com.georgejahad.difform difform]])]
-        :plugins [[lein-pprint "1.1.1"]]}}
+        :plugins [[lein-pprint "1.1.1"]
+                  [quickie "0.2.5"]]}}
