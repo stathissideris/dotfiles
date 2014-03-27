@@ -44,6 +44,8 @@
 (setq powerline-color1 "grey22")
 (setq powerline-color2 "grey40")
 
+(global-set-key (kbd "C-z") nil)
+
 ;; (defpowerline cider-ns
 ;;   (propertize (if (and nrepl-connection-list (eq 'cider-repl-mode major-mode))
 ;;                   (cider-eval-and-get-value "(str *ns*)") "")
@@ -168,6 +170,7 @@
 
 ;; setting the PC keyboard's various keys to
 ;; Super or Hyper, for emacs running on Windows.
+
 (setq w32-pass-lwindow-to-system nil 
       w32-pass-rwindow-to-system nil 
       w32-pass-apps-to-system nil 
