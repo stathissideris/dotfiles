@@ -3,7 +3,9 @@
       '(highlight-symbol
         clojure-mode
         clj-refactor
-        yasnippet))
+        yasnippet
+        cider
+        magit))
 
 ;;(require 'package)
 
@@ -14,6 +16,13 @@
         ("melpa" . "http://melpa.milkbox.net/packages/")
         ))
 (package-initialize)
+
+;;attempt to install packages at startup
+(unless package-archive-contents
+  (package-refresh-contents))
+(dolist (p packages-to-bootstrap)
+  (when (not (package-installed-p p))
+    (package-install p)))
 
 (setq site-lisp-dir
       (expand-file-name "site-lisp" user-emacs-directory))
@@ -67,13 +76,6 @@
 ;;                              (powerline-column         'right       powerline-color1  )
 ;;                              (powerline-percent        'right  nil  powerline-color1  )
 ;;                              (powerline-make-text      "  "    nil  )))))
-
-;;attempt to install packages at startup
-(unless package-archive-contents
-  (package-refresh-contents))
-(dolist (p packages-to-bootstrap)
-  (when (not (package-installed-p p))
-    (package-install p)))
 
 ;;;;;;;;;;;; options ;;;;;;;;;;;;;;;;
 
