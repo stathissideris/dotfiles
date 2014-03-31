@@ -262,7 +262,6 @@
 (global-set-key "\M-i" `indent-region)
 (global-set-key "\C-o" `find-file)
 (global-set-key "\C-s" `save-buffer)
-(global-set-key "\C-w" `kill-this-buffer)
 (global-set-key (kbd "<C-f4>") '(lambda () (interactive) (kill-this-buffer) (delete-window)))
 (global-set-key [f7] 'toggle-truncate-lines)
 
