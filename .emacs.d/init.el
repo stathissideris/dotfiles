@@ -103,7 +103,7 @@
 (global-set-key [C-M-down] 'transpose-sexp-forward)
 (global-set-key [C-M-up] 'transpose-sexp-backward)
 (global-set-key (kbd "M-{") 'paredit-wrap-curly)
-(global-set-key (kbd "M-[") 'paredit-wrap-square)
+;;(global-set-key (kbd "M-[") 'paredit-wrap-square)
 (global-set-key [M-f2] 'paredit-mode)
 (global-set-key (kbd "<scroll>") 'paredit-mode)
 
@@ -215,12 +215,6 @@
 (global-set-key (kbd "<H-right>") 'windmove-right)
 (global-set-key (kbd "<H-up>")    'windmove-up)
 (global-set-key (kbd "<H-down>")  'windmove-down)
-
-;;to make it work with the remapped application key on mac
-(global-set-key (kbd "<escape> <left>")  'windmove-left)
-(global-set-key (kbd "<escape> <right>") 'windmove-right)
-(global-set-key (kbd "<escape> <up>")    'windmove-up)
-(global-set-key (kbd "<escape> <down>")  'windmove-down)
 
 (setq framemove-hook-into-windmove t)
 

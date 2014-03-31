@@ -28,7 +28,6 @@
    (th-show-tooltip-for-point "No help found.")))
 
 (global-set-key [f2] 'clojure-quick-use)
-(global-set-key [f12] 'save-load-and-compile)
 
 (global-set-key (kbd "C-,") 'highlight-symbol-prev)
 (global-set-key (kbd "C-.") 'highlight-symbol-next)
