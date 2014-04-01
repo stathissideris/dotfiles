@@ -558,7 +558,8 @@
 (require 'clojure-dev)
 
 ;; mac-specific config
-(if (string-equal system-type "darwin")
+(if (or (string-equal system-type "darwin")
+        (string-equal system-name "devbox-stathis.development.agentsmutual.co.uk"))
     (require 'mac))
 (if (string-equal system-name "MUCHA")
     (require 'mucha))
