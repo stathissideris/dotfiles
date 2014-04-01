@@ -52,8 +52,6 @@
 ;(add-hook 'org-mode-hook 'turn-on-pretty-mode)
 
 (load-theme 'zenburn t)
-(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-powerline")
-(require 'powerline)
 
 (global-set-key (kbd "C-z") nil)
 
@@ -566,7 +564,10 @@
 (if (string-equal system-name "MUCHA")
     (require 'mucha))
 (if (not window-system)
-    (require 'no-window))
+    (require 'no-window)
+  (progn
+    (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-powerline")
+    (require 'powerline)))
 
 (put 'erase-buffer 'disabled nil)
 

@@ -26,7 +26,6 @@
 (defvar powerline-color1)
 (defvar powerline-color2)
 
-
 (setq powerline-color1 "grey22")
 (setq powerline-color2 "grey40")
 
