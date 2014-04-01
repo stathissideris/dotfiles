@@ -2,19 +2,22 @@
 (setq packages-to-bootstrap
       '(highlight-symbol
         clojure-mode
+        clojure-test-mode
         clj-refactor
-        yasnippet
         cider
-        magit))
+        ac-nrepl
+        yasnippet
+        magit
+        git-gutter
+        markdown-mode
+        puppet-mode
+        undo-tree
+        zenburn-theme))
 
 ;;(require 'package)
 
 (setq package-archives
-      '(
-        ;;       '(("gnu" . "http://elpa.gnu.org/packages/")
-        ;;         ("marmalade" . "http://marmalade-repo.org/packages/")
-        ("melpa" . "http://melpa.milkbox.net/packages/")
-        ))
+      '(("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 
 ;;attempt to install packages at startup
@@ -22,7 +25,8 @@
   (package-refresh-contents))
 (dolist (p packages-to-bootstrap)
   (when (not (package-installed-p p))
-    (package-install p)))
+    (package-install p))
+  (require p))
 
 (setq site-lisp-dir
       (expand-file-name "site-lisp" user-emacs-directory))
@@ -55,6 +59,8 @@
 
 (global-set-key (kbd "C-z") nil)
 
+(global-undo-tree-mode)
+
 ;; (defpowerline cider-ns
 ;;   (propertize (if (and nrepl-connection-list (eq 'cider-repl-mode major-mode))
 ;;                   (cider-eval-and-get-value "(str *ns*)") "")
@@ -80,6 +86,7 @@
 ;;;;;;;;;;;; options ;;;;;;;;;;;;;;;;
 
 (global-subword-mode 1)
+(setq inhibit-startup-screen t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -127,10 +134,10 @@
 (setq-default cursor-type 'box)
 (require 'stathis-blog)
 
-(require 'color-theme)
-(color-theme-initialize)
-(setq color-theme-is-global t)
-(color-theme-gnome2)
+;; (require 'color-theme)
+;; (color-theme-initialize)
+;; (setq color-theme-is-global t)
+(load-theme 'zenburn t)
 
 ;(cua-mode t)
 (ido-mode t)
@@ -731,51 +738,6 @@ by using nxml's indentation rules."
 (setq yas-snippet-dirs
   '("~/.emacs.d/site-lisp/mysnippets"))
 ;;(yas-global-mode 1)
-
-(defun buffer-background (color)
-  "Sets the color of the current buffer. Pass nil to restore the default."
-  (interactive)
-  (setq buffer-face-mode-face `(:background ,color))
-  (buffer-face-mode))
-
-(defun buffer-background-inactive ()
-  (interactive)
-  (buffer-background "#2F4F4F")) ;;or #2F4F4F in the case of gnome2
-
-(defun buffer-background-active ()
-  (interactive)
-  ;;make all buffers inactive first
-  (mapcar (lambda (b)
-            (with-current-buffer b
-              (buffer-background-inactive))) (buffer-list))
-  (buffer-background "#2F4F4F")) ;;or #284444
-
-(defadvice switch-to-buffer (before set-background activate)
-  (buffer-background-inactive))
-(defadvice switch-to-buffer (after set-background activate)
-  (buffer-background-active))
-(defadvice windmove-up (before set-background activate)
-  (buffer-background-inactive))
-(defadvice windmove-up (after set-background activate)
-  (buffer-background-active))
-(defadvice windmove-down (before set-background activate)
-  (buffer-background-inactive))
-(defadvice windmove-down (after set-background activate)
-  (buffer-background-active))
-(defadvice windmove-left (before set-background activate)
-  (buffer-background-inactive))
-(defadvice windmove-left (after set-background activate)
-  (buffer-background-active))
-(defadvice windmove-right (before set-background activate)
-  (buffer-background-inactive))
-(defadvice windmove-right (after set-background activate)
-  (buffer-background-active))
-;;mouse
-(defadvice select-window (after set-background activate)
-  (buffer-background-active))
-(add-hook 'mouse-leave-buffer-hook 'buffer-background-inactive)
-
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

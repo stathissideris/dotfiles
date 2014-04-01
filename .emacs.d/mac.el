@@ -8,7 +8,8 @@
   (setq mac-option-modifier nil)
   (set-keyboard-coding-system nil))
 
-;(map-mac-keys)
+(if window-system
+    (map-mac-keys))
 
 (defun mac-keys-for-pc-keyboard ()
   (interactive)
@@ -37,5 +38,19 @@
         (shell-command
          (format "%s %s" (executable-find "open") (file-name-directory file)))
       (error "Buffer is not attached to any file"))))
+
+(global-unset-key (kbd "§"))
+
+(global-set-key (kbd "§ <left>")  'windmove-left)
+(global-set-key (kbd "§ <right>") 'windmove-right)
+(global-set-key (kbd "§ <up>")    'windmove-up)
+(global-set-key (kbd "§ <down>")  'windmove-down)
+
+(global-set-key (kbd "§ §")  'mark-sexp)
+
+(global-unset-key (kbd "≥"))
+(global-unset-key (kbd "≤"))
+(global-set-key (kbd "≥") 'highlight-symbol-next)
+(global-set-key (kbd "≤") 'highlight-symbol-prev)
 
 (provide 'mac)
