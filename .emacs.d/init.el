@@ -51,37 +51,13 @@
 
 ;(add-hook 'org-mode-hook 'turn-on-pretty-mode)
 
+(load-theme 'zenburn t)
 (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-powerline")
 (require 'powerline)
-
-(setq powerline-color1 "grey22")
-(setq powerline-color2 "grey40")
 
 (global-set-key (kbd "C-z") nil)
 
 (global-undo-tree-mode)
-
-;; (defpowerline cider-ns
-;;   (propertize (if (and nrepl-connection-list (eq 'cider-repl-mode major-mode))
-;;                   (cider-eval-and-get-value "(str *ns*)") "")
-;;               'face (powerline-make-face color1)))
-;; 
-;; (setq-default mode-line-format
-;;               (list "%e"
-;;                     '(:eval (concat
-;;                              (powerline-rmw            'left   nil  )
-;;                              (powerline-buffer-id      'left   nil  )
-;;                              (powerline-cider-ns       'left   nil  powerline-color1)
-;;                              (powerline-major-mode     'left        powerline-color1  )
-;;                              (powerline-minor-modes    'left        powerline-color1  )
-;;                              (powerline-narrow         'left        powerline-color1  powerline-color2  )
-;;                              (powerline-vc             'center                        powerline-color2  )
-;;                              (powerline-make-fill                                     powerline-color2  )
-;;                              (powerline-row            'right       powerline-color1  powerline-color2  )
-;;                              (powerline-make-text      ":"          powerline-color1  )
-;;                              (powerline-column         'right       powerline-color1  )
-;;                              (powerline-percent        'right  nil  powerline-color1  )
-;;                              (powerline-make-text      "  "    nil  )))))
 
 ;;;;;;;;;;;; options ;;;;;;;;;;;;;;;;
 
@@ -137,7 +113,6 @@
 ;; (require 'color-theme)
 ;; (color-theme-initialize)
 ;; (setq color-theme-is-global t)
-(load-theme 'zenburn t)
 
 ;(cua-mode t)
 (ido-mode t)
