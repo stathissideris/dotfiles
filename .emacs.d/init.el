@@ -118,8 +118,10 @@
 (ido-mode t)
 
 ;;;; looks
-(setq scroll-bar-mode-explicit t)
-(set-scroll-bar-mode `right)
+(if window-system
+    (progn
+      (setq scroll-bar-mode-explicit t)
+      (set-scroll-bar-mode `right)))
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))) ;; one two lines at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
