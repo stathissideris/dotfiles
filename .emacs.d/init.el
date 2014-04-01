@@ -164,7 +164,7 @@
 
 ;;line numbers
 (global-set-key [f11] `setnu-mode)
-(set-face-background setnu-line-number-face "#243c3c") ;;line numbers
+;;(set-face-background setnu-line-number-face "#243c3c") ;;line numbers
 (setq setnu-line-number-format "%6d ")
 
 (defun new-scratch ()
@@ -195,8 +195,8 @@
 (global-set-key [backtab] `switch-to-buffer)
 (global-set-key (kbd "<M-f4>") `save-buffers-kill-emacs)
 
-(require 'popup-buffer-switch)
-(global-set-key (kbd "<f9>") 'popup-buffer-switch)
+;;(require 'popup-buffer-switch)
+;;(global-set-key (kbd "<f9>") 'popup-buffer-switch)
 
 ;;;; remember positions in files
 ;;(require 'saveplace)
