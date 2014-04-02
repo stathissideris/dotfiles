@@ -12,7 +12,8 @@
         markdown-mode
         puppet-mode
         undo-tree
-        zenburn-theme))
+        zenburn-theme
+        diminish))
 
 ;;(require 'package)
 
@@ -48,6 +49,14 @@
 (require 'highlight-symbol)
 (require 'org)
 (require 'cider)
+
+(require 'diminish)
+(diminish 'undo-tree-mode)
+(diminish 'highlight-symbol-mode "HI")
+(diminish 'magit-auto-revert-mode)
+(diminish 'git-gutter-mode)
+(diminish 'clojure-mode "clj")
+(diminish 'clj-refactor-mode)
 
 ;(add-hook 'org-mode-hook 'turn-on-pretty-mode)
 
