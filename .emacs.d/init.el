@@ -361,6 +361,16 @@
 (set-face-attribute 'dired-directory nil :foreground "#5fd7ff")
 (set-face-attribute 'dired-marked nil :foreground "#5fff00")
 
+;;prevent dired from opening new buffers on dir visit
+(put 'dired-find-alternate-file 'disabled nil)
+
+;;prevent dired from opening new buffers on parent
+(add-hook
+ 'dired-mode-hook
+ (lambda ()
+   (define-key dired-mode-map (kbd "^")
+     (lambda () (interactive) (find-alternate-file "..")))))
+
 (defun hide-dos-eol ()
   "Do not show ^M in files containing mixed UNIX and DOS line endings."
   (interactive)
