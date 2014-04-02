@@ -329,6 +329,8 @@
 (global-set-key [C-m] `newline-and-indent)
 ;; (global-set-key "\t" `self-insert-command)
 
+(global-set-key (kbd "C-c C-g") 'magit-status)
+
 (add-hook 'emacs-lisp-mode-hook '(lambda () (highlight-symbol-mode 1)))
 
 ;;custom faces
