@@ -55,7 +55,6 @@
 (diminish 'highlight-symbol-mode "HI")
 (diminish 'magit-auto-revert-mode)
 (diminish 'git-gutter-mode)
-(diminish 'clojure-mode "clj")
 (diminish 'clj-refactor-mode)
 
 ;(add-hook 'org-mode-hook 'turn-on-pretty-mode)
