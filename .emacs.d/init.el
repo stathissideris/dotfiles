@@ -358,6 +358,9 @@
 
 (set-face-attribute 'cider-repl-prompt-face nil :weight 'bold)
 
+(set-face-attribute 'dired-directory nil :foreground "#5fd7ff")
+(set-face-attribute 'dired-marked nil :foreground "#5fff00")
+
 (defun hide-dos-eol ()
   "Do not show ^M in files containing mixed UNIX and DOS line endings."
   (interactive)
