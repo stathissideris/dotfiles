@@ -358,11 +358,12 @@
 
 (set-face-attribute 'cider-repl-prompt-face nil :weight 'bold)
 
-(set-face-attribute 'dired-directory nil :foreground "#5fd7ff")
+(if window-system
+    (set-face-attribute 'dired-directory nil :foreground "#5fd7ff")
+  (set-face-attribute 'dired-directory nil :foreground "#0020ff"))
 (set-face-attribute 'dired-marked nil :foreground "#5fff00")
 
 ;;prevent dired from opening new buffers on dir visit
-(put 'dired-find-alternate-file 'disabled nil)
 
 ;;prevent dired from opening new buffers on parent
 (add-hook
@@ -779,3 +780,4 @@ by using nxml's indentation rules."
  '(yas/trigger-key "M-SPC"))
 
 
+(put 'dired-find-alternate-file 'disabled nil)
