@@ -358,10 +358,11 @@
 
 (set-face-attribute 'cider-repl-prompt-face nil :weight 'bold)
 
-;; (if window-system
-;;     (set-face-attribute 'dired-directory nil :foreground "#5fd7ff")
-;;   (set-face-attribute 'dired-directory nil :foreground "#0020ff"))
-;; (set-face-attribute 'dired-marked nil :foreground "#5fff00")
+(require 'dired)
+(if window-system
+    (set-face-attribute 'dired-directory nil :foreground "#5fd7ff")
+  (set-face-attribute 'dired-directory nil :foreground "#0020ff"))
+(set-face-attribute 'dired-marked nil :foreground "#5fff00")
 
 ;;prevent dired from opening new buffers on dir visit
 
