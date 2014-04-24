@@ -1,0 +1,15 @@
+[user]
+	name = Stathis Sideris
+	email = stathis@pixelated-noise.com
+[core]
+	excludesfile = /Users/sideris/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[github]
+	user = sideris@gmail.com
+[push]
+	default = simple
