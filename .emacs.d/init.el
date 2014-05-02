@@ -6,6 +6,8 @@
         clj-refactor
         cider
         ac-nrepl
+        tuareg
+        merlin
         yasnippet
         magit
         git-gutter
@@ -49,6 +51,7 @@
 (require 'highlight-symbol)
 (require 'org)
 (require 'cider)
+(require 'tuareg)
 
 (require 'diminish)
 (diminish 'undo-tree-mode)
@@ -338,6 +341,16 @@
 ;;(global-set-key [tab] `tab-to-tab-stop)
 (global-set-key [C-m] `newline-and-indent)
 ;; (global-set-key "\t" `self-insert-command)
+
+;;ocaml
+(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+(setq auto-mode-alist
+      (append '(("\\.ml[ily]?$" . tuareg-mode)
+                ("\\.topml$" . tuareg-mode))
+              auto-mode-alist))
+(add-hook 'tuareg-mode-hook 'merlin-mode)
+(setq merlin-use-auto-complete-mode t)
+(setq merlin-error-after-save nil)
 
 (global-set-key (kbd "C-c C-g") 'magit-status)
 
