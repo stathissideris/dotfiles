@@ -782,3 +782,6 @@ by using nxml's indentation rules."
 
 
 (put 'dired-find-alternate-file 'disabled nil)
+
+;;to not get international characters on alt- mac
+(set-keyboard-coding-system nil)
