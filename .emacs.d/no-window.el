@@ -9,7 +9,7 @@
 (global-set-key (kbd "<f1> <up>")    'windmove-up)
 (global-set-key (kbd "<f1> <down>")  'windmove-down)
 
-(global-set-key (kbd "<f1> <f1>")  'mark-sexp)
+(global-set-key (kbd "<f1> SPC")  'mark-sexp)
 
 (global-set-key (kbd "<f1> .") 'highlight-symbol-next)
 (global-set-key (kbd "<f1> ,") 'highlight-symbol-prev)

@@ -5,7 +5,7 @@
 (cljr-add-keybindings-with-prefix "C-c C-v")
 
 (setq clojure-quick-namespaces
-	  '("clojure.contrib.trace" "clojure.pprint" "clojure.repl"))
+	  '("clojure.pprint" "clojure.repl"))
 
 (defun clojure-quick-use ()
   "Use a clojure namespace quickly from a pre-defined list of namespaces."
