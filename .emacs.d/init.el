@@ -15,7 +15,8 @@
         puppet-mode
         undo-tree
         zenburn-theme
-        diminish))
+        diminish
+        zencoding-mode))
 
 ;;(require 'package)
 
