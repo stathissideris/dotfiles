@@ -7,7 +7,7 @@
         cider
         ac-nrepl
         tuareg
-        merlin
+        ;;merlin
         yasnippet
         magit
         git-gutter
@@ -16,7 +16,7 @@
         undo-tree
         zenburn-theme
         diminish
-        zencoding-mode))
+        emmet-mode))
 
 ;;(require 'package)
 
