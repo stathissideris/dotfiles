@@ -250,9 +250,6 @@
 ;; editing
 (global-set-key "\C-n" `new-scratch)
 (global-set-key "\M-i" `indent-region)
-(global-set-key "\C-o" `find-file)
-(global-set-key "\C-s" `save-buffer)
-(global-set-key (kbd "<C-f4>") '(lambda () (interactive) (kill-this-buffer) (delete-window)))
 (global-set-key [f7] 'toggle-truncate-lines)
 
 (setq-default indent-tabs-mode nil)
@@ -468,12 +465,6 @@
   (interactive)
   (org-get-subtree-internal t)
   (message "Clean promoted subtree copied to clipboard"))
-
-;; search
-(global-set-key (kbd "C-f") `isearch-forward)
-;;(global-set-key (kbd "M-f") `isearch-backward)
-(define-key isearch-mode-map [f3] 'isearch-repeat-forward)
-(define-key isearch-mode-map [M-f3] 'isearch-repeat-backward)
 
 (global-set-key [?\M-e] `eval-region)
 ;;(global-set-key [f12] `iimage-mode)
