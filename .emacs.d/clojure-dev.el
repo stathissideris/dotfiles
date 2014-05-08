@@ -85,4 +85,9 @@
   )
 (add-hook 'clojure-mode-hook 'clojure-hook)
 
+;;cider
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(setq cider-auto-select-error-buffer t)
+(setq cider-repl-use-clojure-font-lock t)
+
 (provide 'clojure-dev)
