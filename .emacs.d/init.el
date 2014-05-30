@@ -131,13 +131,16 @@
 
 ;;;; looks
 (if window-system
-    (progn
-      (setq scroll-bar-mode-explicit t)
-      (set-scroll-bar-mode `right)))
+    (scroll-bar-mode -1)
+    ;; (progn
+    ;;   (setq scroll-bar-mode-explicit t)
+    ;;   (set-scroll-bar-mode `right))
+    )
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))) ;; one two lines at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 (setq scroll-step 1) ;; keyboard scroll one line at a time
+(setq scroll-conservatively 10000)
 
 ;;cursor
 (set-default 'cursor-type 'bar)
@@ -776,7 +779,6 @@ by using nxml's indentation rules."
  '(minimap-window-location (quote right))
  '(org-agenda-files (quote ("i:/notes/notes.org")))
  '(org-support-shift-select t)
- '(scroll-conservatively 1)
  '(show-paren-mode t)
  '(slime-backend "")
  '(speedbar-use-images nil)
