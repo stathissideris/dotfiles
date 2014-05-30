@@ -257,6 +257,20 @@
 
 (setq-default indent-tabs-mode nil)
 
+;;F1 stuff
+
+(global-unset-key (kbd "<f1>"))
+
+(global-set-key (kbd "<f1> <left>")  'windmove-left)
+(global-set-key (kbd "<f1> <right>") 'windmove-right)
+(global-set-key (kbd "<f1> <up>")    'windmove-up)
+(global-set-key (kbd "<f1> <down>")  'windmove-down)
+
+(global-set-key (kbd "<f1> SPC")  'mark-sexp)
+
+(global-set-key (kbd "<f1> .") 'highlight-symbol-next)
+(global-set-key (kbd "<f1> ,") 'highlight-symbol-prev)
+
 ;;change the shiftiness of the number keys
 ;;found here: http://stackoverflow.com/questions/6277813/unshifted-symbols-in-emacs/6280799#6280799
 (define-minor-mode snoopy-mode
