@@ -806,3 +806,11 @@ by using nxml's indentation rules."
 
 ;;to not get international characters on alt- mac
 (set-keyboard-coding-system nil)
+
+(defun get-string-from-file (filePath)
+  "Return filePath's file content."
+  (with-temp-buffer
+    (insert-file-contents filePath)
+    (buffer-string)))
+
+(setq initial-scratch-message (get-string-from-file "~/.emacs.d/logo"))
