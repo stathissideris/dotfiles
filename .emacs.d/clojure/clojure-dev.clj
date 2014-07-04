@@ -161,14 +161,19 @@
    (doseq [i (seq (.getTrayIcons tray))]
      (.remove tray i))))
 
-(remove-all-tray-icons)
+(try
+  (remove-all-tray-icons)
+  (catch Exception e))
+
 (def tray-icon
-  (let [icon (java.awt.TrayIcon.
-              (icon->image (.getIcon (javax.swing.UIManager/getDefaults) "FileView.computerIcon"))
-              #_(.getImage (java.awt.Toolkit/getDefaultToolkit) "tray.gif")
-              "REPL notifications" nil)]
-   (.add (java.awt.SystemTray/getSystemTray) icon)
-   icon))
+  (try
+    (let [icon (java.awt.TrayIcon.
+                (icon->image (.getIcon (javax.swing.UIManager/getDefaults) "FileView.computerIcon"))
+                #_(.getImage (java.awt.Toolkit/getDefaultToolkit) "tray.gif")
+                "REPL notifications" nil)]
+      (.add (java.awt.SystemTray/getSystemTray) icon)
+      icon)
+    (catch Exception e)))
 
 (def tray-msg-type-map
   {:none java.awt.TrayIcon$MessageType/NONE
@@ -206,8 +211,9 @@
           (do
             (notify (or (.getMessage ~'e) "No message.") "REPL job error" :error)
             (throw ~'e)))))
-
-(notify "clojure-dev.clj loaded" "emacs" :info)
+(try
+  (notify "clojure-dev.clj loaded" "emacs" :info)
+  (catch Exception e))
 
 ;;;; parsing
 

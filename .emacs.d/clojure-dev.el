@@ -65,15 +65,14 @@
 
 ;;mode hooks
 
-(defun slime-clojure-repl-setup ()
+(defun cider-repl-setup ()
   "Some REPL setup."
   (interactive)
-  (load-clojure-file "gxsclient.clj")
   (load-clojure-file "clojure-dev.clj")
-  (ac-nrepl-setup)
-  (auto-complete-mode)
+  ;;(ac-nrepl-setup)
+  ;;(auto-complete-mode)
   (hide-dos-eol))
-(add-hook 'cider-repl-mode-hook 'slime-clojure-repl-setup)
+(add-hook 'cider-repl-mode-hook 'cider-repl-setup)
 
 (defun clojure-hook ()
   (paredit-mode 1)
