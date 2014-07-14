@@ -10,6 +10,8 @@
                       '[[vinyasa.pull pull]
                         [alex-and-georges.debug-repl debug-repl]
                         [com.georgejahad.difform difform]])]
+        :test-refresh {:notify-command ["tmux" "display-message"]}
         :plugins [[lein-pprint "1.1.1"]
                   [quickie "0.2.5"]
-                  [cider/cider-nrepl "0.7.0-SNAPSHOT"]]}}
+                  [cider/cider-nrepl "0.7.0-SNAPSHOT"]
+                  [com.jakemccrary/lein-test-refresh "0.5.0"]]}}
