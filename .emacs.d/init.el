@@ -16,7 +16,8 @@
         undo-tree
         zenburn-theme
         diminish
-        emmet-mode))
+        emmet-mode
+        ag))
 
 ;;(require 'package)
 
