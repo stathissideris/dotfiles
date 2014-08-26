@@ -4,8 +4,8 @@
         clojure-mode
         ;;clojure-test-mode
         clj-refactor
-        cider
-        ac-nrepl
+        ;;cider
+        ;;ac-nrepl
         tuareg
         ;;merlin
         yasnippet
@@ -39,6 +39,7 @@
 (add-to-list 'load-path user-emacs-directory)
 (add-to-list 'load-path site-lisp-dir)
 (add-to-list 'load-path "~/.emacs.d/site-lisp/org-mode/lisp")
+(add-to-list 'load-path "~/cider-0.7.0")
 
 (require 'bm)
 (require 'setnu)
@@ -59,7 +60,7 @@
 (diminish 'undo-tree-mode)
 (diminish 'highlight-symbol-mode "hi")
 (diminish 'paredit-mode "prdt")
-(diminish 'auto-complete-mode "ac")
+;;(diminish 'auto-complete-mode "ac")
 (diminish 'magit-auto-revert-mode)
 (diminish 'git-gutter-mode)
 (diminish 'clj-refactor-mode)
