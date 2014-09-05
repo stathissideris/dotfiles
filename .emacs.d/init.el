@@ -81,6 +81,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;mustache files are html-like
+(setq auto-mode-alist
+   (cons '("\\.mustache" . html-mode) auto-mode-alist))
 
 (autoload 'markdown-mode "markdown-mode.el"
    "Major mode for editing Markdown files" t)
