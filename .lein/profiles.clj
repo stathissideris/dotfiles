@@ -14,5 +14,5 @@
                        :notify-on-success true}
         :plugins [[lein-pprint "1.1.1"]
                   [quickie "0.2.5"]
-                  [cider/cider-nrepl "0.7.0-SNAPSHOT"]
+                  [cider/cider-nrepl "0.7.0"]
                   [com.jakemccrary/lein-test-refresh "0.5.0"]]}}

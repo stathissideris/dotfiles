@@ -4,6 +4,7 @@
         clojure-mode
         ;;clojure-test-mode
         clj-refactor
+        align-cljlet
         ;;cider
         ;;ac-nrepl
         tuareg
