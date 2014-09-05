@@ -158,9 +158,9 @@
 
 
 ;;line numbers
-(global-set-key [f11] `setnu-mode)
+(global-set-key [f11] `linum-mode)
 ;;(set-face-background setnu-line-number-face "#243c3c") ;;line numbers
-(setq setnu-line-number-format "%6d ")
+;;(setq setnu-line-number-format "%6d ")
 
 (defun new-scratch ()
   "open up a guaranteed new scratch buffer"
