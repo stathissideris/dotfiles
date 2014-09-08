@@ -87,6 +87,9 @@
 ;;cider
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 (setq cider-auto-select-error-buffer t)
-(setq cider-repl-use-clojure-font-lock t)
+(setq cider-repl-wrap-history t)
+(setq cider-repl-history-size 1000)
+(setq cider-show-error-buffer 'except-in-repl)
+(setq cider-repl-history-file "~/.emacs.d/cider-history")
 
 (provide 'clojure-dev)
