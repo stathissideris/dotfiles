@@ -83,6 +83,7 @@
   ;(pretty-mode 1)
   )
 (add-hook 'clojure-mode-hook 'clojure-hook)
+(define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)
 
 ;;cider
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
