@@ -91,5 +91,8 @@
 (setq cider-repl-history-size 1000)
 (setq cider-show-error-buffer 'except-in-repl)
 (setq cider-repl-history-file "~/.emacs.d/cider-history")
+(define-key cider-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
+(define-key cider-repl-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
 
 (provide 'clojure-dev)
+
