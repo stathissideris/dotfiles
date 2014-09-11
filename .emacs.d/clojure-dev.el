@@ -4,15 +4,17 @@
 
 (cljr-add-keybindings-with-prefix "C-c C-v")
 
-(setq clojure-quick-namespaces
-	  '("clojure.pprint" "clojure.repl"))
+(setq clojure-quick-sexp
+	  '("(dev/reset)"
+        "(use 'clojure.repl)"
+        "(use 'clojure.tools.trace)"
+        "(use 'clojure.pprint)"))
 
-(defun clojure-quick-use ()
-  "Use a clojure namespace quickly from a pre-defined list of namespaces."
+(defun clojure-quick-eval ()
   (interactive)
   (let ((selection (ido-completing-read
-					"Use namespace: " clojure-quick-namespaces nil t "")))
-	(cider-interactive-eval (concat "(use '" selection ")"))))
+					"Clojure eval: " clojure-quick-sexp nil t "")))
+	(cider-interactive-eval selection)))
 
 (defun save-load-and-compile ()
   ""
@@ -27,7 +29,7 @@
 	 (th-show-tooltip-for-point msg))
    (th-show-tooltip-for-point "No help found.")))
 
-(global-set-key [f2] 'clojure-quick-use)
+(global-set-key [f2] 'clojure-quick-eval)
 
 (global-set-key (kbd "C-,") 'highlight-symbol-prev)
 (global-set-key (kbd "C-.") 'highlight-symbol-next)
