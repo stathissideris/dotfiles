@@ -188,7 +188,7 @@
 ;; navigation
 (global-set-key [C-prior] `previous-buffer)
 (global-set-key [C-next] `next-buffer)
-(global-set-key "\C-l" `goto-line)
+;;(global-set-key "\C-l" `goto-line)
 (global-set-key [C-tab] `other-window)
 (global-set-key [backtab] `switch-to-buffer)
 (global-set-key (kbd "<M-f4>") `save-buffers-kill-emacs)
