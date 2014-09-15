@@ -79,7 +79,6 @@
 (defun clojure-hook ()
   (paredit-mode 1)
   (highlight-symbol-mode 1)
-  (ac-nrepl-setup)
   (auto-complete-mode)
   (clj-refactor-mode 1)
   ;(pretty-mode 1)
