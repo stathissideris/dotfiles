@@ -85,6 +85,7 @@
   )
 (add-hook 'clojure-mode-hook 'clojure-hook)
 (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)
+(define-key clojure-mode-map (kbd "C-x t") 'clojure-jump-to-test)
 
 ;;cider
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
@@ -95,6 +96,42 @@
 (setq cider-repl-history-file "~/.emacs.d/cider-history")
 (define-key cider-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
 (define-key cider-repl-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
+
+(defun string-join (sep s)
+  (mapconcat 'identity s sep))
+
+(defun toggle-test-path (path)
+  "Calculate the filename of the corresponding test from the
+  current buffer, or the src filename from a test filename. So, toggle between
+
+  /devel/bare-square/monitor/src/monitor/extractor/site_catalyst/api.clj
+
+  and
+
+  /devel/bare-square/monitor/test/monitor/extractor/site_catalyst/api_test.clj
+
+  Contains a bug for the (rare) cases where there is a \"test\"
+  or \"src\" in your namespace hierarchy."
+  (string-join
+   "/"
+   (mapcar
+    (lambda (x)
+      (cond ((string-equal x "test") "src")
+            ((string-equal x "src") "test")
+            ((string-match "\\(.+\\)_test\\.clj" x)
+             (concat (match-string 1 x) ".clj"))
+            ((string-match "\\(.+\\)\\.clj" x)
+             (concat (match-string 1 x) "_test.clj"))
+            (t x)))
+    (split-string path "/"))))
+
+(defun clojure-jump-to-test ()
+  "Jump to corresponding test buffer (or the corresponding src
+  buffer if you're in a test."
+  (interactive)
+  (find-file (toggle-test-path buffer-file-name)))
+
+;;;-----
 
 (defun chomp-end (str)
   "Chomp tailing whitespace from STR."

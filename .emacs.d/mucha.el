@@ -5,4 +5,6 @@
 ;;for debugging:
 (setq mucha-options-loaded t)
 
+(setq magit-git-executable "c:\\Program Files (x86)\\Git\\bin\\git.exe")
+
 (provide 'mucha)
