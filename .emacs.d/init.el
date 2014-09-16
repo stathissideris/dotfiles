@@ -17,8 +17,7 @@
         undo-tree
         zenburn-theme
         diminish
-        emmet-mode
-        ag))
+        emmet-mode))
 
 ;;(require 'package)
 
@@ -33,6 +32,10 @@
   (when (not (package-installed-p p))
     (package-install p))
   (require p))
+
+(if (not (string-equal system-name "MUCHA"))
+    (when (not (package-installed-p 'ag))
+      (package-install 'ag)))
 
 (setq site-lisp-dir
       (expand-file-name "site-lisp" user-emacs-directory))
@@ -391,6 +394,8 @@
 (set-face-attribute 'highlight-symbol-face nil :foreground "gray100")
 
 (set-face-attribute 'cider-repl-prompt-face nil :weight 'bold)
+(cider-repl-display-in-current-window nil)
+(cider-repl-use-clojure-font-lock nil)
 
 (require 'dired)
 (if window-system
