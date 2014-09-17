@@ -17,6 +17,7 @@
         undo-tree
         zenburn-theme
         diminish
+        company
         emmet-mode))
 
 ;;(require 'package)
@@ -392,10 +393,6 @@
 
 (set-face-attribute 'highlight-symbol-face nil :background "orange3")
 (set-face-attribute 'highlight-symbol-face nil :foreground "gray100")
-
-(set-face-attribute 'cider-repl-prompt-face nil :weight 'bold)
-(cider-repl-display-in-current-window nil)
-(cider-repl-use-clojure-font-lock nil)
 
 (require 'dired)
 (if window-system

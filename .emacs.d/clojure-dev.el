@@ -65,37 +65,37 @@
     (hide-dos-eol)))
 (ad-activate 'cider-popup-buffer-display)
 
-;;mode hooks
-
-(defun cider-repl-setup ()
-  "Some REPL setup."
-  (interactive)
-  (load-clojure-file "clojure-dev.clj")
-  ;;(ac-nrepl-setup)
-  ;;(auto-complete-mode)
-  (hide-dos-eol))
-(add-hook 'cider-repl-mode-hook 'cider-repl-setup)
-
 (defun clojure-hook ()
   (paredit-mode 1)
   (highlight-symbol-mode 1)
-  (auto-complete-mode)
   (clj-refactor-mode 1)
-  ;(pretty-mode 1)
-  )
+  (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)
+  (define-key clojure-mode-map (kbd "C-x t") 'clojure-jump-to-test))
 (add-hook 'clojure-mode-hook 'clojure-hook)
-(define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)
-(define-key clojure-mode-map (kbd "C-x t") 'clojure-jump-to-test)
 
-;;cider
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-(setq cider-auto-select-error-buffer t)
-(setq cider-repl-wrap-history t)
-(setq cider-repl-history-size 1000)
-(setq cider-show-error-buffer 'except-in-repl)
-(setq cider-repl-history-file "~/.emacs.d/cider-history")
-(define-key cider-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
-(define-key cider-repl-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
+(defun cider-repl-hook ()
+  "Some REPL setup."
+  (interactive)
+  (set-face-attribute 'cider-repl-prompt-face nil :weight 'bold)
+  (load-clojure-file "clojure-dev.clj")
+  (hide-dos-eol))
+(add-hook 'cider-repl-mode-hook 'cider-repl-hook)
+
+(defun cider-hook ()
+  (cider-turn-on-eldoc-mode)
+  (cider-repl-display-in-current-window nil)
+  (cider-repl-use-clojure-font-lock nil)
+  (setq cider-auto-select-error-buffer t)
+  (setq cider-repl-wrap-history t)
+  (setq cider-repl-history-size 1000)
+  (setq cider-show-error-buffer 'except-in-repl)
+  (setq cider-repl-history-file "~/.emacs.d/cider-history")
+  (define-key cider-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
+  (define-key cider-repl-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing))
+(add-hook 'cider-mode-hook 'cider-hook)
+(add-hook 'after-init-hook 'global-company-mode) ;;auto-completion
+
+;;jump to tests and back
 
 (defun string-join (sep s)
   (mapconcat 'identity s sep))
@@ -131,7 +131,7 @@
   (interactive)
   (find-file (toggle-test-path buffer-file-name)))
 
-;;;-----
+;;eval and replace with pretty-printed code
 
 (defun chomp-end (str)
   "Chomp tailing whitespace from STR."
