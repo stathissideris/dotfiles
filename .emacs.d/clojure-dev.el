@@ -68,10 +68,10 @@
 (defun clojure-hook ()
   (paredit-mode 1)
   (highlight-symbol-mode 1)
-  (clj-refactor-mode 1)
-  (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)
-  (define-key clojure-mode-map (kbd "C-x t") 'clojure-jump-to-test))
+  (clj-refactor-mode 1))
 (add-hook 'clojure-mode-hook 'clojure-hook)
+(define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)
+(define-key clojure-mode-map (kbd "C-x t") 'clojure-jump-to-test)
 
 (defun cider-repl-hook ()
   "Some REPL setup."
@@ -89,11 +89,11 @@
   (setq cider-repl-wrap-history t)
   (setq cider-repl-history-size 1000)
   (setq cider-show-error-buffer 'except-in-repl)
-  (setq cider-repl-history-file "~/.emacs.d/cider-history")
-  (define-key cider-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
-  (define-key cider-repl-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing))
+  (setq cider-repl-history-file "~/.emacs.d/cider-history"))
 (add-hook 'cider-mode-hook 'cider-hook)
 (add-hook 'after-init-hook 'global-company-mode) ;;auto-completion
+(define-key cider-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
+(define-key cider-repl-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
 
 ;;jump to tests and back
 
