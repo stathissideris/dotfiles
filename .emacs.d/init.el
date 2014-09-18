@@ -783,7 +783,6 @@ by using nxml's indentation rules."
  '(ac-trigger-key nil)
  '(browse-url-mozilla-program "firefox")
  '(case-fold-search t)
- '(cider-repl-display-in-current-window t)
  '(column-number-mode t)
  '(current-language-environment "UTF-8")
  '(default-input-method "rfc1345")

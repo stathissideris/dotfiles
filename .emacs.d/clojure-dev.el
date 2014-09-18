@@ -82,18 +82,17 @@
 (add-hook 'cider-repl-mode-hook 'cider-repl-hook)
 
 (defun cider-hook ()
-  (cider-turn-on-eldoc-mode)
-  (cider-repl-display-in-current-window nil)
-  (cider-repl-use-clojure-font-lock nil)
-  (setq cider-auto-select-error-buffer t)
-  (setq cider-repl-wrap-history t)
-  (setq cider-repl-history-size 1000)
-  (setq cider-show-error-buffer 'except-in-repl)
-  (setq cider-repl-history-file "~/.emacs.d/cider-history"))
+  (cider-turn-on-eldoc-mode))
 (add-hook 'cider-mode-hook 'cider-hook)
 (add-hook 'after-init-hook 'global-company-mode) ;;auto-completion
 (define-key cider-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
 (define-key cider-repl-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
+
+(setq cider-show-error-buffer 'except-in-repl)
+(setq cider-auto-select-error-buffer t)
+(setq cider-repl-wrap-history t)
+(setq cider-repl-history-size 1000)
+(setq cider-repl-history-file "~/.emacs.d/cider-history")
 
 ;;jump to tests and back
 
