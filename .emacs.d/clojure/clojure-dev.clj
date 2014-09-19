@@ -232,9 +232,6 @@
                       (cond (not (string? x)) x
                             :else (truncate-string x limit))) t)))
 
-(defmacro gxs [fun & props]
-  `(~'gxsclient/gxs-call ~(str fun) ~@props))
-
 ;;;; reverse engineering
 
 (defn hierarchy-seq [cl]
@@ -292,13 +289,3 @@
                  (enumeration-seq
                   (.entries (JarFile. filename))))))
 
-(defn load-jar
-  "Does not work"
-  [url]
-  (doto (.getDeclaredMethod URLClassLoader "addURL" (into-array Class [URL]))
-    (.setAccessible true)
-    (.invoke (ClassLoader/getSystemClassLoader)
-             (into-array Object [(URL. "jar" "" url)]))))
-
-(defn read-gxs [res]
-  (-> res first first second read-string))
