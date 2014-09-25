@@ -3,7 +3,7 @@
       '(highlight-symbol
         clojure-mode
         ;;clojure-test-mode
-        clj-refactor
+        ;;clj-refactor
         align-cljlet
         ;;cider
         ;;ac-nrepl
@@ -68,7 +68,7 @@
 ;;(diminish 'auto-complete-mode "ac")
 (diminish 'magit-auto-revert-mode)
 (diminish 'git-gutter-mode)
-(diminish 'clj-refactor-mode)
+;;(diminish 'clj-refactor-mode)
 
 ;(add-hook 'org-mode-hook 'turn-on-pretty-mode)
 

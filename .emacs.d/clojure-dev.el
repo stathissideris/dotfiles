@@ -1,8 +1,6 @@
 (require 'inf-lisp)
-(require 'clj-refactor)
-;(require 'ac-nrepl)
-
-(cljr-add-keybindings-with-prefix "C-c C-v")
+;;(require 'clj-refactor)
+;;(cljr-add-keybindings-with-prefix "C-c C-v")
 
 (setq clojure-quick-sexp
 	  '("(dev/reset)"
