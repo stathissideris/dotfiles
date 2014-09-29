@@ -138,6 +138,7 @@
 
 ;(cua-mode t)
 (ido-mode t)
+(setq ido-everywhere t)
 
 ;;;; looks
 (if window-system
