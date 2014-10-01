@@ -289,3 +289,6 @@
                  (enumeration-seq
                   (.entries (JarFile. filename))))))
 
+(defn to-date-time [s]
+  (let [d (map parse-int (rest (re-find #"(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d).(\d\d\d)" s)))]
+    `(time/date-time ~@d)))
