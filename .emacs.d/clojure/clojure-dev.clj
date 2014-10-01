@@ -289,6 +289,11 @@
                  (enumeration-seq
                   (.entries (JarFile. filename))))))
 
+;;refactoring
+
 (defn to-date-time [s]
   (let [d (map parse-int (rest (re-find #"(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d).(\d\d\d)" s)))]
     `(time/date-time ~@d)))
+
+(defn lists->vectors [r]
+  (walk/walk #(if (list? %) (vec %) %) vec r))
