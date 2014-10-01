@@ -1,10 +1,13 @@
 {:user {:dependencies [[org.clojars.gjahad/debug-repl "0.3.3"]
                        [im.chit/vinyasa "0.1.8"]
-                       [difform "1.1.2"]]
+                       [difform "1.1.2"]
+                       [pjstadig/humane-test-output "0.6.0"]]
         :injections [(require 'vinyasa.inject)
                      (require 'vinyasa.pull)
                      (require 'alex-and-georges.debug-repl)
                      (require 'com.georgejahad.difform)
+                     (require 'pjstadig.humane-test-output)
+                     (pjstadig.humane-test-output/activate!)
                      (vinyasa.inject/inject
                       'clojure.core
                       '[[vinyasa.pull pull]
