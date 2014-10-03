@@ -772,9 +772,10 @@ by using nxml's indentation rules."
 ;;to cancel
 ;;(cancel-timer zone-timer)
 
-(setq yas-snippet-dirs
-  '("~/.emacs.d/site-lisp/mysnippets"))
-;;(yas-global-mode 1)
+;; (setq yas-snippet-dirs
+;;   '("~/.emacs.d/site-lisp/mysnippets"))
+(require 'yasnippet)
+(yas-global-mode 1)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
