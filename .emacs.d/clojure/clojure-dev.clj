@@ -297,3 +297,11 @@
 
 (defn lists->vectors [r]
   (walk/walk #(if (list? %) (vec %) %) vec r))
+
+(defn grab-line [filename line-number]
+  (-> filename
+      io/file
+      io/reader
+      line-seq
+      (->> (into []))
+      (nth line-number)))
