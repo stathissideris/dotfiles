@@ -83,7 +83,7 @@
 (defun cider-hook ()
   (cider-turn-on-eldoc-mode))
 (add-hook 'cider-mode-hook 'cider-hook)
-(add-hook 'after-init-hook 'global-company-mode) ;;auto-completion
+;;(add-hook 'after-init-hook 'global-company-mode) ;;auto-completion
 (define-key cider-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
 (define-key cider-repl-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
 

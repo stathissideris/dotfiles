@@ -18,7 +18,8 @@
         zenburn-theme
         diminish
         company
-        emmet-mode))
+        emmet-mode
+        ido-ubiquitous))
 
 ;;(require 'package)
 
@@ -137,8 +138,8 @@
 ;; (setq color-theme-is-global t)
 
 ;(cua-mode t)
-(ido-mode t)
 (setq ido-everywhere t)
+(ido-mode t)
 
 ;;;; looks
 (if window-system
@@ -771,6 +772,17 @@ by using nxml's indentation rules."
 ;;            (zone)))))
 ;;to cancel
 ;;(cancel-timer zone-timer)
+
+
+(global-company-mode)
+
+(defun indent-or-complete ()
+  (interactive)
+  (if (looking-at "\\_>")
+      (company-complete-common)
+    (indent-according-to-mode)))
+
+(global-set-key "\t" 'indent-or-complete)
 
 ;; (setq yas-snippet-dirs
 ;;   '("~/.emacs.d/site-lisp/mysnippets"))
