@@ -75,6 +75,7 @@
 (defun cider-repl-hook ()
   "Some REPL setup."
   (interactive)
+  (paredit-mode)
   (set-face-attribute 'cider-repl-prompt-face nil :weight 'bold)
   (load-clojure-file "clojure-dev.clj")
   (hide-dos-eol))
