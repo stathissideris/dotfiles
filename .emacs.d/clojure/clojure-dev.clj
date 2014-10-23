@@ -306,9 +306,11 @@
       (->> (into []))
       (nth line-number)))
 
-(defn who-called-me []
-  (try (throw (ex-info "probe" {}))
-       (catch Exception e (clojure.repl/pst e))))
+(defn who-called-me
+  ([] (who-called-me 20))
+  ([depth]
+     (try (throw (ex-info "probe" {}))
+          (catch Exception e (clojure.repl/pst depth)))))
 
 (defn trace-fn [tag fun]
   (fn [& args]
