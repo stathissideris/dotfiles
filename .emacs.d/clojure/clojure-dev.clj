@@ -307,10 +307,10 @@
       (nth line-number)))
 
 (defn who-called-me
-  ([] (who-called-me 20))
+  ([] (who-called-me 25))
   ([depth]
      (try (throw (ex-info "probe" {}))
-          (catch Exception e (clojure.repl/pst depth)))))
+          (catch Exception e (clojure.repl/pst e depth)))))
 
 (defn trace-fn [tag fun]
   (fn [& args]
