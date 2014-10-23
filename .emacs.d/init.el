@@ -819,6 +819,7 @@ by using nxml's indentation rules."
  '(speedbar-use-images nil)
  '(tab-width 4)
  '(tool-bar-mode nil)
+ '(undo-outer-limit 24000000)
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
  '(yas/trigger-key "M-SPC"))
 

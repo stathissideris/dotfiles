@@ -305,3 +305,7 @@
       line-seq
       (->> (into []))
       (nth line-number)))
+
+(defn who-called-me []
+  (try (throw (ex-info "probe" {}))
+       (catch Exception e (clojure.repl/pst e))))
