@@ -2,11 +2,9 @@
 (setq packages-to-bootstrap
       '(highlight-symbol
         clojure-mode
-        ;;clojure-test-mode
-        ;;clj-refactor
+        clj-refactor
         align-cljlet
         ;;cider
-        ;;ac-nrepl
         tuareg
         ;;merlin
         yasnippet
@@ -21,10 +19,10 @@
         emmet-mode
         ido-ubiquitous))
 
-;;(require 'package)
-
-(setq package-archives
-      '(("melpa" . "http://melpa.milkbox.net/packages/")))
+(require 'package)
+(add-to-list
+ 'package-archives
+ '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 ;;attempt to install packages at startup
@@ -62,6 +60,10 @@
 (require 'cider)
 (require 'tuareg)
 
+(defun install-package ()
+  (interactive)
+  (call-interactively 'package-install))
+
 (require 'diminish)
 (diminish 'undo-tree-mode)
 (diminish 'highlight-symbol-mode "hi")
@@ -69,6 +71,7 @@
 ;;(diminish 'auto-complete-mode "ac")
 (diminish 'magit-auto-revert-mode)
 (diminish 'git-gutter-mode)
+(diminish 'eldoc-mode)
 ;;(diminish 'clj-refactor-mode)
 
 ;(add-hook 'org-mode-hook 'turn-on-pretty-mode)
@@ -788,6 +791,10 @@ by using nxml's indentation rules."
 ;;   '("~/.emacs.d/site-lisp/mysnippets"))
 (require 'yasnippet)
 (yas-global-mode 1)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
