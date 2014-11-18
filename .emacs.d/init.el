@@ -5,7 +5,7 @@
         ;;clojure-test-mode
         ;;clj-refactor
         align-cljlet
-        ;;cider
+        cider
         ;;ac-nrepl
         tuareg
         ;;merlin
@@ -45,7 +45,7 @@
 (add-to-list 'load-path user-emacs-directory)
 (add-to-list 'load-path site-lisp-dir)
 (add-to-list 'load-path "~/.emacs.d/site-lisp/org-mode/lisp")
-(add-to-list 'load-path "~/cider-0.7.0")
+;;(add-to-list 'load-path "~/cider-0.7.0")
 
 (require 'bm)
 (require 'setnu)
@@ -614,7 +614,7 @@
 
 ;; clojure stuff
 
-(require 'clojure-dev)
+(require 'clojure-dev2)
 
 ;; mac-specific config
 (if (or (string-equal system-type "darwin")
