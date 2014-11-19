@@ -614,7 +614,7 @@
 
 ;; clojure stuff
 
-(require 'clojure-dev)
+(require 'clojure-dev2)
 
 ;; mac-specific config
 (if (or (string-equal system-type "darwin")
