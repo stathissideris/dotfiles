@@ -21,10 +21,10 @@
         emmet-mode
         ido-ubiquitous))
 
-;;(require 'package)
-
-(setq package-archives
-      '(("melpa" . "http://melpa.milkbox.net/packages/")))
+(require 'package)
+(add-to-list
+ 'package-archives
+ '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 ;;attempt to install packages at startup
@@ -614,7 +614,7 @@
 
 ;; clojure stuff
 
-(require 'clojure-dev2)
+(require 'clojure-dev)
 
 ;; mac-specific config
 (if (or (string-equal system-type "darwin")
