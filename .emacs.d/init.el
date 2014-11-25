@@ -784,6 +784,22 @@ by using nxml's indentation rules."
 
 (global-set-key "\t" 'indent-or-complete)
 
+(defun escape-double-quotes (start end)
+  (interactive "r")
+  (let ((text (buffer-substring start end)))
+    (save-excursion
+      (delete-region start end)
+      (insert (replace-regexp-in-string "\"" "\\\\\"" text)))))
+
+;;highlight the region you want to double-quote, turn off paredit and run this:
+(defun double-quote (start end)
+  (interactive "r")
+  (let ((text (buffer-substring start end)))
+    (save-excursion
+      (delete-region start end)
+      (insert
+       (concat "\"" (replace-regexp-in-string "\"" "\\\\\"" text) "\"")))))
+
 ;; (setq yas-snippet-dirs
 ;;   '("~/.emacs.d/site-lisp/mysnippets"))
 (require 'yasnippet)
