@@ -305,3 +305,16 @@
       line-seq
       (->> (into []))
       (nth line-number)))
+
+(defn who-called-me
+  ([] (who-called-me 25))
+  ([depth]
+     (try (throw (ex-info "probe" {}))
+          (catch Exception e (clojure.repl/pst e depth)))))
+
+(defn trace-fn [tag fun]
+  (fn [& args]
+    (println (format "(%s %s)" (name tag) (apply pr-str args)))
+    (let [res (apply fun args)]
+      (println (format "%s=> %s" (name tag) (pr-str res)))
+      res)))

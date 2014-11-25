@@ -5,7 +5,7 @@
         ;;clojure-test-mode
         ;;clj-refactor
         align-cljlet
-        ;;cider
+        cider
         ;;ac-nrepl
         tuareg
         ;;merlin
@@ -21,10 +21,10 @@
         emmet-mode
         ido-ubiquitous))
 
-;;(require 'package)
-
-(setq package-archives
-      '(("melpa" . "http://melpa.milkbox.net/packages/")))
+(require 'package)
+(add-to-list
+ 'package-archives
+ '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 ;;attempt to install packages at startup
@@ -45,7 +45,7 @@
 (add-to-list 'load-path user-emacs-directory)
 (add-to-list 'load-path site-lisp-dir)
 (add-to-list 'load-path "~/.emacs.d/site-lisp/org-mode/lisp")
-(add-to-list 'load-path "~/cider-0.7.0")
+;;(add-to-list 'load-path "~/cider-0.7.0")
 
 (require 'bm)
 (require 'setnu)
@@ -614,7 +614,7 @@
 
 ;; clojure stuff
 
-(require 'clojure-dev)
+(require 'clojure-dev2)
 
 ;; mac-specific config
 (if (or (string-equal system-type "darwin")
@@ -835,6 +835,7 @@ by using nxml's indentation rules."
  '(speedbar-use-images nil)
  '(tab-width 4)
  '(tool-bar-mode nil)
+ '(undo-outer-limit 24000000)
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
  '(yas/trigger-key "M-SPC"))
 

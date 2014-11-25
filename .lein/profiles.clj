@@ -1,5 +1,7 @@
 {:user {:dependencies [[org.clojars.gjahad/debug-repl "0.3.3"]
-                       [im.chit/vinyasa "0.1.8"]
+                       [im.chit/vinyasa "0.2.1"
+                        :exclusions [org.apache.httpcomponents/httpclient
+                                     org.apache.httpcomponents/httpcore]]
                        [difform "1.1.2"]
                        [pjstadig/humane-test-output "0.6.0"]]
         :injections [(require 'vinyasa.inject)
@@ -15,7 +17,6 @@
                         [com.georgejahad.difform difform]])]
         :test-refresh {:notify-command ["tmux" "display-message"]
                        :notify-on-success true}
-        :plugins [[lein-pprint "1.1.1"]
-                  [quickie "0.2.5"]
-                  [cider/cider-nrepl "0.7.0"]
-                  [com.jakemccrary/lein-test-refresh "0.5.0"]]}}
+        :plugins [[lein-pprint "1.1.2"]
+                  [cider/cider-nrepl "0.8.1"]
+                  [com.jakemccrary/lein-test-refresh "0.5.4"]]}}
