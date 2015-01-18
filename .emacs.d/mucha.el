@@ -6,5 +6,6 @@
 (setq mucha-options-loaded t)
 
 (setq magit-git-executable "c:\\Program Files (x86)\\Git\\bin\\git.exe")
+(setq magit-process-quote-curly-braces nil)
 
 (provide 'mucha)
