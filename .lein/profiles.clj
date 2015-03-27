@@ -1,4 +1,5 @@
-{:user {:dependencies [[org.clojars.gjahad/debug-repl "0.3.3"]
+{:user {:signing {:gpg-key "25C79D92"}
+        :dependencies [[org.clojars.gjahad/debug-repl "0.3.3"]
                        [im.chit/vinyasa "0.1.8"]
                        [difform "1.1.2"]
                        [pjstadig/humane-test-output "0.6.0"]]

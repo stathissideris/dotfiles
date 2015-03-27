@@ -821,7 +821,7 @@ by using nxml's indentation rules."
  '(tool-bar-mode nil)
  '(undo-outer-limit 24000000)
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
- '(yas/trigger-key "M-SPC"))
+ '(yas-trigger-key "M-SPC"))
 
 
 (put 'dired-find-alternate-file 'disabled nil)

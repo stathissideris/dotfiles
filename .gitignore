@@ -1,0 +1,11 @@
+/.lein/self-installs/
+*
+!.gitignore
+!.gitconfig
+!.emacs.d
+!.emacs.d/*
+!.tmux.conf
+!.lein
+!.lein/profiles.clj
+
+.DS_Store
