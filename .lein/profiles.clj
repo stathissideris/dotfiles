@@ -4,7 +4,8 @@
                         :exclusions [org.apache.httpcomponents/httpclient
                                      org.apache.httpcomponents/httpcore]]
                        [difform "1.1.2"]
-                       [pjstadig/humane-test-output "0.6.0"]]
+                       [pjstadig/humane-test-output "0.6.0"]
+                       [org.clojure/tools.nrepl "0.2.7"]]
         :injections [(require 'vinyasa.inject)
                      (require 'vinyasa.pull)
                      (require 'alex-and-georges.debug-repl)
@@ -19,5 +20,5 @@
         :test-refresh {:notify-command ["tmux" "display-message"]
                        :notify-on-success true}
         :plugins [[lein-pprint "1.1.2"]
-                  [cider/cider-nrepl "0.8.1"]
+                  [cider/cider-nrepl "0.9.0-SNAPSHOT"]
                   [com.jakemccrary/lein-test-refresh "0.5.4"]]}}
