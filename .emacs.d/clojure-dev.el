@@ -1,5 +1,5 @@
 (require 'inf-lisp)
-;;(require 'clj-refactor)
+(require 'clj-refactor)
 ;;(cljr-add-keybindings-with-prefix "C-c C-v")
 
 (setq clojure-quick-sexp
@@ -66,8 +66,7 @@
 (defun clojure-hook ()
   (paredit-mode 1)
   (highlight-symbol-mode 1)
-  ;;(clj-refactor-mode 1)
-  )
+  (clj-refactor-mode 1))
 (add-hook 'clojure-mode-hook 'clojure-hook)
 (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)
 (define-key clojure-mode-map (kbd "C-x t") 'clojure-jump-to-test)

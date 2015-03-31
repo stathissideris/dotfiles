@@ -2,8 +2,7 @@
 (setq packages-to-bootstrap
       '(highlight-symbol
         clojure-mode
-        ;;clojure-test-mode
-        ;;clj-refactor
+        clj-refactor
         align-cljlet
         cider
         ;;ac-nrepl
