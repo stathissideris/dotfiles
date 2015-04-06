@@ -43,7 +43,7 @@
 
 (add-to-list 'load-path user-emacs-directory)
 (add-to-list 'load-path site-lisp-dir)
-(add-to-list 'load-path "~/.emacs.d/site-lisp/org-mode/lisp")
+;;(add-to-list 'load-path "~/.emacs.d/site-lisp/org-mode/lisp")
 ;;(add-to-list 'load-path "~/cider-0.7.0")
 
 (require 'bm)
