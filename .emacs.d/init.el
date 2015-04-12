@@ -10,6 +10,7 @@
         ;;merlin
         yasnippet
         magit
+        powerline
         git-gutter
         markdown-mode
         puppet-mode
@@ -58,6 +59,9 @@
 (require 'org)
 (require 'cider)
 (require 'tuareg)
+
+(require 'powerline)
+(powerline-default-theme)
 
 (require 'diminish)
 (diminish 'undo-tree-mode)
