@@ -4,6 +4,7 @@
 !.gitconfig
 !.emacs.d
 !.emacs.d/*
+!.emacs.d/lisp/*
 !.tmux.conf
 !.lein
 !.lein/profiles.clj

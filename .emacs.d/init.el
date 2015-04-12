@@ -6,15 +6,15 @@
         align-cljlet
         cider
         ;;ac-nrepl
-        tuareg
+        ;;tuareg
         ;;merlin
         yasnippet
         magit
         git-gutter
         markdown-mode
         puppet-mode
+        solarized-theme
         undo-tree
-        zenburn-theme
         diminish
         company
         emmet-mode
@@ -41,10 +41,8 @@
 (setq site-lisp-dir
       (expand-file-name "site-lisp" user-emacs-directory))
 
-(add-to-list 'load-path user-emacs-directory)
 (add-to-list 'load-path site-lisp-dir)
-;;(add-to-list 'load-path "~/.emacs.d/site-lisp/org-mode/lisp")
-;;(add-to-list 'load-path "~/cider-0.7.0")
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 (require 'bm)
 (require 'setnu)
@@ -72,7 +70,7 @@
 
 ;(add-hook 'org-mode-hook 'turn-on-pretty-mode)
 
-(load-theme 'zenburn t)
+(load-theme 'solarized-dark t)
 
 (global-set-key (kbd "C-z") nil)
 
@@ -142,7 +140,9 @@
 
 ;;;; looks
 (if window-system
-    (scroll-bar-mode -1)
+    (progn
+      (scroll-bar-mode -1)
+      (tool-bar-mode -1))
     ;; (progn
     ;;   (setq scroll-bar-mode-explicit t)
     ;;   (set-scroll-bar-mode `right))
@@ -622,10 +622,7 @@
 (if (string-equal system-name "MUCHA")
     (require 'mucha))
 (if (not window-system)
-    (require 'no-window)
-  (progn
-    (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-powerline")
-    (require 'powerline)))
+    (require 'no-window))
 
 (put 'erase-buffer 'disabled nil)
 
@@ -809,34 +806,13 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ac-trigger-key nil)
- '(browse-url-mozilla-program "firefox")
- '(case-fold-search t)
- '(column-number-mode t)
- '(current-language-environment "UTF-8")
- '(default-input-method "rfc1345")
- '(global-font-lock-mode t nil (font-lock))
- '(haskell-mode-hook (quote (turn-on-haskell-indent turn-on-haskell-indentation turn-on-eldoc-mode capitalized-words-mode turn-on-haskell-doc-mode imenu-add-menubar-index)))
- '(ibuffer-default-sorting-mode (quote alphabetic))
- '(ibuffer-display-summary nil)
- '(ibuffer-formats (quote ((mark modified read-only " " (name 18 30 :left :elide)) (mark " " (name 16 -1) " " filename))))
- '(ibuffer-saved-filter-groups (quote (("default" ("special buffers" (name . "^\\*"))))))
- '(ibuffer-saved-filters (quote (("gnus" ((or (mode . message-mode) (mode . mail-mode) (mode . gnus-group-mode) (mode . gnus-summary-mode) (mode . gnus-article-mode)))) ("programming" ((or (mode . emacs-lisp-mode) (mode . cperl-mode) (mode . c-mode) (mode . java-mode) (mode . idl-mode) (mode . lisp-mode)))))))
- '(ibuffer-use-other-window t)
- '(inferior-lisp-program "c:\\dev\\bin\\ccl\\wx86cl.exe")
- '(minimap-enlarge-certain-faces (quote always))
- '(minimap-hide-fringes t)
- '(minimap-window-location (quote right))
- '(org-agenda-files (quote ("i:/notes/notes.org")))
- '(org-support-shift-select t)
- '(show-paren-mode t)
- '(slime-backend "")
- '(speedbar-use-images nil)
- '(tab-width 4)
- '(tool-bar-mode nil)
- '(undo-outer-limit 24000000)
- '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
- '(yas-trigger-key "M-SPC"))
+ '(cider-prompt-for-symbol nil)
+ '(custom-safe-themes
+   (quote
+    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
+ '(package-selected-packages
+   (quote
+    (solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag))))
 
 
 (put 'dired-find-alternate-file 'disabled nil)
@@ -851,3 +827,9 @@ by using nxml's indentation rules."
     (buffer-string)))
 
 (setq initial-scratch-message (get-string-from-file "~/.emacs.d/logo"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
