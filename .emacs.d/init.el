@@ -15,6 +15,7 @@
         markdown-mode
         puppet-mode
         solarized-theme
+        zenburn-theme
         undo-tree
         diminish
         company
@@ -73,8 +74,6 @@
 ;;(diminish 'clj-refactor-mode)
 
 ;(add-hook 'org-mode-hook 'turn-on-pretty-mode)
-
-(load-theme 'solarized-dark t)
 
 (global-set-key (kbd "C-z") nil)
 
@@ -145,12 +144,14 @@
 ;;;; looks
 (if window-system
     (progn
+      (load-theme 'solarized-dark t)
       (scroll-bar-mode -1)
       (tool-bar-mode -1))
-    ;; (progn
-    ;;   (setq scroll-bar-mode-explicit t)
-    ;;   (set-scroll-bar-mode `right))
-    )
+  (load-theme 'zenburn t)
+  ;; (progn
+  ;;   (setq scroll-bar-mode-explicit t)
+  ;;   (set-scroll-bar-mode `right))
+  )
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))) ;; one two lines at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
@@ -811,13 +812,9 @@ by using nxml's indentation rules."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(cider-prompt-for-symbol nil)
- '(custom-safe-themes
-   (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
+ '(custom-safe-themes (quote ("e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
  '(ns-use-srgb-colorspace nil)
- '(package-selected-packages
-   (quote
-    (solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
+ '(package-selected-packages (quote (solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
  '(powerline-default-separator nil))
 
 
