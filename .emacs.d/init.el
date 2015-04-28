@@ -829,6 +829,13 @@ by using nxml's indentation rules."
     (buffer-string)))
 
 (setq initial-scratch-message (get-string-from-file "~/.emacs.d/logo"))
+
+;;; sql mode
+(add-hook 'sql-interactive-mode-hook
+          (lambda ()
+            (toggle-truncate-lines t)))
+(define-key sql-mode-map (kbd "C-x C-e") 'sql-send-paragraph)
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
