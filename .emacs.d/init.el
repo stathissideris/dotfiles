@@ -20,7 +20,8 @@
         diminish
         company
         emmet-mode
-        ido-ubiquitous))
+        ido-ubiquitous
+        expand-region))
 
 (require 'package)
 (add-to-list
@@ -830,11 +831,18 @@ by using nxml's indentation rules."
 
 (setq initial-scratch-message (get-string-from-file "~/.emacs.d/logo"))
 
-;;; sql mode
+
+(require 'sql)
 (add-hook 'sql-interactive-mode-hook
           (lambda ()
             (toggle-truncate-lines t)))
 (define-key sql-mode-map (kbd "C-x C-e") 'sql-send-paragraph)
+
+
+(require 'expand-region)
+(global-set-key (kbd "C-@") 'er/expand-region)
+(pending-delete-mode t)
+
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
