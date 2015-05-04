@@ -850,8 +850,10 @@ by using nxml's indentation rules."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(fixed-pitch ((t (:family "Monaco"))))
+ '(dired-directory ((t (:inherit font-lock-function-name-face :foreground "#55bbff"))))
  '(org-level-1 ((t (:inherit fixed-pitch :foreground "#cb4b16" :height 1.3))))
  '(org-level-2 ((t (:inherit fixed-pitch :foreground "#859900" :height 1.2))))
  '(org-level-3 ((t (:inherit fixed-pitch :foreground "#268bd2" :height 1.15))))
  '(org-level-4 ((t (:inherit fixed-pitch :foreground "#b58900" :height 1.1))))
- '(dired-directory ((t (:inherit font-lock-function-name-face :foreground "#55bbff")))))
+ '(org-level-5 ((t (:inherit fixed-pitch :foreground "#2aa198"))))
+ '(show-paren-match ((t (:foreground "green" :weight bold)))))
