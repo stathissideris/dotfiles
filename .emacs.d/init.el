@@ -24,10 +24,19 @@
         expand-region))
 
 (require 'package)
-(add-to-list
- 'package-archives
- '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+(defun maybe-install-and-require (p)
+  (when (not (package-installed-p p))
+    (package-install p))
+  (require p))
 
 ;;attempt to install packages at startup
 (unless package-archive-contents
@@ -840,9 +849,11 @@ by using nxml's indentation rules."
 
 
 (require 'expand-region)
-(global-set-key (kbd "C-@") 'er/expand-region)
+(global-set-key (kbd "C-\\") 'er/expand-region)
 (pending-delete-mode t)
 
+(maybe-install-and-require 'browse-kill-ring)
+(browse-kill-ring-default-keybindings)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
