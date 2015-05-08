@@ -862,6 +862,7 @@ by using nxml's indentation rules."
  ;; If there is more than one, they won't work right.
  '(fixed-pitch ((t (:family "Monaco"))))
  '(dired-directory ((t (:inherit font-lock-function-name-face :foreground "#55bbff"))))
+ '(hl-line ((t (:background "color-17"))))
  '(org-level-1 ((t (:inherit fixed-pitch :foreground "#cb4b16" :height 1.3))))
  '(org-level-2 ((t (:inherit fixed-pitch :foreground "#859900" :height 1.2))))
  '(org-level-3 ((t (:inherit fixed-pitch :foreground "#268bd2" :height 1.15))))
