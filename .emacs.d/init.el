@@ -372,6 +372,8 @@
 (global-unset-key [?\M-f])
 
 ;; programming
+(global-set-key [?\C-/] `comment-region)
+(global-set-key (kbd "C-?") `uncomment-region)
 (setq comment-empty-lines t)
 (define-key global-map (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-S-f") `indent-region)
@@ -820,10 +822,16 @@ by using nxml's indentation rules."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(cider-prompt-for-symbol nil)
- '(custom-safe-themes (quote ("e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
- '(dired-dwim-target t)
+ '(custom-safe-themes
+   (quote
+    ("e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
  '(ns-use-srgb-colorspace nil)
- '(package-selected-packages (quote (solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
+ '(org-time-clocksum-format
+   (quote
+    (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
+ '(package-selected-packages
+   (quote
+    (solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
  '(powerline-default-separator nil))
 
 
@@ -868,4 +876,5 @@ by using nxml's indentation rules."
  '(org-level-3 ((t (:inherit fixed-pitch :foreground "#268bd2" :height 1.15))))
  '(org-level-4 ((t (:inherit fixed-pitch :foreground "#b58900" :height 1.1))))
  '(org-level-5 ((t (:inherit fixed-pitch :foreground "#2aa198"))))
- '(show-paren-match ((t (:foreground "green" :weight bold)))))
+ '(show-paren-match ((t (:foreground "green" :background "Black" :weight bold))))
+ '(org-clock-overlay ((t (:background "Black")))))
