@@ -122,16 +122,16 @@
                             str))
 
 ;;monkey patch!
-(defun cider-eval-last-sexp-and-replace ()
-  "Evaluate the expression preceding point and replace it with its result."
-  (interactive)
-  (let* ((last-sexp (concat "(with-out-str (clojure.pprint/pprint " (cider-last-sexp) "))"))
-         (value     (chomp-end (cider-eval-and-get-value last-sexp))))
-    (save-excursion
-      (backward-kill-sexp)
-      (insert value)
-      (paredit-backward)
-      (mark-sexp)
-      (indent-for-tab-command))))
+;; (defun cider-eval-last-sexp-and-replace ()
+;;   "Evaluate the expression preceding point and replace it with its result."
+;;   (interactive)
+;;   (let* ((last-sexp (concat "(with-out-str (clojure.pprint/pprint " (cider-last-sexp) "))"))
+;;          (value     (chomp-end (cider-eval-and-get-value last-sexp))))
+;;     (save-excursion
+;;       (backward-kill-sexp)
+;;       (insert value)
+;;       (paredit-backward)
+;;       (mark-sexp)
+;;       (indent-for-tab-command))))
 
 (provide 'clojure-dev2)
