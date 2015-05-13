@@ -372,7 +372,6 @@
 (global-unset-key [?\M-f])
 
 ;; programming
-(global-set-key [?\C-/] `comment-region)
 (global-set-key (kbd "C-?") `uncomment-region)
 (setq comment-empty-lines t)
 (define-key global-map (kbd "RET") 'newline-and-indent)
