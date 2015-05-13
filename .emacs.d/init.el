@@ -857,10 +857,16 @@ by using nxml's indentation rules."
 
 (require 'expand-region)
 (global-set-key (kbd "C-\\") 'er/expand-region)
-(pending-delete-mode t)
+;;(pending-delete-mode 'no)
 
 (maybe-install-and-require 'browse-kill-ring)
 (browse-kill-ring-default-keybindings)
+
+(maybe-install-and-require 'multiple-cursors)
+(global-set-key (kbd "C-c .") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-c ,") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c /") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
