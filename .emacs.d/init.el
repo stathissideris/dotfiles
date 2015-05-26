@@ -868,6 +868,10 @@ by using nxml's indentation rules."
 (global-set-key (kbd "C-c /") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 
+(defun tabs->newlines ()
+  (interactive)
+  (replace-string "\t" "\n"))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
