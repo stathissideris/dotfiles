@@ -872,6 +872,10 @@ by using nxml's indentation rules."
   (interactive)
   (replace-string "\t" "\n"))
 
+(defun mce ()
+  (interactive)
+  (mc/edit-lines))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
