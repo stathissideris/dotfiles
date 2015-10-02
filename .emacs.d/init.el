@@ -79,7 +79,7 @@
 (diminish 'highlight-symbol-mode "hi")
 (diminish 'paredit-mode "prdt")
 ;;(diminish 'auto-complete-mode "ac")
-(diminish 'magit-auto-revert-mode)
+;;(diminish 'magit-auto-revert-mode)
 (diminish 'git-gutter-mode)
 ;;(diminish 'clj-refactor-mode)
 
