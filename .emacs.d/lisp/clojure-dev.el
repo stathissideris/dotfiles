@@ -1,6 +1,5 @@
 (require 'inf-lisp)
 (require 'clj-refactor)
-;;(cljr-add-keybindings-with-prefix "C-c C-v")
 
 (setq clojure-quick-sexp
 	  '("(dev/reset)"
@@ -13,19 +12,6 @@
   (let ((selection (ido-completing-read
 					"Clojure eval: " clojure-quick-sexp nil t "")))
 	(cider-interactive-eval selection)))
-
-(defun save-load-and-compile ()
-  ""
-  (interactive)
-  (save-buffer)
-  (cider-load-current-buffer))
-
-(defun cloj-help-popup (msg)
-  (if msg
-   (let ((lines (cdr (split-string msg "\n"))))
-	 (setq msg (mapconcat (lambda (x) x) lines "\n"))
-	 (th-show-tooltip-for-point msg))
-   (th-show-tooltip-for-point "No help found.")))
 
 (global-set-key [f2] 'clojure-quick-eval)
 
@@ -48,11 +34,6 @@
 
 (global-set-key [M-f1] 'clojuredocs-example)
 (global-set-key [M-f3] 'nrepl-pretty-toggle)
-(global-set-key
- (kbd "<H-home>")
- (lambda ()
-   (interactive)
-   (switch-to-buffer "*GXS Scripts*")))
 
 (setq auto-mode-alist (cons '("\\.edn$" . clojure-mode) auto-mode-alist))
 
@@ -66,7 +47,11 @@
 (defun clojure-hook ()
   (paredit-mode 1)
   (highlight-symbol-mode 1)
-  (clj-refactor-mode 1))
+
+  (clj-refactor-mode 1)
+  (yas-minor-mode 1)
+  (cljr-add-keybindings-with-prefix "C-c C-v"))
+
 (add-hook 'clojure-mode-hook 'clojure-hook)
 (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)
 (define-key clojure-mode-map (kbd "C-x t") 'clojure-jump-to-test)
@@ -76,8 +61,9 @@
   (interactive)
   (paredit-mode)
   (set-face-attribute 'cider-repl-prompt-face nil :weight 'bold)
-  (load-clojure-file "clojure-dev.clj")
-  (hide-dos-eol))
+  ;;(load-clojure-file "clojure-dev.clj")
+  ;;(hide-dos-eol)
+  )
 (add-hook 'cider-repl-mode-hook 'cider-repl-hook)
 
 (defun cider-hook ()
@@ -87,8 +73,8 @@
 (define-key cider-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
 (define-key cider-repl-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
 
-(setq cider-show-error-buffer 'except-in-repl)
-(setq cider-auto-select-error-buffer t)
+;;(setq cider-show-error-buffer 'except-in-repl)
+;;(setq cider-auto-select-error-buffer t)
 (setq cider-repl-wrap-history t)
 (setq cider-repl-history-size 1000)
 (setq cider-repl-history-file "~/.emacs.d/cider-history")
@@ -138,16 +124,16 @@
                             str))
 
 ;;monkey patch!
-(defun cider-eval-last-sexp-and-replace ()
-  "Evaluate the expression preceding point and replace it with its result."
-  (interactive)
-  (let* ((last-sexp (concat "(with-out-str (clojure.pprint/pprint " (cider-last-sexp) "))"))
-         (value     (chomp-end (cider-eval-and-get-value last-sexp))))
-    (save-excursion
-      (backward-kill-sexp)
-      (insert value)
-      (paredit-backward)
-      (mark-sexp)
-      (indent-for-tab-command))))
+;; (defun cider-eval-last-sexp-and-replace ()
+;;   "Evaluate the expression preceding point and replace it with its result."
+;;   (interactive)
+;;   (let* ((last-sexp (concat "(with-out-str (clojure.pprint/pprint " (cider-last-sexp) "))"))
+;;          (value     (chomp-end (cider-eval-and-get-value last-sexp))))
+;;     (save-excursion
+;;       (backward-kill-sexp)
+;;       (insert value)
+;;       (paredit-backward)
+;;       (mark-sexp)
+;;       (indent-for-tab-command))))
 
 (provide 'clojure-dev)
