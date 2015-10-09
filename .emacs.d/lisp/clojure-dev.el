@@ -2,10 +2,10 @@
 (require 'clj-refactor)
 
 (setq clojure-quick-sexp
-	  '("(dev/reset)"
-        "(use 'clojure.repl)"
-        "(use 'clojure.tools.trace)"
-        "(use 'clojure.pprint)"))
+	  '("(dev/refresh)"
+            "(use 'clojure.repl)"
+            "(use 'clojure.tools.trace)"
+            "(use 'clojure.pprint)"))
 
 (defun clojure-quick-eval ()
   (interactive)

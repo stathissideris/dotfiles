@@ -881,7 +881,7 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(fixed-pitch ((t (:family "Monaco"))))
+ '(fixed-pitch ((t (:family "Consolas"))))
  '(dired-directory ((t (:inherit font-lock-function-name-face :foreground "#55bbff"))))
  '(hl-line ((t (:background "color-17"))))
  '(org-level-1 ((t (:inherit fixed-pitch :foreground "#cb4b16" :height 1.3))))
