@@ -1,4 +1,4 @@
-{:user {:signing {:gpg-key "25C79D92"}
+{:user {:signing {:gpg-key "7AF00D02"}
         :dependencies [#_[org.clojars.gjahad/debug-repl "0.3.3"]
                        #_[im.chit/vinyasa "0.2.1"
                         :exclusions [org.apache.httpcomponents/httpclient
