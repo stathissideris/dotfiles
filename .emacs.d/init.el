@@ -641,18 +641,18 @@
 (put 'erase-buffer 'disabled nil)
 
 ;;auto-complete mode
-(add-to-list 'load-path "~/.emacs.d/site-lisp/ac")
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/site-lisp/ac/ac-dict")
-(ac-config-default)
-(setq ac-delay 1)
-(setq ac-use-quick-help t)
-(setq ac-quick-help-delay 0.6)
-(add-hook
- 'auto-complete-mode-hook
- (lambda ()
-   (local-set-key (kbd "<C-pause>") 'auto-complete)))
-(defun ac () (interactive) (auto-complete-mode))
+;; (add-to-list 'load-path "~/.emacs.d/site-lisp/ac")
+;; (require 'auto-complete-config)
+;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/site-lisp/ac/ac-dict")
+;; (ac-config-default)
+;; (setq ac-delay 1)
+;; (setq ac-use-quick-help t)
+;; (setq ac-quick-help-delay 0.6)
+;; (add-hook
+;;  'auto-complete-mode-hook
+;;  (lambda ()
+;;    (local-set-key (kbd "<C-pause>") 'auto-complete)))
+;; (defun ac () (interactive) (auto-complete-mode))
 
 ;;ibuffer
 
