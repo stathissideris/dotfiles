@@ -12,7 +12,7 @@
                (require 'pjstadig.humane-test-output)
                (pjstadig.humane-test-output/activate!)
                (vinyasa.inject/in
-                clojure.core
+                clojure.core >
                 [alembic.still [distill pull]]
                 [clojure.pprint pprint]
                 [clojure.repl doc source pst])]
