@@ -17,6 +17,7 @@
   (setq mac-command-key-is-meta nil)
   (setq mac-option-modifier 'meta))
 
+(setq inferior-lisp-program "/Users/sideris/devel-tools/ccl/dx86cl64")
 (global-set-key [f8] `(lambda () (interactive) (find-file "/Users/sideris/Dropbox/global/notes/notes.org")))
 
 ;;for debugging:

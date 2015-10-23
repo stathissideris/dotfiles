@@ -8,6 +8,7 @@
         ;;ac-nrepl
         ;;tuareg
         ;;merlin
+        slime
         yasnippet
         magit
         powerline
@@ -830,7 +831,7 @@ by using nxml's indentation rules."
     (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
  '(package-selected-packages
    (quote
-    (solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
+    (slime solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
  '(powerline-default-separator nil))
 
 
