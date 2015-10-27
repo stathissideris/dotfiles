@@ -9,6 +9,11 @@
         ;;tuareg
         ;;merlin
         slime
+
+        ;;scala:
+        scala-mode2
+        sbt-mode
+
         yasnippet
         magit
         powerline
@@ -639,6 +644,8 @@
 (if (not window-system)
     (require 'no-window))
 
+(require 'scala)
+
 (put 'erase-buffer 'disabled nil)
 
 ;;auto-complete mode
@@ -831,8 +838,9 @@ by using nxml's indentation rules."
     (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
  '(package-selected-packages
    (quote
-    (slime solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
- '(powerline-default-separator nil))
+    (browse-kill-ring sbt-mode scala-mode2 slime solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
+ '(powerline-default-separator nil)
+ '(sbt:program-name "/usr/local/bin/sbt"))
 
 
 (put 'dired-find-alternate-file 'disabled nil)
