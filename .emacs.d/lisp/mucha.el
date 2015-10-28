@@ -18,4 +18,8 @@
 ;; Bind it to `o' in dired mode.
 (define-key dired-mode-map "o" 'w32-dired-open-explorer)
 
+(set-face-attribute 'default nil :family "Consolas")
+;;(set-face-attribute 'default nil :height 120)
+(set-face-attribute 'fixed-pitch nil :family "Consolas")
+
 (provide 'mucha)
