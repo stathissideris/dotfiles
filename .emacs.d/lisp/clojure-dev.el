@@ -136,4 +136,16 @@
 ;;       (mark-sexp)
 ;;       (indent-for-tab-command))))
 
+(defun macroexpand-replace ()
+  (interactive)
+  (let ((exp
+         (cider-sync-request:macroexpand
+          "macroexpand-all"
+          (cider-last-sexp))))
+    (backward-sexp)
+    (let ((bounds (bounds-of-thing-at-point 'sexp)))
+      (delete-region (car bounds) (cdr bounds))
+      (insert exp)
+      (indent-for-tab-command))))
+
 (provide 'clojure-dev)
