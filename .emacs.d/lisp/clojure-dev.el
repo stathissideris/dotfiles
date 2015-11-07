@@ -1,5 +1,6 @@
 (require 'inf-lisp)
 (require 'clj-refactor)
+(require 'cider-macroexpansion)
 
 (setq clojure-quick-sexp
 	  '("(dev/refresh)"
