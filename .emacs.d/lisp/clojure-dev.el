@@ -116,31 +116,34 @@
   (find-file (toggle-test-path buffer-file-name)))
 
 ;;eval and replace with pretty-printed code
-
 (defun chomp-end (str)
   "Chomp tailing whitespace from STR."
-  (replace-regexp-in-string (rx (* (any " \t\n")) eos)
+  (replace-regexp-in-string (rx (* (any "\t\n")) eos)
                             ""
                             str))
 
+(defun nrepl-eval (input)
+ (nrepl-dict-get
+  (cider-nrepl-sync-request:eval input)
+  "value"))
+
 ;;monkey patch!
-;; (defun cider-eval-last-sexp-and-replace ()
-;;   "Evaluate the expression preceding point and replace it with its result."
-;;   (interactive)
-;;   (let* ((last-sexp (concat "(with-out-str (clojure.pprint/pprint " (cider-last-sexp) "))"))
-;;          (value     (chomp-end (cider-eval-and-get-value last-sexp))))
-;;     (save-excursion
-;;       (backward-kill-sexp)
-;;       (insert value)
-;;       (paredit-backward)
-;;       (mark-sexp)
-;;       (indent-for-tab-command))))
+(defun cider-eval-last-sexp-and-replace ()
+  "Evaluate the expression preceding point and replace it with its result."
+  (interactive)
+  (let ((last-sexp (concat "(with-out-str (clojure.pprint/pprint " (cider-last-sexp) "))")))
+    ;; we have to be sure the evaluation won't result in an error
+    (cider-nrepl-sync-request:eval last-sexp)
+    ;; seems like the sexp is valid, so we can safely kill it
+    (backward-kill-sexp)
+    (insert (read (nrepl-eval last-sexp)))
+    (delete-backward-char 1)))
 
 (defun macroexpand-replace ()
   (interactive)
   (let ((exp
          (cider-sync-request:macroexpand
-          "macroexpand-all"
+          "macroexpand-1"
           (cider-last-sexp))))
     (backward-sexp)
     (let ((bounds (bounds-of-thing-at-point 'sexp)))
