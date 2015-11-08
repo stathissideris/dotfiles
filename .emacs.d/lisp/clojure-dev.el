@@ -152,4 +152,9 @@
       (insert exp)
       (indent-for-tab-command))))
 
+(fset 'apply-fix-macro
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([134217768 102 105 120 32 5 134217848 109 97 99 114 111 101 120 112 97 110 100 45 114 101 112 108 97 99 101 return] 0 "%d")) arg)))
+
+(define-key clojure-mode-map (kbd "<f12>") 'apply-fix-macro)
+
 (provide 'clojure-dev)
