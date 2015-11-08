@@ -137,7 +137,7 @@
     (cider-nrepl-sync-request:eval last-sexp)
     ;; seems like the sexp is valid, so we can safely kill it
     (backward-kill-sexp)
-    (insert (read (nrepl-eval last-sexp)))
+    (insert (read (nrepl-dict-get (cider-nrepl-sync-request:eval last-sexp) "value")))
     (delete-backward-char 1)))
 
 (defun macroexpand-replace ()
