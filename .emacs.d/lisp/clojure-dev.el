@@ -157,4 +157,38 @@
 
 (define-key clojure-mode-map (kbd "<f12>") 'apply-fix-macro)
 
+(defun replace-not-in-strings (start end match replacement)
+  "Only tested on single characters"
+  (set-mark nil)
+  (let ((p (point)))
+    (setq pos start)
+    (while (< pos end)
+      (goto-char pos)
+      (let ((faces (face-at-point t t)))
+        (princ faces)
+        (princ "\n")
+        (cond ((member 'font-lock-string-face faces)
+               (princ "case 1\n")
+               (setq pos (1+ pos)))
+
+              ((string-equal match (buffer-substring pos (1+ pos)))
+               (princ "case 2\n")
+               (delete-char 1)
+               (insert replacement)
+               (setq pos (1+ pos)))
+
+              (:else (setq pos (1+ pos))))))
+    (goto-char p)))
+
+(defun format-map ()
+  (interactive)
+  (let ((p (point)))
+    (mark-sexp)
+    (replace-not-in-strings (region-beginning) (region-end) "," "\n")
+    (goto-char p)
+    (mark-sexp)
+    (indent-region (region-beginning) (region-end))))
+
+
+
 (provide 'clojure-dev)
