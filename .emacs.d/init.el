@@ -889,11 +889,12 @@ by using nxml's indentation rules."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(dired-directory ((t (:inherit font-lock-function-name-face :foreground "#55bbff"))))
+ '(font-lock-string-face ((t (:foreground "#606060"))))
  '(hl-line ((t (:background "color-17"))))
+ '(org-clock-overlay ((t (:background "Black"))))
  '(org-level-1 ((t (:inherit fixed-pitch :foreground "#cb4b16" :height 1.3))))
  '(org-level-2 ((t (:inherit fixed-pitch :foreground "#859900" :height 1.2))))
  '(org-level-3 ((t (:inherit fixed-pitch :foreground "#268bd2" :height 1.15))))
  '(org-level-4 ((t (:inherit fixed-pitch :foreground "#b58900" :height 1.1))))
  '(org-level-5 ((t (:inherit fixed-pitch :foreground "#2aa198"))))
- '(show-paren-match ((t (:foreground "green" :background "Black" :weight bold))))
- '(org-clock-overlay ((t (:background "Black")))))
+ '(show-paren-match ((t (:foreground "green" :background "Black" :weight bold)))))
