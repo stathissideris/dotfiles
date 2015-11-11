@@ -830,6 +830,7 @@ by using nxml's indentation rules."
  '(custom-safe-themes
    (quote
     ("e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
+ '(git-commit-summary-max-length 120)
  '(ns-use-srgb-colorspace nil)
  '(org-time-clocksum-format
    (quote
@@ -888,9 +889,12 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(cider-repl-stdout-face ((t (:foreground "#c0c0c0"))))
  '(dired-directory ((t (:inherit font-lock-function-name-face :foreground "#55bbff"))))
  '(font-lock-string-face ((t (:foreground "#606060"))))
  '(hl-line ((t (:background "color-17"))))
+ '(magit-diff-hunk-heading ((t (:background "#009F00" :foreground "black"))))
+ '(magit-diff-hunk-heading-highlight ((t (:background "#5FFF5F" :foreground "black"))))
  '(org-clock-overlay ((t (:background "Black"))))
  '(org-level-1 ((t (:inherit fixed-pitch :foreground "#cb4b16" :height 1.3))))
  '(org-level-2 ((t (:inherit fixed-pitch :foreground "#859900" :height 1.2))))
