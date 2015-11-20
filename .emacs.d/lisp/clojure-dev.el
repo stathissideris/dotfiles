@@ -152,8 +152,17 @@
       (insert exp)
       (indent-for-tab-command))))
 
-(fset 'apply-fix-macro
-   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([134217768 102 105 120 32 5 134217848 109 97 99 114 111 101 120 112 97 110 100 45 114 101 112 108 97 99 101 return] 0 "%d")) arg)))
+;; (fset 'apply-fix-macro
+;;    (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([134217768 102 105 120 32 5 134217848 109 97 99 114 111 101 120 112 97 110 100 45 114 101 112 108 97 99 101 return] 0 "%d")) arg)))
+
+(defun apply-fix-macro ()
+  (interactive)
+  (paredit-wrap-round)
+  (insert "fix ")
+  (forward-sexp)
+  (forward-char 1)
+  (macroexpand-replace)
+  (backward-sexp))
 
 (define-key clojure-mode-map (kbd "<f12>") 'apply-fix-macro)
 
