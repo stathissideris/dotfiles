@@ -387,15 +387,8 @@
 (global-unset-key [?\M-f])
 
 ;; programming
-(global-set-key (kbd "C-?") `uncomment-region)
 (setq comment-empty-lines t)
 (define-key global-map (kbd "RET") 'newline-and-indent)
-(global-set-key (kbd "C-S-f") `indent-region)
-;; (setq tab-width 4)
-(setq tab-stop-list `(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
-;;(global-set-key [tab] `tab-to-tab-stop)
-(global-set-key [C-m] `newline-and-indent)
-;; (global-set-key "\t" `self-insert-command)
 
 ;;ocaml
 (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
