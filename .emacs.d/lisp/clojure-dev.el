@@ -3,7 +3,7 @@
 (require 'cider-macroexpansion)
 
 (setq clojure-quick-sexp
-	  '("(dev/refresh)"
+	  '("(user/refresh)"
             "(use 'clojure.repl)"
             "(use 'clojure.tools.trace)"
             "(use 'clojure.pprint)"))
