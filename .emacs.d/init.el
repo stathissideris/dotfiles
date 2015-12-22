@@ -823,31 +823,6 @@ by using nxml's indentation rules."
 (require 'yasnippet)
 (yas-global-mode 1)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(cider-prompt-for-symbol nil)
- '(cljr-cljc-clojure-test-declaration
-   "#?(:clj [clojure.test :refer :all]
-:cljs [cljs.test :refer :all :include-macros true])")
- '(cljr-clojure-test-declaration "[clojure.test :refer :all]")
- '(custom-safe-themes
-   (quote
-    ("e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
- '(git-commit-summary-max-length 120)
- '(ns-use-srgb-colorspace nil)
- '(org-time-clocksum-format
-   (quote
-    (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
- '(package-selected-packages
-   (quote
-    (browse-kill-ring sbt-mode scala-mode2 slime solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
- '(powerline-default-separator nil)
- '(sbt:program-name "/usr/local/bin/sbt"))
-
-
 (put 'dired-find-alternate-file 'disabled nil)
 
 ;;to not get international characters on alt- mac
@@ -889,6 +864,33 @@ by using nxml's indentation rules."
 (defun mce ()
   (interactive)
   (mc/edit-lines))
+
+(require 'tiling)
+(define-key global-map (kbd "C-\\") 'tiling-cycle)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(cider-prompt-for-symbol nil)
+ '(cljr-cljc-clojure-test-declaration
+   "#?(:clj [clojure.test :refer :all]
+:cljs [cljs.test :refer :all :include-macros true])")
+ '(cljr-clojure-test-declaration "[clojure.test :refer :all]")
+ '(custom-safe-themes
+   (quote
+    ("e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
+ '(git-commit-summary-max-length 120)
+ '(ns-use-srgb-colorspace nil)
+ '(org-time-clocksum-format
+   (quote
+    (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
+ '(package-selected-packages
+   (quote
+    (emacsd-tile ttl-mode browse-kill-ring sbt-mode scala-mode2 slime solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
+ '(powerline-default-separator nil)
+ '(sbt:program-name "/usr/local/bin/sbt"))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
