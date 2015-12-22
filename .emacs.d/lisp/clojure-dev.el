@@ -56,6 +56,8 @@
 (add-hook 'clojure-mode-hook 'clojure-hook)
 (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)
 (define-key clojure-mode-map (kbd "C-x t") 'clojure-jump-to-test)
+(define-key cider-repl-mode-map (kbd "C-c M-o") 'cider-repl-clear-buffer)
+(define-key cider-repl-mode-map (kbd "C-c o") 'cider-repl-switch-to-other)
 
 (defun cider-repl-hook ()
   "Some REPL setup."
