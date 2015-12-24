@@ -902,6 +902,7 @@ by using nxml's indentation rules."
     ("e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
  '(frame-resize-pixelwise t)
  '(git-commit-summary-max-length 120)
+ '(js-indent-level 2)
  '(ns-use-srgb-colorspace nil)
  '(org-time-clocksum-format
    (quote
