@@ -917,6 +917,7 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(bold ((t (:foreground "white" :weight bold))))
  '(cider-repl-stdout-face ((t (:foreground "#c0c0c0"))))
  '(dired-directory ((t (:inherit font-lock-function-name-face :foreground "#55bbff"))))
  '(font-lock-string-face ((t (:foreground "#606060"))))
