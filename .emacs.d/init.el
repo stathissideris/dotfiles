@@ -868,9 +868,6 @@ by using nxml's indentation rules."
 (require 'tiling)
 (define-key global-map (kbd "C-\\") 'tiling-cycle)
 
-(require 'ttl-mode)
-
-
 ;; Flash active buffer
 
 (global-set-key (kbd "C-c ;") 'flash-active-buffer)
