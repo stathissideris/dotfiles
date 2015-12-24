@@ -5,7 +5,7 @@
   (setq mac-option-key-is-meta nil)
   (setq mac-command-key-is-meta t)
   (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier nil)
+  (setq mac-option-modifier 'super)
   (set-keyboard-coding-system nil))
 
 (if window-system
@@ -39,19 +39,5 @@
         (shell-command
          (format "%s %s" (executable-find "open") (file-name-directory file)))
       (error "Buffer is not attached to any file"))))
-
-(global-unset-key (kbd "§"))
-
-(global-set-key (kbd "§ <left>")  'windmove-left)
-(global-set-key (kbd "§ <right>") 'windmove-right)
-(global-set-key (kbd "§ <up>")    'windmove-up)
-(global-set-key (kbd "§ <down>")  'windmove-down)
-
-(global-set-key (kbd "§ §")  'mark-sexp)
-
-(global-unset-key (kbd "≥"))
-(global-unset-key (kbd "≤"))
-(global-set-key (kbd "≥") 'highlight-symbol-next)
-(global-set-key (kbd "≤") 'highlight-symbol-prev)
 
 (provide 'mac)
