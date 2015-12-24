@@ -868,6 +868,22 @@ by using nxml's indentation rules."
 (require 'tiling)
 (define-key global-map (kbd "C-\\") 'tiling-cycle)
 
+;; Flash active buffer
+
+(global-set-key (kbd "C-c ;") 'flash-active-buffer)
+(make-face 'flash-active-buffer-face)
+(set-face-attribute 'flash-active-buffer-face nil
+                    :background "#808080"
+                    :foreground "black")
+(defun flash-active-buffer ()
+  (interactive)
+  (run-at-time "200 millisec" nil
+               (lambda (remap-cookie)
+                 (face-remap-remove-relative remap-cookie))
+               (face-remap-add-relative 'default 'flash-active-buffer-face)))
+
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
