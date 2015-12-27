@@ -1,24 +1,29 @@
 {:user
  {:signing {:gpg-key "7AF00D02"}
-  :dependencies [#_[org.clojars.gjahad/debug-repl "0.3.3"]
-                 #_[difform "1.1.2"]
-                 [alembic "0.3.2"]
+  :dependencies [[alembic "0.3.2"]
+                 [org.clojure/tools.nrepl "0.2.12"]
                  [im.chit/vinyasa "0.4.2"]
-                 [pjstadig/humane-test-output "0.7.0"]
-                 [org.clojure/tools.nrepl "0.2.11"]]
+                 [pjstadig/humane-test-output "0.7.0"]]
   :injections [(require '[vinyasa.inject :as inject])
-               #_(require 'alex-and-georges.debug-repl)
-               #_(require 'com.georgejahad.difform)
                (require 'pjstadig.humane-test-output)
                (pjstadig.humane-test-output/activate!)
                (vinyasa.inject/in
                 clojure.core >
                 [alembic.still [distill pull]]
                 [clojure.pprint pprint]
-                [clojure.repl doc source pst])]
+                [clojure.repl doc source pst]
+                [clojure.data diff])
+               ;;don't work:
+               (defn >ppr [x] (clojure.pprint/pprint x) x)
+               (defn >show-diff [a b]
+                 (let [[removed added] (clojure.data/diff a b)]
+                   (println "Removed:")
+                   (clojure.pprint/pprint removed)
+                   (println "\nAdded:")
+                   (clojure.pprint/pprint added)))]
   :test-refresh {:notify-command ["tmux" "display-message"]
                  :notify-on-success true}
-  :plugins [[lein-pprint "1.1.2"]
+  :plugins [[cider/cider-nrepl "0.10.0"]
+            [lein-pprint "1.1.2"]
             [refactor-nrepl "2.0.0-SNAPSHOT"]
-            [cider/cider-nrepl "0.10.0-SNAPSHOT"]
             [com.jakemccrary/lein-test-refresh "0.5.4"]]}}
