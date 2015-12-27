@@ -8,5 +8,6 @@
 !.tmux.conf
 !.lein
 !.lein/profiles.clj
+!.phoenix.js
 
 .DS_Store
