@@ -58,6 +58,7 @@
 (define-key clojure-mode-map (kbd "C-x t") 'clojure-jump-to-test)
 (define-key cider-repl-mode-map (kbd "C-c M-o") 'cider-repl-clear-buffer)
 (define-key cider-repl-mode-map (kbd "C-c o") 'cider-repl-switch-to-other)
+(define-key cider-repl-mode-map (kbd "{") 'paredit-open-curly)
 
 (defun cider-repl-hook ()
   "Some REPL setup."
