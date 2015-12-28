@@ -75,7 +75,7 @@
 (require 'highlight-symbol)
 (require 'org)
 (require 'cider)
-(require 'tuareg)
+;;(require 'tuareg)
 
 (require 'powerline)
 (powerline-default-theme)
@@ -391,14 +391,14 @@
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;;ocaml
-(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
-(setq auto-mode-alist
-      (append '(("\\.ml[ily]?$" . tuareg-mode)
-                ("\\.topml$" . tuareg-mode))
-              auto-mode-alist))
-(add-hook 'tuareg-mode-hook 'merlin-mode)
-(setq merlin-use-auto-complete-mode t)
-(setq merlin-error-after-save nil)
+;; (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+;; (setq auto-mode-alist
+;;       (append '(("\\.ml[ily]?$" . tuareg-mode)
+;;                 ("\\.topml$" . tuareg-mode))
+;;               auto-mode-alist))
+;; (add-hook 'tuareg-mode-hook 'merlin-mode)
+;; (setq merlin-use-auto-complete-mode t)
+;; (setq merlin-error-after-save nil)
 
 (global-set-key (kbd "C-c C-g") 'magit-status)
 
