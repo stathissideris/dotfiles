@@ -933,9 +933,13 @@ by using nxml's indentation rules."
   ("3" split-window-right)
   ("-" (lambda nil (interactive) (text-scale-increase -0.5)))
   ("=" (lambda nil (interactive) (text-scale-increase 0.5)))
+  ("," beginning-of-buffer)
+  ("." end-of-buffer)
+  ("b" ido-switch-buffer)
   ("k" kill-this-buffer)
   ("0" delete-window)
   ("q" nil))
+(global-set-key (kbd "§") 'hydra-windows/body)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
