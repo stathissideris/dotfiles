@@ -854,7 +854,7 @@ by using nxml's indentation rules."
 (maybe-install-and-require 'multiple-cursors)
 (global-set-key (kbd "C-c .") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-c ,") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c /") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-c /") 'mc/mark-all-dwim)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 
 (defun tabs->newlines ()
