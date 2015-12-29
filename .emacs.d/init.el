@@ -25,6 +25,7 @@
         undo-tree
         diminish
         company
+        hydra
         emmet-mode
         ido-ubiquitous
         expand-region))
@@ -882,7 +883,59 @@ by using nxml's indentation rules."
                  (face-remap-remove-relative remap-cookie))
                (face-remap-add-relative 'default 'flash-active-buffer-face)))
 
+(require 'hydra)
 
+(defun move-splitter-left (arg)
+  "Move window splitter left."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'right))
+      (shrink-window-horizontally arg)
+    (enlarge-window-horizontally arg)))
+
+(defun move-splitter-right (arg)
+  "Move window splitter right."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'right))
+      (enlarge-window-horizontally arg)
+    (shrink-window-horizontally arg)))
+
+(defun move-splitter-up (arg)
+  "Move window splitter up."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'up))
+      (enlarge-window arg)
+    (shrink-window arg)))
+
+(defun move-splitter-down (arg)
+  "Move window splitter down."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'up))
+      (shrink-window arg)
+    (enlarge-window arg)))
+
+(defhydra hydra-windows (global-map "C-M-s"
+                                    :foreign-keys warn)
+  "windows"
+  ("<up>" windmove-up)
+  ("<down>" windmove-down)
+  ("<left>" windmove-left)
+  ("<right>" windmove-right)
+  ("w" move-splitter-up)
+  ("s" move-splitter-down)
+  ("a" move-splitter-left)
+  ("d" move-splitter-right)
+  ("1" delete-other-windows)
+  ("2" split-window-below)
+  ("3" split-window-right)
+  ("-" (lambda nil (interactive) (text-scale-increase -0.5)))
+  ("=" (lambda nil (interactive) (text-scale-increase 0.5)))
+  ("k" kill-this-buffer)
+  ("0" delete-window)
+  ("q" nil))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -906,7 +959,7 @@ by using nxml's indentation rules."
     (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
  '(package-selected-packages
    (quote
-    (emacsd-tile ttl-mode browse-kill-ring sbt-mode scala-mode2 slime solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
+    (hydra emacsd-tile ttl-mode browse-kill-ring sbt-mode scala-mode2 slime solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
  '(powerline-default-separator nil)
  '(sbt:program-name "/usr/local/bin/sbt"))
 
