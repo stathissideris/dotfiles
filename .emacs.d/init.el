@@ -2,8 +2,8 @@
 (setq packages-to-bootstrap
       '(highlight-symbol
         clojure-mode
-        clj-refactor
-        align-cljlet
+        ;;clj-refactor
+        ;;align-cljlet
         cider
         ;;ac-nrepl
         ;;tuareg
@@ -32,9 +32,9 @@
 
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/") t)
+             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+;; (add-to-list 'package-archives
+;;              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 
 (when (not package-archive-contents)
@@ -822,7 +822,7 @@ by using nxml's indentation rules."
 ;; (setq yas-snippet-dirs
 ;;   '("~/.emacs.d/site-lisp/mysnippets"))
 (require 'yasnippet)
-(yas-global-mode 1)
+;;(yas-global-mode 1)
 
 (put 'dired-find-alternate-file 'disabled nil)
 
@@ -846,7 +846,7 @@ by using nxml's indentation rules."
 
 
 (require 'expand-region)
-(global-set-key (kbd "C-\\") 'er/expand-region)
+(global-set-key (kbd "M-=") 'er/expand-region)
 ;;(pending-delete-mode 'no)
 
 (maybe-install-and-require 'browse-kill-ring)
@@ -883,6 +883,10 @@ by using nxml's indentation rules."
                  (face-remap-remove-relative remap-cookie))
                (face-remap-add-relative 'default 'flash-active-buffer-face)))
 
+
+
+
+
 (require 'hydra)
 
 (defun move-splitter-left (arg)
@@ -917,28 +921,79 @@ by using nxml's indentation rules."
       (shrink-window arg)
     (enlarge-window arg)))
 
+
+(make-face 'move-window-buffer-face)
+(set-face-attribute 'move-window-buffer-face nil
+                    :background "#073642")
+(setq ss/window-move-remap-cookie nil)
+
+(defun remove-window-move-indicator ()
+  (if ss/window-move-remap-cookie
+      (face-remap-remove-relative
+       ss/window-move-remap-cookie)))
+
+(defun add-window-move-indicator ()
+  (setq
+   ss/window-move-remap-cookie
+   (face-remap-add-relative 'default 'move-window-buffer-face)))
+
+(defun window-move (direction)
+  (let ((fun (cond ((eq direction 'up) 'windmove-up)
+                   ((eq direction 'down) 'windmove-down)
+                   ((eq direction 'left) 'windmove-left)
+                   ((eq direction 'right) 'windmove-right))))
+    (remove-window-move-indicator)
+    (funcall fun)
+    (add-window-move-indicator)))
+
+(defun buffer-swap (direction)
+  (let* ((other-window (windmove-find-other-window direction))
+         (other-buffer (window-buffer other-window))
+         (this-buffer (current-buffer))
+         (this-window (selected-window)))
+    (set-window-buffer other-window this-buffer)
+    (set-window-buffer this-window other-buffer)
+    (window-move direction)))
+
 (defhydra hydra-windows (global-map "C-M-s"
-                                    :foreign-keys warn)
+                                    :foreign-keys warn
+                                    :post remove-window-move-indicator)
   "windows"
-  ("<up>" windmove-up)
-  ("<down>" windmove-down)
-  ("<left>" windmove-left)
-  ("<right>" windmove-right)
+  ("<up>" (progn (window-move 'up)))
+  ("<down>" (progn (window-move 'down)))
+  ("<left>" (progn (window-move 'left)))
+  ("<right>" (progn (window-move 'right)))
+
+  ("C-<up>" (progn (buffer-swap 'up)))
+  ("C-<down>" (progn (buffer-swap 'down)))
+  ("C-<left>" (progn (buffer-swap 'left)))
+  ("C-<right>" (progn (buffer-swap 'right)))
+
   ("w" move-splitter-up)
   ("s" move-splitter-down)
   ("a" move-splitter-left)
   ("d" move-splitter-right)
-  ("1" delete-other-windows)
-  ("2" split-window-below)
-  ("3" split-window-right)
-  ("-" (lambda nil (interactive) (text-scale-increase -0.5)))
-  ("=" (lambda nil (interactive) (text-scale-increase 0.5)))
-  ("," beginning-of-buffer)
-  ("." end-of-buffer)
-  ("b" ido-switch-buffer)
-  ("k" kill-this-buffer)
-  ("0" delete-window)
-  ("q" nil))
+
+  ("1" delete-other-windows "max")
+  ("2" split-window-below "split below")
+  ("-" split-window-below "split below")
+  ("3" split-window-right "split right")
+  ("|" split-window-right "split right")
+  ("+" balance-windows "balance")
+
+  ("C--" (progn (text-scale-increase -0.5)))
+  ("C-=" (progn (text-scale-increase 0.5)))
+
+  ("," beginning-of-buffer "home")
+  ("." end-of-buffer "end")
+
+  ("f" ido-find-file)
+  ("b" ido-switch-buffer "switch")
+  ("k" kill-this-buffer "kill")
+  ("0" delete-window "del")
+
+  ("§" nil "exit")
+  ("q" nil "exit"))
 (global-set-key (kbd "§") 'hydra-windows/body)
 
 (custom-set-variables
