@@ -990,11 +990,25 @@ by using nxml's indentation rules."
   ("f" ido-find-file)
   ("b" ido-switch-buffer "switch")
   ("k" kill-this-buffer "kill")
-  ("0" delete-window "del")
+  ("0" (progn (remove-window-move-indicator)
+              (delete-window)
+              (add-window-move-indicator)) "del")
 
   ("§" nil "exit")
   ("q" nil "exit"))
 (global-set-key (kbd "§") 'hydra-windows/body)
+
+
+;;TTL mode
+(autoload 'ttl-mode "ttl-mode" "Major mode for OWL or Turtle files" t)
+(add-hook 'ttl-mode-hook    ; Turn on font lock when in ttl mode
+          'turn-on-font-lock)
+(setq auto-mode-alist
+      (append
+       (list
+        '("\\.n3" . ttl-mode)
+        '("\\.ttl" . ttl-mode))
+       auto-mode-alist))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
