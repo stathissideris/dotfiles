@@ -957,6 +957,7 @@ by using nxml's indentation rules."
 
 (defhydra hydra-windows (global-map "C-M-s"
                                     :foreign-keys warn
+                                    :pre  add-window-move-indicator
                                     :post remove-window-move-indicator)
   "windows"
   ("<up>" (progn (window-move 'up)))
