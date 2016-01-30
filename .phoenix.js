@@ -82,14 +82,24 @@ function makeCurrentFullScreen() {
 }
 
 function currentTrack() {
-  //doesn't work, can't collect output
-  alert(Command.run("curl http://mucha:8888/default | grep 'id=\"track_title\"' | perl -ne '/\"track\">(.+?)<\/span>/; print $1'"));
+  Command.run("/Users/sideris/bin/current-track.sh", []);
+}
+
+function nextTrack() {
+  Command.run("/usr/bin/curl", ["http://mucha:8888/default/?cmd=StartNext&param1="]);
+  alert("next track");
+}
+
+function bluetoothAssistant() {
+  alert("bluetooth assistant");
+  Command.run("/usr/bin/open", ["/System/Library/CoreServices/Bluetooth Setup Assistant.app"]);
 }
 
 keys.push(Phoenix.bind('1', mash, grid('2 side-by-side')));
 keys.push(Phoenix.bind('2', mash, grid('2 stacked')));
 keys.push(Phoenix.bind('0', mash, focusDevelop)); //mash it, does not work properly with single press
-//keys.push(Phoenix.bind('9', mash, currentTrack));
 keys.push(Phoenix.bind('9', mash, makeCurrentFullScreen));
 keys.push(Phoenix.bind('=', mash, swapMostRecent));
-
+keys.push(Phoenix.bind('f11', ['alt'], currentTrack));
+keys.push(Phoenix.bind('f12', ['alt'], nextTrack));
+keys.push(Phoenix.bind('m', mash, bluetoothAssistant));
