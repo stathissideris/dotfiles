@@ -359,7 +359,7 @@
   (let ((old-buffer (current-buffer)))
 	(delete-window)
 	(make-frame)
-	(switch-to-buffer old-buffer)))  
+	(switch-to-buffer old-buffer)))
 
 ;; (global-set-key "\C-k"
 ;;      `(lambda () (
@@ -447,7 +447,7 @@
 
 (add-hook
  'org-mode-hook
- '(lambda () 
+ '(lambda ()
     (define-key org-mode-map [S-insert] 'org-complete)
     (define-key org-mode-map [S-return] 'org-insert-subheading)
     (define-key org-mode-map [M-left] 'org-promote-subtree)
@@ -456,7 +456,7 @@
     ;;yasnippet/org-mode key conflict fix
     (org-set-local 'yas/trigger-key [tab])
     (define-key yas/keymap [tab] 'yas/next-field-group)))
- 
+
 (setq org-support-shift-select t)
 (transient-mark-mode 1)
 
@@ -489,7 +489,7 @@
 		  (delete-char level)
 		  (insert (make-string level (string-to-char " "))))
 		(forward-line)))))
-	
+
 (defun org-get-subtree-internal (clean)
   (outline-mark-subtree)
   (setq temp-buffer (generate-new-buffer "temp"))
@@ -521,35 +521,35 @@
 ;; move region
 ;; found here: http://groups.google.com/group/gnu.emacs.help/browse_thread/thread/75dd91fd45742d54
 
-(defun move-text-internal (arg) 
-  (cond 
-   ((and mark-active transient-mark-mode) 
-	(if (> (point) (mark)) 
-        (exchange-point-and-mark)) 
-	(let ((column (current-column)) 
-          (text (delete-and-extract-region (point) (mark)))) 
-	  (forward-line arg) 
-	  (move-to-column column t) 
-	  (set-mark (point)) 
-	  (insert text) 
-	  (exchange-point-and-mark) 
-	  (setq deactivate-mark nil))) 
-   (t 
-	(beginning-of-line) 
-	(when (or (> arg 0) (not (bobp))) 
-	  (forward-line) 
-	  (when (or (< arg 0) (not (eobp))) 
-        (transpose-lines arg)) 
+(defun move-text-internal (arg)
+  (cond
+   ((and mark-active transient-mark-mode)
+	(if (> (point) (mark))
+        (exchange-point-and-mark))
+	(let ((column (current-column))
+          (text (delete-and-extract-region (point) (mark))))
+	  (forward-line arg)
+	  (move-to-column column t)
+	  (set-mark (point))
+	  (insert text)
+	  (exchange-point-and-mark)
+	  (setq deactivate-mark nil)))
+   (t
+	(beginning-of-line)
+	(when (or (> arg 0) (not (bobp)))
+	  (forward-line)
+	  (when (or (< arg 0) (not (eobp)))
+        (transpose-lines arg))
 	  (forward-line -1)))))
-(defun move-text-down (arg) 
-  "Move region (transient-mark-mode active) or current line 
-  arg lines down." 
-  (interactive "*p") 
+(defun move-text-down (arg)
+  "Move region (transient-mark-mode active) or current line
+  arg lines down."
+  (interactive "*p")
   (move-text-internal arg))
-(defun move-text-up (arg) 
-  "Move region (transient-mark-mode active) or current line 
-  arg lines up." 
-  (interactive "*p") 
+(defun move-text-up (arg)
+  "Move region (transient-mark-mode active) or current line
+  arg lines up."
+  (interactive "*p")
   (move-text-internal (- arg)))
 ;;(global-set-key [\M-up] 'move-text-up)
 ;;(global-set-key [\M-down] 'move-text-down)
@@ -727,8 +727,8 @@
    index in STRING."
   (let ((case-fold-search nil))
     (while (string-match "[A-Z]" s (or start 1))
-      (setq s (replace-match (concat (or sep "-") 
-                                     (downcase (match-string 0 s))) 
+      (setq s (replace-match (concat (or sep "-")
+                                     (downcase (match-string 0 s)))
                              t nil s)))
     (downcase s)))
 
@@ -774,7 +774,7 @@ by using nxml's indentation rules."
   (save-excursion
       (nxml-mode)
       (goto-char begin)
-      (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
+      (while (search-forward-regexp "\>[ \\t]*\<" nil t)
         (backward-char) (insert "\n"))
       (indent-region begin end))
     (message "Ah, much better!"))
