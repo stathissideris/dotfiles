@@ -1015,6 +1015,8 @@ by using nxml's indentation rules."
         '("\\.ttl" . ttl-mode))
        auto-mode-alist))
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
