@@ -18,7 +18,7 @@
   (setq mac-option-modifier 'meta))
 
 (setq inferior-lisp-program "/Users/sideris/devel-tools/ccl/dx86cl64")
-(global-set-key [f8] `(lambda () (interactive) (find-file "/Users/sideris/Dropbox/global/notes/notes.org")))
+(global-set-key [f8] `(lambda () (interactive) (find-file "/Users/sideris/notes/notes.org")))
 
 ;;for debugging:
 (setq mac-options-loaded t)
