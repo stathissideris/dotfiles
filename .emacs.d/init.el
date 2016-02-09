@@ -384,9 +384,6 @@
 (setq auto-save-default nil) ; stop creating those #autosave# files
 (setq visible-bell t)
 
-(global-unset-key [?\C-f])
-(global-unset-key [?\M-f])
-
 ;; programming
 (setq comment-empty-lines t)
 (define-key global-map (kbd "RET") 'newline-and-indent)
