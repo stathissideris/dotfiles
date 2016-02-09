@@ -6,8 +6,9 @@ var keys = [];
 var mash = [ 'cmd', 'alt', 'ctrl' ];
 
 var grids = {
-    '2 side-by-side': {rows: 1, cols: 2},
-    '2 stacked': {rows: 2, cols: 1},
+  '2 side-by-side': {rows: 1, cols: 2},
+  '2 stacked': {rows: 2, cols: 1},
+  '3 side-by-side': {rows: 1, cols: 3},
 };
 
 function alert(message) {
@@ -17,7 +18,7 @@ function alert(message) {
 
   var sFrame = Screen.mainScreen().visibleFrameInRectangle();
   modal.origin = {x: 20, y: sFrame.height - 20};
-  
+
   modal.show();
 };
 
@@ -71,7 +72,7 @@ function focusDevelop() {
   var emacs = findByName("Google Chrome");
   //var iterm = findByName("iTerm");
   //var slack = findByName("Slack");
-  
+
   chrome.windows()[0].focus();
   emacs.windows()[0].focus();
 }
@@ -97,6 +98,7 @@ function bluetoothAssistant() {
 
 keys.push(Phoenix.bind('1', mash, grid('2 side-by-side')));
 keys.push(Phoenix.bind('2', mash, grid('2 stacked')));
+keys.push(Phoenix.bind('3', mash, grid('3 side-by-side')));
 keys.push(Phoenix.bind('0', mash, focusDevelop)); //mash it, does not work properly with single press
 keys.push(Phoenix.bind('9', mash, makeCurrentFullScreen));
 keys.push(Phoenix.bind('=', mash, swapMostRecent));
