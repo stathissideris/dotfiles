@@ -3,7 +3,6 @@
       '(highlight-symbol
         clojure-mode
         clj-refactor
-        ;;align-cljlet
         cider
         ;;ac-nrepl
         ;;tuareg
@@ -33,12 +32,7 @@
 (require 'package)
 (add-to-list 'package-archives
              '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-;; (add-to-list 'package-archives
-;;              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
-
-(when (not package-archive-contents)
-  (package-refresh-contents))
 
 (defun maybe-install-and-require (p)
   (when (not (package-installed-p p))
@@ -46,21 +40,14 @@
   (require p))
 
 ;;attempt to install packages at startup
-(unless package-archive-contents
-  (package-refresh-contents))
-(dolist (p packages-to-bootstrap)
-  (when (not (package-installed-p p))
-    (package-install p))
-  (require p))
+(unless package-archive-contents (package-refresh-contents))
+(dolist (p packages-to-bootstrap) (maybe-install-and-require p))
 
 (if (not (string-equal system-name "MUCHA"))
     (when (not (package-installed-p 'ag))
       (package-install 'ag)))
 
-(setq site-lisp-dir
-      (expand-file-name "site-lisp" user-emacs-directory))
-
-(add-to-list 'load-path site-lisp-dir)
+(add-to-list 'load-path (expand-file-name "site-lisp" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 (require 'bm)
@@ -1019,52 +1006,13 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(cider-prompt-for-symbol nil)
- '(cljr-cljc-clojure-test-declaration
-   "#?(:clj [clojure.test :refer :all]
-:cljs [cljs.test :refer :all :include-macros true])")
- '(cljr-clojure-test-declaration "[clojure.test :refer :all]")
- '(custom-safe-themes
-   (quote
-    ("e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
- '(dired-dwim-target t)
- '(frame-resize-pixelwise t)
- '(git-commit-fill-column 3000)
- '(git-commit-summary-max-length 120)
- '(js-indent-level 2)
- '(ns-use-srgb-colorspace nil)
- '(org-time-clocksum-format
-   (quote
-    (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
  '(package-selected-packages
    (quote
-    (hydra emacsd-tile ttl-mode browse-kill-ring sbt-mode scala-mode2 slime solarized-theme powerline clj-refactor zenburn-theme yasnippet undo-tree tuareg puppet-mode paredit multiple-cursors markdown-mode magit ido-ubiquitous highlight-symbol git-gutter emmet-mode diminish company cider align-cljlet ag)))
- '(powerline-default-separator nil)
- '(sbt:program-name "/usr/local/bin/sbt"))
+    (browse-kill-ring zenburn-theme undo-tree solarized-theme slime sbt-mode puppet-mode powerline markdown-mode magit ido-ubiquitous highlight-symbol git-gutter expand-region emmet-mode diminish company clj-refactor aggressive-indent ag))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(bold ((t (:foreground "white" :weight bold))))
- '(cider-repl-stdout-face ((t (:foreground "#c0c0c0"))))
- '(dired-directory ((t (:inherit font-lock-function-name-face :foreground "#55bbff"))))
- '(font-lock-string-face ((t (:foreground "#606060"))))
- '(hl-line ((t (:background "color-17"))))
- '(magit-blame-date ((t (:background "#404040" :foreground "#F2804F"))))
- '(magit-blame-heading ((t (:background "#404040" :foreground "#073642"))))
- '(magit-blame-name ((t (:inherit magit-blame-heading :background "#404040" :foreground "#F2804F"))))
- '(magit-blame-summary ((t (:background "#404040" :foreground "#F2804F" :weight bold))))
- '(magit-diff-hunk-heading ((t (:background "#009F00" :foreground "black"))))
- '(magit-diff-hunk-heading-highlight ((t (:background "#5FFF5F" :foreground "black"))))
- '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.8))))
- '(markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.5))))
- '(org-clock-overlay ((t (:background "Black"))))
- '(org-level-1 ((t (:inherit fixed-pitch :foreground "#cb4b16" :height 1.3))))
- '(org-level-2 ((t (:inherit fixed-pitch :foreground "#859900" :height 1.2))))
- '(org-level-3 ((t (:inherit fixed-pitch :foreground "#268bd2" :height 1.15))))
- '(org-level-4 ((t (:inherit fixed-pitch :foreground "#b58900" :height 1.1))))
- '(org-level-5 ((t (:inherit fixed-pitch :foreground "#2aa198"))))
- '(show-paren-match ((t (:foreground "green" :background "Black" :weight bold))))
- '(smerge-refined-added ((t (:inherit smerge-refined-change :background "#225522")))))
+ )
