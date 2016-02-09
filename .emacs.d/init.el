@@ -51,7 +51,6 @@
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 (require 'bm)
-(require 'setnu)
 (require 'xmlgen)
 (require 'tooltip-help)
 (require 'framemove)
@@ -300,46 +299,6 @@
 (global-set-key (kbd "<f1> .") 'highlight-symbol-next)
 (global-set-key (kbd "<f1> ,") 'highlight-symbol-prev)
 
-;;change the shiftiness of the number keys
-;;found here: http://stackoverflow.com/questions/6277813/unshifted-symbols-in-emacs/6280799#6280799
-(define-minor-mode snoopy-mode
-  "Toggle snoopy mode.
-   With no argument, this command toggles the mode.
-   Non-null prefix argument turns on the mode.
-   Null prefix argument turns off the mode."
-  ;;   The initial value.
-  nil
-  ;; The indicator for the mode line.
-  " Snoopy"
-  ;; The minor mode bindings.
-  '(
-    ;; ("1" . (lambda () (interactive) (insert-char ?! 1)))
-    ;; ("2" . (lambda () (interactive) (insert-char ?@ 1)))
-    ;; ("3" . (lambda () (interactive) (insert-char ?# 1)))
-    ;; ("4" . (lambda () (interactive) (insert-char ?$ 1)))
-    ;; ("5" . (lambda () (interactive) (insert-char ?% 1)))
-    ;; ("6" . (lambda () (interactive) (insert-char ?^ 1)))
-    ;; ("7" . (lambda () (interactive) (insert-char ?& 1)))
-    ;; ("8" . (lambda () (interactive) (insert-char ?* 1)))
-    ("9" . (lambda () (interactive) (paredit-open-round)))
-    ("0" . (lambda () (interactive) (paredit-close-round)))
-
-    ;; ("!" . (lambda () (interactive) (insert-char ?1 1)))
-    ;; ("@" . (lambda () (interactive) (insert-char ?2 1)))
-    ;; ("#" . (lambda () (interactive) (insert-char ?3 1)))
-    ;; ("$" . (lambda () (interactive) (insert-char ?4 1)))
-    ;; ("%" . (lambda () (interactive) (insert-char ?5 1)))
-    ;; ("^" . (lambda () (interactive) (insert-char ?6 1)))
-    ;; ("&" . (lambda () (interactive) (insert-char ?7 1)))
-    ;; ("*" . (lambda () (interactive) (insert-char ?8 1)))
-    ("(" . (lambda () (interactive) (insert-char ?9 1)))
-    (")" . (lambda () (interactive) (insert-char ?0 1)))))
-
-(global-set-key (kbd "<pause>") 'snoopy-mode)
-
-;(fmakunbound 'snoopy-mode)
-;(makunbound 'snoopy-mode-map)
-
 ;;doesn't work:
 (defun detach-buffer ()
   (interactive)
@@ -348,20 +307,9 @@
 	(make-frame)
 	(switch-to-buffer old-buffer)))
 
-;; (global-set-key "\C-k"
-;;      `(lambda () (
-;; 	  (push-mark)
-;; 	  (pop-mark)
-;;       )))
-;;end-of-line
-;;beginning-of-line
-;;delete-region
-;;push-mark
-
 (defun refresh-file ()
   (interactive)
-  (revert-buffer t t t)
-  )
+  (revert-buffer t t t))
 (global-set-key [f5] `refresh-file)
 (global-set-key [f6] `mark-whole-buffer)
 
