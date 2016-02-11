@@ -13,6 +13,7 @@
         scala-mode2
         sbt-mode
 
+        google-this
         yasnippet
         magit
         powerline
@@ -62,6 +63,7 @@
 (require 'highlight-symbol)
 (require 'org)
 (require 'cider)
+(require 'google-this)
 ;;(require 'tuareg)
 
 (require 'powerline)
@@ -74,6 +76,7 @@
 ;;(diminish 'auto-complete-mode "ac")
 ;;(diminish 'magit-auto-revert-mode)
 (diminish 'git-gutter-mode)
+(diminish 'google-this-mode)
 ;;(diminish 'clj-refactor-mode)
 
 ;(add-hook 'org-mode-hook 'turn-on-pretty-mode)
@@ -81,6 +84,9 @@
 (global-set-key (kbd "C-z") nil)
 
 (global-undo-tree-mode)
+
+(google-this-mode 1)
+(global-set-key (kbd "C-x g") 'google-this-noconfirm)
 
 ;;;;;;;;;;;; options ;;;;;;;;;;;;;;;;
 
