@@ -955,9 +955,19 @@ by using nxml's indentation rules."
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+(defun euro ()
+  (interactive)
+  (insert "€"))
+
+(defun pound ()
+  (interactive)
+  (insert "£"))
+
 (custom-set-variables
- '(cider-prompt-for-symbol nil)
- '(git-commit-finish-query-functions nil)
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(cider-prompt-for-symbol nil)
  '(cljr-cljc-clojure-test-declaration
    "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
@@ -968,18 +978,24 @@ by using nxml's indentation rules."
  '(dired-dwim-target t)
  '(frame-resize-pixelwise t)
  '(git-commit-fill-column 3000)
+ '(git-commit-finish-query-functions nil)
  '(git-commit-summary-max-length 120)
  '(js-indent-level 2)
  '(ns-use-srgb-colorspace nil)
  '(org-time-clocksum-format
    (quote
     (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
- '(powerline-default-separator nil)
  '(package-selected-packages
    (quote
-    (browse-kill-ring zenburn-theme undo-tree solarized-theme slime sbt-mode puppet-mode powerline markdown-mode magit ido-ubiquitous highlight-symbol git-gutter expand-region emmet-mode diminish company clj-refactor aggressive-indent ag))))
+    (google-this browse-kill-ring zenburn-theme undo-tree solarized-theme slime sbt-mode puppet-mode powerline markdown-mode magit ido-ubiquitous highlight-symbol git-gutter expand-region emmet-mode diminish company clj-refactor aggressive-indent ag)))
+ '(powerline-default-separator nil)
+ '(safe-local-variable-values (quote ((clojure-indent-style . t)))))
 
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(bold ((t (:foreground "white" :weight bold))))
  '(cider-repl-stdout-face ((t (:foreground "#c0c0c0"))))
  '(dired-directory ((t (:inherit font-lock-function-name-face :foreground "#55bbff"))))
