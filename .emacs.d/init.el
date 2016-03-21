@@ -123,6 +123,8 @@
 (global-set-key (kbd "C-d") 'duplicate-sexp)
 (define-key paredit-mode-map (kbd "C-d") 'duplicate-sexp)
 
+(define-key lisp-interaction-mode-map (kbd "C-x M-e") 'eval-print-last-sexp)
+
 (global-set-key [C-M-down] 'transpose-sexp-forward)
 (global-set-key [C-M-up] 'transpose-sexp-backward)
 (global-set-key (kbd "M-{") 'paredit-wrap-curly)
