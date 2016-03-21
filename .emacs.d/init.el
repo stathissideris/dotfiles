@@ -27,7 +27,9 @@
         company
         hydra
         emmet-mode
+        flx-ido
         ido-ubiquitous
+        projectile
         expand-region))
 
 (require 'package)
@@ -154,7 +156,11 @@
 
 ;(cua-mode t)
 (setq ido-everywhere t)
+(setq recentf-max-saved-items 200)
+(setq ido-use-virtual-buffers t)
 (ido-mode t)
+(flx-ido-mode t)
+(projectile-global-mode)
 
 ;;;; looks
 (if window-system
