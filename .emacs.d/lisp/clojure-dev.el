@@ -7,7 +7,8 @@
 	  '("(user/refresh)"
             "(use 'clojure.repl)"
             "(use 'clojure.tools.trace)"
-            "(use 'clojure.pprint)"))
+            "(use 'clojure.pprint)"
+            "(dev/start-cljs-figwheel)"))
 
 (defun clojure-quick-eval ()
   (interactive)
