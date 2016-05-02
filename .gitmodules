@@ -1,0 +1,3 @@
+[submodule ".emacs.d/lisp/expand-region.el"]
+	path = .emacs.d/lisp/expand-region.el
+	url = https://github.com/magnars/expand-region.el
