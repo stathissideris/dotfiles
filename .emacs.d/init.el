@@ -30,7 +30,8 @@
         flx-ido
         ido-ubiquitous
         projectile
-        expand-region))
+        ;;expand-region
+        use-package))
 
 (require 'package)
 (add-to-list 'package-archives
@@ -52,6 +53,7 @@
 
 (add-to-list 'load-path (expand-file-name "site-lisp" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "lisp/expand-region.el" user-emacs-directory))
 
 (require 'bm)
 (require 'xmlgen)
@@ -976,6 +978,18 @@ by using nxml's indentation rules."
 (defun pound ()
   (interactive)
   (insert "£"))
+
+(use-package projectile
+  :pin melpa-stable
+  :config
+  (setq projectile-mode-line '(:eval (format " P[%s]" (projectile-project-name)))
+    projectile-globally-ignored-files '("TAGS" ".nrepl-port")
+    projectile-globally-ignored-file-suffixes '("pyc")
+    projectile-globally-ignored-directories
+    '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" "venv" "build"
+      "vendor" "vendors" ".cabal-sandbox" "dist" ".vagrant" "node_modules"
+      "bower_components" ".bundle" ".stack-work"))
+  (projectile-global-mode nil))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
