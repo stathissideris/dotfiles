@@ -160,8 +160,8 @@
 
 ;(cua-mode t)
 (setq ido-everywhere t)
-(setq recentf-max-saved-items 200)
-(setq ido-use-virtual-buffers t)
+;;(setq recentf-max-saved-items 200)
+;;(setq ido-use-virtual-buffers t)
 (ido-mode t)
 (flx-ido-mode t)
 (projectile-global-mode)
