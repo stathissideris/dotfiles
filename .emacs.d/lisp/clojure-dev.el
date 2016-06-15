@@ -201,6 +201,11 @@
     (mark-sexp)
     (replace-not-in-strings (region-beginning) (region-end) "," "\n")
     (goto-char p)
+
+    (mark-sexp)
+    (replace-not-in-strings (region-beginning) (region-end) "} {" "}\n{")
+    (goto-char p)
+
     (mark-sexp)
     (indent-region (region-beginning) (region-end))))
 
