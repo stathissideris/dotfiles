@@ -144,12 +144,12 @@
 ;;spaces instead of tabs
 (setq clojure-mode-hook
 	  (function (lambda ()
-				  (setq indent-tabs-mode nil)
-				  (setq c-indent-level 2))))
+                      (setq indent-tabs-mode nil)
+                      (setq c-indent-level 2))))
 (setq lisp-mode-hook
 	  (function (lambda ()
-				  (setq indent-tabs-mode nil)
-				  (setq c-indent-level 2))))
+                      (setq indent-tabs-mode nil)
+                      (setq c-indent-level 2))))
 
 (setq-default cursor-type 'box)
 (require 'stathis-blog)
