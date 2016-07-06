@@ -83,7 +83,6 @@
   (interactive)
   (forward-sexp)
   (transpose-sexps -1)
-  (backward-sexp)
   (backward-sexp))
 
 (provide 'paredit-steroids)
