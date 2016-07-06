@@ -88,7 +88,7 @@
 
 ;;jump to tests and back
 
-(defun string-join (sep s)
+(defun ss/string-join (sep s)
   (mapconcat 'identity s sep))
 
 (defun toggle-test-path (path)
@@ -103,7 +103,7 @@
 
   Contains a bug for the (rare) cases where there is a \"test\"
   or \"src\" in your namespace hierarchy."
-  (string-join
+  (ss/string-join
    "/"
    (mapcar
     (lambda (x)
