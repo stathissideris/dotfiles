@@ -151,7 +151,6 @@
                       (setq indent-tabs-mode nil)
                       (setq c-indent-level 2))))
 
-(setq-default cursor-type 'box)
 (require 'stathis-blog)
 
 ;; (require 'color-theme)
@@ -997,10 +996,13 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(Buffer-menu-name-width 32)
+ '(ag-executable "/usr/local/bin/ag")
  '(cider-prompt-for-symbol nil)
  '(cljr-cljc-clojure-test-declaration
    "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
  '(cljr-clojure-test-declaration "[clojure.test :refer :all]")
+ '(css-indent-offset 2)
  '(custom-safe-themes
    (quote
     ("e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
@@ -1010,15 +1012,20 @@ by using nxml's indentation rules."
  '(git-commit-finish-query-functions nil)
  '(git-commit-summary-max-length 120)
  '(js-indent-level 2)
+ '(lua-indent-level 2)
+ '(minimap-automatically-delete-window nil)
+ '(minimap-enlarge-certain-faces (quote always))
+ '(minimap-normal-height-faces (quote (font-lock-function-name-face)))
+ '(minimap-update-delay 0.3)
  '(ns-use-srgb-colorspace nil)
+ '(org-hide-leading-stars t)
  '(org-time-clocksum-format
    (quote
     (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
  '(package-selected-packages
    (quote
-    (google-this browse-kill-ring zenburn-theme undo-tree solarized-theme slime sbt-mode puppet-mode powerline markdown-mode magit ido-ubiquitous highlight-symbol git-gutter expand-region emmet-mode diminish company clj-refactor aggressive-indent ag)))
- '(powerline-default-separator nil)
- '(safe-local-variable-values (quote ((clojure-indent-style . t)))))
+    (minimap lua-mode google-this browse-kill-ring zenburn-theme undo-tree solarized-theme slime sbt-mode puppet-mode powerline markdown-mode magit ido-ubiquitous highlight-symbol git-gutter expand-region emmet-mode diminish company clj-refactor aggressive-indent ag)))
+ '(powerline-default-separator nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
