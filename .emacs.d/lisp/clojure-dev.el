@@ -42,7 +42,7 @@
 
 ;;hide dos new lines in cider help
 (defadvice cider-popup-buffer-display
-  (after cider-popup-hide-dos-eol (popup-buffer &optional select))
+    (after cider-popup-hide-dos-eol (popup-buffer &optional select))
   (with-current-buffer popup-buffer
     (hide-dos-eol)))
 (ad-activate 'cider-popup-buffer-display)
@@ -73,9 +73,6 @@
   )
 (add-hook 'cider-repl-mode-hook 'cider-repl-hook)
 
-(defun cider-hook ()
-  (cider-turn-on-eldoc-mode))
-(add-hook 'cider-mode-hook 'cider-hook)
 ;;(add-hook 'after-init-hook 'global-company-mode) ;;auto-completion
 (define-key cider-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
 (define-key cider-repl-mode-map (kbd "C-c p") 'cider-repl-toggle-pretty-printing)
@@ -209,6 +206,7 @@
     (mark-sexp)
     (indent-region (region-beginning) (region-end))))
 
-
+(fset 'midje-to-test-assertion
+   [?\C-s ?= ?> return backspace backspace backspace right C-M-up ?\M-\( C-right ?= ?  left left left ?\M-\( ?i ?s ?  left left left left f1 ?  ?\C-\M-\\])
 
 (provide 'clojure-dev)
