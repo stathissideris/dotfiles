@@ -1,6 +1,8 @@
 ;;packages to attempt to install at startup, comment this out if offline
 (setq packages-to-bootstrap
       '(highlight-symbol
+        dockerfile-mode
+        yaml-mode
         clojure-mode
         clj-refactor
         cider
@@ -1024,8 +1026,15 @@ by using nxml's indentation rules."
     (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
  '(package-selected-packages
    (quote
-    (minimap lua-mode google-this browse-kill-ring zenburn-theme undo-tree solarized-theme slime sbt-mode puppet-mode powerline markdown-mode magit ido-ubiquitous highlight-symbol git-gutter expand-region emmet-mode diminish company clj-refactor aggressive-indent ag)))
- '(powerline-default-separator nil))
+    (yaml-mode dockerfile-mode minimap lua-mode google-this browse-kill-ring zenburn-theme undo-tree solarized-theme slime sbt-mode puppet-mode powerline markdown-mode magit ido-ubiquitous highlight-symbol git-gutter expand-region emmet-mode diminish company clj-refactor aggressive-indent ag)))
+ '(powerline-default-separator nil)
+ '(safe-local-variable-values
+   (quote
+    ((eval define-clojure-indent
+           (snippet
+            (quote defun))
+           (template
+            (quote defun)))))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
