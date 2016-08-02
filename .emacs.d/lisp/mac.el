@@ -40,4 +40,6 @@
          (format "%s %s" (executable-find "open") (file-name-directory file)))
       (error "Buffer is not attached to any file"))))
 
+(setq exec-path (append exec-path '("/usr/local/bin")))
+
 (provide 'mac)
