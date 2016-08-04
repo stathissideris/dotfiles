@@ -142,8 +142,10 @@
 
 (use-package sgml-mode
   :config
-  :bind (;;("<f1> SPC" . sgml-mark-tag)
-         )
+  :bind (:map sgml-mode-map
+         ("<f1> SPC" . sgml-mark-tag))
+  :mode (("\\.html$" . sgml-mode)
+         ("\\.xml$" . sgml-mode))
   :config
   (defun sgml-mark-tag ()
     (interactive)
@@ -495,7 +497,7 @@
 (global-set-key (kbd "C--") (lambda () (interactive) (text-scale-increase -0.5)))
 (global-set-key (kbd "C-0") (lambda () (interactive) (text-scale-increase 0)))
 
-(global-set-key (kbd "<f1> SPC")  'mark-sexp)
+(global-set-key (kbd "<f1> SPC") 'mark-sexp)
 (global-set-key (kbd "<f1> .") 'highlight-symbol-next)
 (global-set-key (kbd "<f1> ,") 'highlight-symbol-prev)
 
