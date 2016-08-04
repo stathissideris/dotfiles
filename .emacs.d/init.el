@@ -8,8 +8,6 @@
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-
 (package-initialize)
 
 (when (not package-archive-contents)
@@ -27,8 +25,17 @@
 ;; ========================================
 ;; Machine-specific config
 
-(if (string-equal system-type "darwin")
-    (require 'mac))
+(use-package mac
+ :if (string-equal system-type "darwin")
+ :load-path "lisp")
+
+(use-package mucha
+  :if (string-equal system-name "MUCHA")
+  :load-path "lisp")
+
+(use-package no-window
+  :if (not window-system)
+  :load-path "lisp")
 
 ;; ========================================
 ;; Modes
