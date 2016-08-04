@@ -36,11 +36,11 @@
 (use-package clojure-mode
   :ensure t
   :pin melpa-stable
+  :diminish (clojure-mode . "clj")
+  :defines clojure-mode-map
   :bind (("C-x t" . clojure-jump-to-test))
+  :mode (("\\.edn$" . clojure-mode))
   :config
-
-  (setq auto-mode-alist (cons '("\\.edn$" . clojure-mode) auto-mode-alist))
-
   (defun ss/string-join (sep s)
     (mapconcat 'identity s sep))
 
@@ -76,18 +76,19 @@
   :ensure t
   :pin melpa-stable
   :diminish clj-refactor-mode
+  :init
+  (add-hook 'clojure-mode-hook (lambda ()
+                                 (clj-refactor-mode 1)
+                                 (cljr-add-keybindings-with-prefix "C-c C-v")))
   :config
   (setq cljr-clojure-test-declaration "[clojure.test :refer :all]")
   (setq cljr-cljc-clojure-test-declaration
-                                       "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
-  (add-hook 'clojure-mode-hook (lambda ()
-                                 (clj-refactor-mode 1)
-                                 (cljr-add-keybindings-with-prefix "C-c C-v"))))
+        "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])"))
 
 (use-package align-cljlet
   :ensure t
   :pin marmalade
-  :config
+  :init
   (add-hook 'clojure-mode-hook
           '(lambda ()
              (define-key clojure-mode-map "\C-c\C-a" 'align-cljlet))))
@@ -100,8 +101,10 @@
          ("M-{" . paredit-wrap-curly)
          ("M-[" . paredit-wrap-square)
          ("<C-M-up>" . transpose-sexp-backward)
-         ("<C-M-down>" . transpose-sexp-forward))
-  :config
+         ("<C-M-down>" . transpose-sexp-forward)
+         ("<M-S-left>" . backward-sexp)
+         ("<M-S-right>" . forward-sexp))
+  :init
   (add-hook 'lisp-mode-hook 'paredit-mode)
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
   (add-hook 'scheme-mode-hook 'paredit-mode)
@@ -130,9 +133,32 @@
     (transpose-sexps -1)
     (backward-sexp)))
 
+(use-package sgml-mode
+  :config
+  :bind (;;("<f1> SPC" . sgml-mark-tag)
+         )
+  :config
+  (defun sgml-mark-tag ()
+    (interactive)
+    (sgml-skip-tag-forward 1)
+    (set-mark-command nil)
+    (sgml-skip-tag-backward 1)))
+
+(use-package tagedit
+  :ensure t
+  :init
+  (add-hook 'html-mode-hook (lambda () (tagedit-mode 1)))
+  :config
+  (tagedit-add-paredit-like-keybindings))
+
 (use-package show-paren-mode
   :init
-  (show-paren-mode)
+  (add-hook 'lisp-mode-hook 'show-paren-mode)
+  (add-hook 'emacs-lisp-mode-hook 'show-paren-mode)
+  (add-hook 'scheme-mode-hook 'show-paren-mode)
+  (add-hook 'cider-repl-mode-hook 'show-paren-mode)
+  (add-hook 'clojure-mode-hook 'show-paren-mode)
+  :config
   (custom-set-faces
    '(show-paren-match ((t (:foreground "green" :background "Black" :weight bold))))))
 
@@ -142,22 +168,21 @@
   :pin melpa-stable
   :bind (("C-c M-o" . cider-repl-clear-buffer)
          ("<f2>" . clojure-quick-eval)
-         ("<f12>" . apply-fix-macro)
-         ;;("{" . 'paredit-open-curly);;TODO
-         )
+         ("<f12>" . apply-fix-macro))
+  :init
+  (add-hook 'cider-mode-hook #'eldoc-mode)
   :config
-  (setq cider-promapt-for-symbol nil)
+  (setq cider-prompt-for-symbol nil)
   (setq cider-repl-history-file "~/.emacs.d/cider-history")
   (setq cider-font-lock-dynamically '(macro core function var))
   (setq cider-repl-use-pretty-printing nil)
   (setq cider-repl-use-clojure-font-lock t)
-  (setq cider-repl-result-prefix ";; => ")
+  ;;(setq cider-repl-result-prefix ";; => ")
   (setq cider-repl-wrap-history t)
   (setq cider-repl-history-size 3000)
   (setq cider-show-error-buffer 'except-in-repl)
   (setq cider-repl-display-help-banner nil)
   (setq cider-inject-dependencies-at-jack-in nil)
-  (add-hook 'cider-mode-hook #'eldoc-mode)
 
   (setq clojure-quick-sexp
         '("(user/refresh)"
@@ -242,6 +267,15 @@
       "bower_components" ".bundle" ".stack-work"))
   (projectile-global-mode nil))
 
+(use-package yasnippet
+  :ensure t
+  :pin melpa-stable
+  :diminish (yas-minor-mode . " Y")
+  :config
+  (yas-global-mode 1)
+  (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
+  (yas-load-directory "~/.emacs.d/snippets"))
+
 (use-package dockerfile-mode
   :ensure t
   :defer t
@@ -251,13 +285,16 @@
   :ensure t
   :pin melpa-stable
   :diminish company-mode
-  :config
-  (global-company-mode))
+  :bind (("<s-SPC>" . company-complete))
+  :init
+  (global-company-mode)
+  (setq company-begin-commands
+        '(self-insert-command org-self-insert-command orgtbl-self-insert-command c-scope-operator c-electric-colon c-electric-lt-gt c-electric-slash cljr-slash)))
 
 (use-package ido-ubiquitous
   :ensure t
   :pin melpa-stable
-  :config
+  :init
   (ido-mode t)
   (ido-ubiquitous)
   (setq ido-enable-flex-matching t))
@@ -293,6 +330,7 @@
 (use-package magit
   :ensure t
   :pin melpa-stable
+  :diminish auto-revert-mode
   :config
   (global-set-key (kbd "C-c C-g") 'magit-status)
 
@@ -313,48 +351,43 @@
 
 (use-package dired
   ;;:bind (("<^>" . (lambda () (find-alternate-file "..")))) ;;TODO
+  :demand t
   :config
   (setq dired-dwim-target t)
   (put 'dired-find-alternate-file 'disabled nil)
 
-  (custom-set-faces
-   '(dired-directory ((t (:inherit font-lock-function-name-face :foreground "#55bbff")))))
+  (set-face-attribute 'dired-marked nil :foreground "#5fff00")
+  (if window-system
+      (set-face-attribute 'dired-directory nil :foreground "#5fd7ff")
+    (set-face-attribute 'dired-directory nil :foreground "#0020ff"))
 
   (defun kill-dired-buffers ()
     (interactive)
     (mapc (lambda (buffer)
 	    (when (eq 'dired-mode (buffer-local-value 'major-mode buffer))
 	      (kill-buffer buffer)))
-	  (buffer-list)))
-  (add-hook 'dired-mode-hook
-	    '(lambda ()
-               (set-face-attribute 'dired-marked nil :foreground "#5fff00")
-               (set-face-attribute 'dired-directory nil :foreground "#55bbff")
-               (if window-system
-                   (set-face-attribute 'dired-directory nil :foreground "#5fd7ff")
-                 (set-face-attribute 'dired-directory nil :foreground "#0020ff")))))
+	  (buffer-list))))
 
 (use-package linum
-  :config
+  :init
   (if window-system
-      (setq linum-format "%d")
-    (setq linum-format "%d "))
+      (setq linum-format "%3d")
+    (setq linum-format "%3d "))
   (global-set-key (kbd "<f11>") 'linum-mode))
 
 (use-package highlight-symbol
-  :diminish t
-  :config
-  (global-set-key (kbd "C-,") 'highlight-symbol-prev)
-  (global-set-key (kbd "C-.") 'highlight-symbol-next)
-
-  (set-face-attribute 'highlight-symbol-face nil :background "orange3")
-  (set-face-attribute 'highlight-symbol-face nil :foreground "gray100")
-
+  :diminish highlight-symbol-mode
+  :init
   (add-hook 'lisp-mode-hook 'highlight-symbol-mode)
   (add-hook 'emacs-lisp-mode-hook 'highlight-symbol-mode)
   (add-hook 'scheme-mode-hook 'highlight-symbol-mode)
   (add-hook 'cider-repl-mode-hook 'highlight-symbol-mode)
-  (add-hook 'clojure-mode-hook 'highlight-symbol-mode))
+  (add-hook 'clojure-mode-hook 'highlight-symbol-mode)
+  :config
+  (global-set-key (kbd "C-,") 'highlight-symbol-prev)
+  (global-set-key (kbd "C-.") 'highlight-symbol-next)
+  (set-face-attribute 'highlight-symbol-face nil :background "#9c7618")
+  (set-face-attribute 'highlight-symbol-face nil :foreground "gray100"))
 
 (use-package windmove
   :init
@@ -370,7 +403,7 @@
 (use-package undo-tree
   :ensure t
   :pin marmalade
-  :diminish (undo-tree-mode . "UT")
+  :diminish undo-tree-mode
   :config
   (global-undo-tree-mode)
 
@@ -423,6 +456,11 @@
 		       (read-directory-name "Directory: " (ag/project-root default-directory))))
     (ag/search string directory :file-regex file-regex)))
 
+(use-package open-github-from-here
+  :bind (("M-g M-h" . open-github-from-here))
+  :defer t
+  :load-path "lisp/emacs-open-github-from-here")
+
 ;; ========================================
 ;; Colors and looks
 
@@ -443,64 +481,62 @@
     (load-theme 'zenburn t)))
 
 ;; ========================================
-;; Misc - fake packages
+;; Misc
 
-(use-package global-custom-keys
-  :init
-  (global-set-key (kbd "C-=") (lambda () (interactive) (text-scale-increase 0.5)))
-  (global-set-key (kbd "C--") (lambda () (interactive) (text-scale-increase -0.5)))
-  (global-set-key (kbd "C-0") (lambda () (interactive) (text-scale-increase 0)))
+;;global-custom-keys
+(global-set-key (kbd "C-=") (lambda () (interactive) (text-scale-increase 0.5)))
+(global-set-key (kbd "C--") (lambda () (interactive) (text-scale-increase -0.5)))
+(global-set-key (kbd "C-0") (lambda () (interactive) (text-scale-increase 0)))
 
-  (global-set-key (kbd "<f1> SPC")  'mark-sexp)
-  (global-set-key (kbd "<f1> .") 'highlight-symbol-next)
-  (global-set-key (kbd "<f1> ,") 'highlight-symbol-prev)
+(global-set-key (kbd "<f1> SPC")  'mark-sexp)
+(global-set-key (kbd "<f1> .") 'highlight-symbol-next)
+(global-set-key (kbd "<f1> ,") 'highlight-symbol-prev)
 
-  (global-set-key (kbd "C-c ;") 'comment-or-uncomment-region)
-  (global-set-key [f7] 'toggle-truncate-lines)
-  (global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "C-c ;") 'comment-or-uncomment-region)
+(global-set-key [f7] 'toggle-truncate-lines)
+(global-set-key (kbd "RET") 'newline-and-indent)
 
-  (defun refresh-file ()
-    (interactive)
-    (revert-buffer t t t))
-  (global-set-key [f5] `refresh-file)
-  (global-set-key [f6] `mark-whole-buffer))
+(defun refresh-file ()
+  (interactive)
+  (revert-buffer t t t))
+(global-set-key [f5] `refresh-file)
+(global-set-key [f6] `mark-whole-buffer)
 
-(use-package super-slow-scroll
-  :init
-  (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))) ;; one two lines at a time
-  (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-  (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-  (setq scroll-step 1) ;; keyboard scroll one line at a time
-  (setq scroll-conservatively 10000))
+;;super-slow-scroll
+(setq mouse-wheel-scroll-amount '(2 ((shift) . 1))) ;; one two lines at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-step 1) ;; keyboard scroll one line at a time
+(setq scroll-conservatively 10000)
 
-(use-package misc-custom-vars
-  :init
-  (setq frame-resize-pixelwise t)
-  (setq inhibit-splash-screen t)
-  (setq comment-empty-lines t)
-  (setq visible-bell t)
-  (setq make-backup-files nil) ;; no backups!
-  (setq auto-save-default nil) ;; stop creating those #autosave# files
-  (column-number-mode t)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+;;misc-custom-vars
+(setq frame-resize-pixelwise t)
+(setq inhibit-splash-screen t)
+(setq comment-empty-lines t)
+(setq visible-bell t)
+(setq make-backup-files nil) ;; no backups!
+(setq auto-save-default nil) ;; stop creating those #autosave# files
+(setq custom-file "~/.emacs.d/custom.el")
+;;(load custom-file 'noerror)
+(column-number-mode t)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(use-package spaces-instead-of-tabs
-  :init
-  (setq-default indent-tabs-mode nil)
-  (setq default-tab-width 2)
-  (setq tab-width 2)
-  (setq python-indent 3)
-  (setq c-basic-offset 3)
-  (setq c-indent-level 3)
-  (setq c++-tab-always-indent nil)
-  (setq js-indent-level 2)
-  (setq lua-indent-level 2))
+;;spaces-instead-of-tabs
+(setq-default indent-tabs-mode nil)
+(setq default-tab-width 2)
+(setq tab-width 2)
+(setq python-indent 3)
+(setq c-basic-offset 3)
+(setq c-indent-level 3)
+(setq c++-tab-always-indent nil)
+(setq js-indent-level 2)
+(setq lua-indent-level 2)
+(setq css-indent-offset 2)
 
-(use-package custom-scratch-message
-  :init
-  (defun get-string-from-file (filePath)
-    "Return filePath's file content."
-    (with-temp-buffer
-      (insert-file-contents filePath)
-      (buffer-string)))
-  (setq initial-scratch-message (get-string-from-file "~/.emacs.d/logo")))
+;;custom-scratch-message
+(defun get-string-from-file (filePath)
+  "Return filePath's file content."
+  (with-temp-buffer
+    (insert-file-contents filePath)
+    (buffer-string)))
+(setq initial-scratch-message (get-string-from-file "~/.emacs.d/logo"))
