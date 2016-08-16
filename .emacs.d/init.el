@@ -1,3 +1,7 @@
+;;early background to prevent white emacs blinding me
+(custom-set-faces
+ '(default ((t (:background "#022b35")))))
+
 ;; ========================================
 ;; package
 (require 'package)
@@ -138,7 +142,10 @@
     (interactive)
     (forward-sexp)
     (transpose-sexps -1)
-    (backward-sexp)))
+    (backward-sexp))
+
+  :config
+  (define-key paredit-mode-map "\C-d" 'duplicate-sexp))
 
 (use-package sgml-mode
   :config
@@ -167,7 +174,6 @@
   (add-hook 'scheme-mode-hook 'show-paren-mode)
   (add-hook 'cider-repl-mode-hook 'show-paren-mode)
   (add-hook 'clojure-mode-hook 'show-paren-mode)
-  :config
   (custom-set-faces
    '(show-paren-match ((t (:foreground "green" :background "Black" :weight bold))))))
 
@@ -192,6 +198,8 @@
   (setq cider-show-error-buffer 'except-in-repl)
   (setq cider-repl-display-help-banner nil)
   (setq cider-inject-dependencies-at-jack-in nil)
+
+  (bind-key "C-c M-o" 'cider-repl-clear-buffer cider-repl-mode-map)
 
   (setq clojure-quick-sexp
         '("(user/refresh)"
@@ -469,6 +477,124 @@
   :bind (("M-g M-h" . open-github-from-here))
   :defer t
   :load-path "lisp/emacs-open-github-from-here")
+
+(use-package hydra
+  :ensure t
+  :pin melpa-stable
+  :init
+  (global-set-key (kbd "§") 'hydra-windows/body)
+
+  (make-face 'move-window-buffer-face)
+  (setq ss/window-move-remap-cookie nil)
+
+  (defun move-splitter-left (arg)
+    "Move window splitter left."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'right))
+        (shrink-window-horizontally arg)
+      (enlarge-window-horizontally arg)))
+
+  (defun move-splitter-right (arg)
+    "Move window splitter right."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'right))
+        (enlarge-window-horizontally arg)
+      (shrink-window-horizontally arg)))
+
+
+  (defun move-splitter-up (arg)
+    "Move window splitter up."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'up))
+        (enlarge-window arg)
+      (shrink-window arg)))
+  (defun move-splitter-down (arg)
+    "Move window splitter down."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'up))
+        (shrink-window arg)
+      (enlarge-window arg)))
+  (set-face-attribute 'move-window-buffer-face nil
+                      :background "#073642")
+
+  (defun remove-window-move-indicator ()
+    (if ss/window-move-remap-cookie
+        (face-remap-remove-relative
+         ss/window-move-remap-cookie)))
+
+  (defun add-window-move-indicator ()
+    (setq
+     ss/window-move-remap-cookie
+     (face-remap-add-relative 'default 'move-window-buffer-face)))
+
+  (defun window-move (direction)
+    (let ((fun (cond ((eq direction 'up) 'windmove-up)
+                     ((eq direction 'down) 'windmove-down)
+                     ((eq direction 'left) 'windmove-left)
+                     ((eq direction 'right) 'windmove-right))))
+      (remove-window-move-indicator)
+      (funcall fun)
+      (add-window-move-indicator)))
+
+  (defun buffer-swap (direction)
+    (let* ((other-window (windmove-find-other-window direction))
+           (other-buffer (window-buffer other-window))
+           (this-buffer (current-buffer))
+           (this-window (selected-window)))
+      (set-window-buffer other-window this-buffer)
+      (set-window-buffer this-window other-buffer)
+      (window-move direction)))
+
+  (defhydra hydra-windows (global-map "C-M-s"
+                                      :foreign-keys warn
+                                      :pre  add-window-move-indicator
+                                      :post remove-window-move-indicator)
+    "windows"
+    ("<up>" (progn (window-move 'up)))
+    ("<down>" (progn (window-move 'down)))
+    ("<left>" (progn (window-move 'left)))
+    ("<right>" (progn (window-move 'right)))
+
+    ("C-<up>" (progn (buffer-swap 'up)))
+    ("C-<down>" (progn (buffer-swap 'down)))
+    ("C-<left>" (progn (buffer-swap 'left)))
+    ("C-<right>" (progn (buffer-swap 'right)))
+
+    ("w" move-splitter-up)
+    ("s" move-splitter-down)
+    ("a" move-splitter-left)
+    ("d" move-splitter-right)
+
+    ("1" delete-other-windows "max")
+    ("2" split-window-below "split below")
+    ("-" split-window-below "split below")
+    ("3" split-window-right "split right")
+    ("|" split-window-right "split right")
+    ("+" balance-windows "balance")
+
+    ("C--" (progn (text-scale-increase -0.5)))
+    ("C-=" (progn (text-scale-increase 0.5)))
+
+    ("," beginning-of-buffer "home")
+    ("." end-of-buffer "end")
+
+    ("f" ido-find-file)
+    ("b" (progn (remove-window-move-indicator)
+                (ido-switch-buffer)
+                (add-window-move-indicator)) "switch")
+    ("k" (progn (remove-window-move-indicator)
+                (kill-this-buffer)
+                (add-window-move-indicator)) "kill")
+    ("0" (progn (remove-window-move-indicator)
+                (delete-window)
+                (add-window-move-indicator)) "del")
+
+    ("§" nil "exit")
+    ("q" nil "exit")))
 
 ;; ========================================
 ;; Colors and looks
