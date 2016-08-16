@@ -1,9 +1,6 @@
 'use strict';
 
-//see https://github.com/watsoncj/phoenix-config/blob/master/phoenix.js#L18
-
-var keys = [];
-var mash = [ 'cmd', 'alt', 'ctrl' ];
+//works with Phoenix 2.2 except for tasks it seems
 
 var grids = {
   '2 side-by-side': {rows: 1, cols: 2},
@@ -13,10 +10,10 @@ var grids = {
 
 function alert(message) {
   var modal = new Modal();
-  modal.message = message;
+  modal.text = message;
   modal.duration = 2;
 
-  var sFrame = Screen.mainScreen().visibleFrameInRectangle();
+  var sFrame = Screen.main().flippedVisibleFrame();
   modal.origin = {x: 20, y: sFrame.height - 20};
 
   modal.show();
@@ -27,10 +24,10 @@ function grid(name) {
   var cols = grids[name].cols;
   return function applyGrid() {
     alert(name);
-    var windows = Window.visibleWindowsInOrder();
+    var windows = Window.recent();
     windows.splice(Math.min(windows.length, cols*rows));
     var pre = windows.length;
-    var sFrame = Screen.mainScreen().visibleFrameInRectangle();
+    var sFrame = Screen.main().flippedVisibleFrame();
     var width = Math.round(sFrame.width / cols);
     var height = Math.round(sFrame.height / rows);
 
@@ -50,7 +47,7 @@ function grid(name) {
 
 function swapMostRecent() {
   alert("swap");
-  var windows = Window.visibleWindowsInOrder();
+  var windows = Window.recent();
   var frame0 = windows[0].frame();
   var frame1 = windows[1].frame();
   windows[0].setFrame(frame1);
@@ -58,7 +55,7 @@ function swapMostRecent() {
 }
 
 var findByName = function(name) {
-  return _.find(App.runningApps(), function(app) {
+  return _.find(App.all(), function(app) {
     if (app.name() === name) {
       return true;
     }
@@ -79,29 +76,31 @@ function focusDevelop() {
 
 function makeCurrentFullScreen() {
   alert("maximize");
-  Window.focusedWindow().maximize();
+  Window.focused().maximize();
 }
 
 function currentTrack() {
-  Command.run("/Users/sideris/bin/current-track.sh", []);
+  var h = Task.run("/Users/sideris/bin/current-track.sh", [], function () {});
 }
 
 function nextTrack() {
-  Command.run("/usr/bin/curl", ["http://mucha:8888/default/?cmd=StartNext&param1="]);
+  var h = Task.run("/usr/bin/curl", ["http://mucha:8888/default/?cmd=StartNext&param1="], function () {});
   alert("next track");
 }
 
 function bluetoothAssistant() {
   alert("bluetooth assistant");
-  Command.run("/usr/bin/open", ["/System/Library/CoreServices/Bluetooth Setup Assistant.app"]);
+  var h = Task.run("/usr/bin/open", ["/System/Library/CoreServices/Bluetooth Setup Assistant.app"], function () {});
 }
 
-keys.push(Phoenix.bind('1', mash, grid('2 side-by-side')));
-keys.push(Phoenix.bind('2', mash, grid('2 stacked')));
-keys.push(Phoenix.bind('3', mash, grid('3 side-by-side')));
-keys.push(Phoenix.bind('0', mash, focusDevelop)); //mash it, does not work properly with single press
-keys.push(Phoenix.bind('9', mash, makeCurrentFullScreen));
-keys.push(Phoenix.bind('=', mash, swapMostRecent));
-keys.push(Phoenix.bind('f11', ['alt'], currentTrack));
-keys.push(Phoenix.bind('f12', ['alt'], nextTrack));
-keys.push(Phoenix.bind('m', mash, bluetoothAssistant));
+var mash = [ 'cmd', 'alt', 'ctrl' ];
+
+var h1 = new Key ('1', mash, grid('2 side-by-side'));
+var h2 = new Key ('2', mash, grid('2 stacked'));
+var h3 = new Key ('3', mash, grid('3 side-by-side'));
+var h0 = new Key ('0', mash, focusDevelop); //mash it, does not work properly with single press
+var h9 = new Key ('9', mash, makeCurrentFullScreen);
+var hEquals = new Key ('=', mash, swapMostRecent);
+var hF11 = new Key ('f11', ['alt'], currentTrack);
+var hF12 = new Key ('f12', ['alt'], nextTrack);
+var hM = new Key ('m', mash, bluetoothAssistant);
