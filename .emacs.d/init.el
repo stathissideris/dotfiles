@@ -9,8 +9,16 @@
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
+;; (add-to-list 'package-archives
+;;              '("melpa" . "https://melpa.org/packages/") t)
+
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
+
+(add-to-list 'package-archives
+             '("org" . "http://orgmode.org/elpa/") t)
+
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 (package-initialize)
 
@@ -25,6 +33,9 @@
 (require 'diminish)                ;; if you use :diminish
 (require 'bind-key)                ;; if you use any :bind variant
 
+;; ERC config
+
+(require 'ss-erc)
 
 ;; ========================================
 ;; Machine-specific config
@@ -156,9 +167,12 @@
   :config
   (defun sgml-mark-tag ()
     (interactive)
-    (sgml-skip-tag-forward 1)
-    (set-mark-command nil)
-    (sgml-skip-tag-backward 1)))
+    (if (= 60 (char-after))
+        (progn
+          (sgml-skip-tag-forward 1)
+          (set-mark-command nil)
+          (sgml-skip-tag-backward 1))
+      (mark-sexp))))
 
 (use-package tagedit
   :ensure t
@@ -167,7 +181,7 @@
   :config
   (tagedit-add-paredit-like-keybindings))
 
-(use-package show-paren-mode
+(use-package paren
   :init
   (add-hook 'lisp-mode-hook 'show-paren-mode)
   (add-hook 'emacs-lisp-mode-hook 'show-paren-mode)
@@ -175,7 +189,7 @@
   (add-hook 'cider-repl-mode-hook 'show-paren-mode)
   (add-hook 'clojure-mode-hook 'show-paren-mode)
   (custom-set-faces
-   '(show-paren-match ((t (:foreground "green" :background "Black" :weight bold))))))
+   '(show-paren-match ((t (:foreground "gray100" :background "#9c7618" :weight bold))))))
 
 (use-package cider
   :ensure t
@@ -318,31 +332,103 @@
 
 (use-package org
   :ensure t
-  :pin melpa-stable
+  :pin org
   :defer t
   :bind (("<S-insert>" . org-complete)
          ("<S-return>" . org-insert-subheading))
+  :init
+  (font-lock-add-keywords 'org-mode
+                          '(("^ +\\([-*]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
   :config
-  (setq org-ellipsis " >>")
-  (setq org-confirm-babel-evaluate nil)
-  (setq org-todo-keyword-faces
-        '(("PROG" . "yellow")
-          ("BLOK" . "IndianRed1")))
-  (setq org-support-shift-select t)
-  (setq org-hide-leading-stars t)
-  (setq org-time-clocksum-format
+  (setq org-ellipsis "…" ;;"↴"
+        org-todo-keywords '((sequence "TODO" "PROG" "BLOK" "DONE"))
+        org-todo-keyword-faces
+        '(;;("PROG" . "yellow")
+          ("BLOK" . "IndianRed1"))
+        org-support-shift-select t
+        org-hide-emphasis-markers t
+        org-hide-leading-stars t
+
+        org-confirm-babel-evaluate nil
+        org-outline-path-complete-in-steps nil
+        org-completion-use-ido t
+        org-src-fontify-natively t
+        org-src-tab-acts-natively nil
+        org-babel-hash-show-time t
+        org-src-preserve-indentation nil
+
+        org-time-clocksum-format
         (quote
          (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((sh         . t)
+                                 (js         . t)
+                                 (emacs-lisp . t)
+                                 (perl       . t)
+                                 (scala      . t)
+                                 (clojure    . t)
+                                 (python     . t)
+                                 (ruby       . t)
+                                 (dot        . t)
+                                 ;;(R          . t)
+                                 (sql        . t)
+                                 (css        . t)))
+
+  ;; (defun sql-to-org-table ()
+  ;;   (interactive)
+  ;;   (mc/edit-lines)
+  ;;   (org-force-self-insert "|")
+  ;;   (multiple-cursors-mode))
+
   (set-face-attribute 'org-hide nil :foreground "DarkSlateGray")
   (set-face-attribute 'org-link nil :foreground "CornflowerBlue")
   (set-face-attribute 'org-link nil :underline t)
+  (font-lock-add-keywords
+   'org-mode `(("^\\*+ \\(TODO\\) " (1 (progn (compose-region (match-beginning 1) (match-end 1) "□") nil)))
+               ("^\\*+ \\(PROG\\) " (1 (progn (compose-region (match-beginning 1) (match-end 1) "▷") nil)))
+               ("^\\*+ \\(BLOK\\) " (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
+               ("^\\*+ \\(DONE\\) " (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
+  (let* ((ss/variable-font-tuple (list :font "Source Sans Pro"))
+         (ss/fixed-font-tuple    (list :font "Source Code Pro"))
+         (base-font-color        "grey65")
+         (background-color       (face-background 'default nil 'default))
+         (primary-color          (face-foreground 'mode-line nil))
+         (secondary-color        (face-background 'secondary-selection nil 'region))
+         (base-height            (face-attribute 'default :height))
+         (headline               `(:inherit default :weight semi-bold :foreground ,base-font-color)))
+
+    (custom-set-faces `(org-agenda-structure ((t (:inherit default :height 2.0 :underline nil))))
+                      `(org-verbatim ((t (:inherit 'fixed-pitched :foreground "#aef"))))
+                      `(org-table ((t (:inherit 'fixed-pitched))))
+                      `(org-block ((t (:inherit 'fixed-pitched))))
+                      `(org-block-background ((t (:inherit 'fixed-pitched))))
+                      `(org-block-begin-line ((t (:inherit 'fixed-pitched))))
+                      `(org-block-end-line ((t (:inherit 'fixed-pitched))))
+                      `(org-level-8 ((t (,@headline ,@ss/variable-font-tuple))))
+                      `(org-level-7 ((t (,@headline ,@ss/variable-font-tuple))))
+                      `(org-level-6 ((t (,@headline ,@ss/variable-font-tuple))))
+                      `(org-level-5 ((t (,@headline ,@ss/variable-font-tuple))))
+                      `(org-level-4 ((t (,@headline ,@ss/variable-font-tuple
+                                                    :height ,(round (* 1.1 base-height))))))
+                      `(org-level-3 ((t (,@headline ,@ss/variable-font-tuple
+                                                    :height ,(round (* 1.25 base-height))))))
+                      `(org-level-2 ((t (,@headline ,@ss/variable-font-tuple
+                                                    :height ,(round (* 1.5 base-height))))))
+                      `(org-level-1 ((t (,@headline ,@ss/variable-font-tuple
+                                                    :height ,(round (* 1.75 base-height))))))
+                      `(org-document-title ((t (,@headline ,@ss/variable-font-tuple :height 1.5 :underline nil))))))
+
   (custom-set-faces
-   '(org-clock-overlay ((t (:background "Black"))))
-   '(org-level-1 ((t (:inherit fixed-pitch :foreground "#cb4b16" :height 1.3))))
-   '(org-level-2 ((t (:inherit fixed-pitch :foreground "#859900" :height 1.2))))
-   '(org-level-3 ((t (:inherit fixed-pitch :foreground "#268bd2" :height 1.15))))
-   '(org-level-4 ((t (:inherit fixed-pitch :foreground "#b58900" :height 1.1))))
-   '(org-level-5 ((t (:inherit fixed-pitch :foreground "#2aa198"))))))
+   '(org-block-begin-line ((t (:foreground "#008ED1" :background "#002E41" :slant normal))))
+   '(org-block-background ((t (:background "grey10"))))
+   '(org-block ((t (:background "#grey10"))))
+   '(org-block-end-line ((t (:foreground "#008ED1" :background "#002E41"))))))
+
+(use-package org-bullets
+  :ensure t
+  :init
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package magit
   :ensure t
@@ -351,17 +437,19 @@
   :config
   (global-set-key (kbd "C-c C-g") 'magit-status)
 
-  (setq git-commit-fill-column 3000)
-  (setq git-commit-finish-query-functions nil)
-  (setq git-commit-summary-max-length 120)
+  (setq git-commit-fill-column 3000
+        git-commit-finish-query-functions nil
+        git-commit-summary-max-length 120)
 
   (custom-set-faces
    '(magit-blame-date ((t (:background "#404040" :foreground "#F2804F"))))
    '(magit-blame-heading ((t (:background "#404040" :foreground "#073642"))))
+   '(magit-diff-file-heading-highlight ((t (:background "#073642" :weight semi-bold))))
    '(magit-blame-name ((t (:inherit magit-blame-heading :background "#404040" :foreground "#F2804F"))))
    '(magit-blame-summary ((t (:background "#404040" :foreground "#F2804F" :weight bold))))
    '(magit-diff-hunk-heading ((t (:background "#009F00" :foreground "black"))))
-   '(magit-diff-hunk-heading-highlight ((t (:background "#5FFF5F" :foreground "black"))))))
+   '(magit-diff-hunk-heading-highlight ((t (:background "#5FFF5F" :foreground "black"))))
+   '(magit-popup-argument ((t (:foreground "white"))))))
 
 ;; ========================================
 ;; Navigation
@@ -400,11 +488,13 @@
   (add-hook 'scheme-mode-hook 'highlight-symbol-mode)
   (add-hook 'cider-repl-mode-hook 'highlight-symbol-mode)
   (add-hook 'clojure-mode-hook 'highlight-symbol-mode)
-  :config
   (global-set-key (kbd "C-,") 'highlight-symbol-prev)
+  (global-set-key (kbd "<f1> ,") 'highlight-symbol-prev)
   (global-set-key (kbd "C-.") 'highlight-symbol-next)
-  (set-face-attribute 'highlight-symbol-face nil :background "#9c7618")
-  (set-face-attribute 'highlight-symbol-face nil :foreground "gray100"))
+  (global-set-key (kbd "<f1> .") 'highlight-symbol-next)
+  :config
+  (custom-set-faces
+   '(highlight-symbol-face ((t (:foreground "gray100" :background "#9c7618" :weight semi-bold))))))
 
 (use-package windmove
   :init
@@ -444,12 +534,20 @@
     (interactive)
     (mc/edit-lines)))
 
+(use-package expand-region
+  :ensure t
+  :pin melpa-stable
+  :bind ("M-=" . er/expand-region))
+
 ;; bookmarks
 (use-package bm
   :ensure t
   :bind (("C-b" . bm-toggle)
-         ("<M-prior>" . bm-previous)
-         ("<M-next>" . bm-next)))
+         ("<s-up>" . bm-previous)
+         ("<s-down>" . bm-next))
+  :init
+  (custom-set-faces
+   '(bm-face ((t (:background "#007994"))))))
 
 (use-package tiling
   :config
@@ -477,6 +575,26 @@
   :bind (("M-g M-h" . open-github-from-here))
   :defer t
   :load-path "lisp/emacs-open-github-from-here")
+
+(use-package sql
+  :init
+  (setq sql-connection-alist
+        '((osio (sql-product 'postgres)
+                (sql-server "localhost")
+                (sql-user "osio_admin")
+                (sql-database "opensensors"))
+          (bsq (sql-product 'postgres)
+               (sql-server "localhost")
+               (sql-port 5430)
+               (sql-user "vittle")
+               (sql-database "bsq"))))
+
+  (defun sql-osio ()
+    (interactive)
+    (sql-connect 'osio))
+  (defun sql-bsq ()
+    (interactive)
+    (sql-connect 'bsq)))
 
 (use-package hydra
   :ensure t
@@ -624,18 +742,24 @@
 (global-set-key (kbd "C-0") (lambda () (interactive) (text-scale-increase 0)))
 
 (global-set-key (kbd "<f1> SPC") 'mark-sexp)
-(global-set-key (kbd "<f1> .") 'highlight-symbol-next)
-(global-set-key (kbd "<f1> ,") 'highlight-symbol-prev)
 
 (global-set-key (kbd "C-c ;") 'comment-or-uncomment-region)
 (global-set-key [f7] 'toggle-truncate-lines)
 (global-set-key (kbd "RET") 'newline-and-indent)
+
+(define-key lisp-interaction-mode-map (kbd "C-x M-e") 'eval-print-last-sexp)
 
 (defun refresh-file ()
   (interactive)
   (revert-buffer t t t))
 (global-set-key [f5] `refresh-file)
 (global-set-key [f6] `mark-whole-buffer)
+
+(defun date (arg)
+  (interactive "P")
+  (insert (if arg
+              (format-time-string "%d.%m.%Y")
+            (format-time-string "%Y-%m-%d"))))
 
 ;;super-slow-scroll
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))) ;; one two lines at a time
@@ -645,6 +769,7 @@
 (setq scroll-conservatively 10000)
 
 ;;misc-custom-vars
+(global-subword-mode 1)
 (setq frame-resize-pixelwise t)
 (setq inhibit-splash-screen t)
 (setq comment-empty-lines t)
@@ -652,9 +777,11 @@
 (setq make-backup-files nil) ;; no backups!
 (setq auto-save-default nil) ;; stop creating those #autosave# files
 (setq custom-file "~/.emacs.d/custom.el")
+(setq temporary-file-directory "/tmp") ;; necessary for tramp+babel
 ;;(load custom-file 'noerror)
 (column-number-mode t)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+(put 'narrow-to-region 'disabled nil)
 
 ;;spaces-instead-of-tabs
 (setq-default indent-tabs-mode nil)
