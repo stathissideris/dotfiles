@@ -60,7 +60,8 @@
   :pin melpa-stable
   :diminish (clojure-mode . "clj")
   :defines clojure-mode-map
-  :bind (("C-x t" . clojure-jump-to-test))
+  :bind (("C-x t" . clojure-jump-to-test)
+         ("C-c C-w" . cider-eval-last-sexp-and-replace))
   :mode (("\\.edn$" . clojure-mode))
   :config
   (defun ss/string-join (sep s)
@@ -73,10 +74,15 @@
       (lambda (x)
         (cond ((string-equal x "test") "src")
               ((string-equal x "src") "test")
-              ((string-match "\\(.+\\)_test\\.clj" x)
-               (concat (match-string 1 x) ".clj"))
-              ((string-match "\\(.+\\)\\.clj" x)
-               (concat (match-string 1 x) "_test.clj"))
+
+              ((string-equal x "src-cljs") "test-cljs")
+              ((string-equal x "test-cljs") "src-cljs")
+
+              ((string-match "\\(.+\\)_test\\.clj\\(.?\\)" x)
+               (concat (match-string 1 x) ".clj" (match-string 2 x)))
+              ((string-match "\\(.+\\)\\.clj\\(.?\\)" x)
+               (concat (match-string 1 x) "_test.clj" (match-string 2 x)))
+
               (t x)))
       (split-string path "/"))))
 
