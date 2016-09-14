@@ -92,7 +92,6 @@ If S is non-nil, it will be used as the quit reason."
   (erc-dcc-disable)
   (erc-ring-mode 1)
   (erc-completion-mode 1)
-  (erc-autojoin-disable)
   (erc-notify-enable)
   (setq-default erc-notify-list nil)
   (erc-track-enable)
