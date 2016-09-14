@@ -455,7 +455,8 @@
    '(magit-blame-summary ((t (:background "#404040" :foreground "#F2804F" :weight bold))))
    '(magit-diff-hunk-heading ((t (:background "#009F00" :foreground "black"))))
    '(magit-diff-hunk-heading-highlight ((t (:background "#5FFF5F" :foreground "black"))))
-   '(magit-popup-argument ((t (:foreground "white"))))))
+   '(magit-popup-argument ((t (:foreground "white"))))
+   '(smerge-refined-added ((t (:inherit smerge-refined-change :background "#227022"))))))
 
 ;; ========================================
 ;; Navigation
@@ -754,6 +755,60 @@
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 (define-key lisp-interaction-mode-map (kbd "C-x M-e") 'eval-print-last-sexp)
+
+(defun yank-without-moving ()
+  (interactive)
+  (let ((pos (point)))
+    (yank)
+    (set-window-point nil pos)))
+
+(global-set-key (kbd "s-y") 'yank-without-moving)
+
+;; special chars
+
+(defun euro ()
+  (interactive)
+  (insert "€"))
+
+(defun pound ()
+  (interactive)
+  (insert "£"))
+
+;; camelcase
+
+(defun un-camelcase-string (s &optional sep start)
+  "Convert CamelCase string S to lower case with word separator SEP.
+   Default for SEP is a hyphen \"-\".
+   If third argument START is non-nil, convert words after that
+   index in STRING."
+  (let ((case-fold-search nil))
+    (while (string-match "[A-Z]" s (or start 1))
+      (setq s (replace-match (concat (or sep "-")
+                                     (downcase (match-string 0 s)))
+                             t nil s)))
+    (downcase s)))
+
+(defun un-camelcase-region ()
+  (interactive)
+  (let ((s (buffer-substring (region-beginning) (region-end))))
+    (delete-region (region-beginning) (region-end))
+    (insert (un-camelcase-string s))))
+
+(defun un-camelcase-symbol ()
+  (interactive)
+  (save-excursion
+    (let ((s (format "%s" (symbol-at-point)))
+          (bounds (bounds-of-thing-at-point 'symbol)))
+      (let ((replacement (un-camelcase-string s)))
+        (when replacement
+          (delete-region (car bounds) (cdr bounds))
+          (insert replacement))))))
+
+(defun camel->kebab ()
+  (interactive)
+  (un-camelcase-region))
+
+;;
 
 (defun refresh-file ()
   (interactive)
