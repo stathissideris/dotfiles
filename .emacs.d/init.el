@@ -111,7 +111,8 @@
   :config
   (setq cljr-clojure-test-declaration "[clojure.test :refer :all]")
   (setq cljr-cljc-clojure-test-declaration
-        "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])"))
+        "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
+  (setq cljr-warn-on-eval nil))
 
 (use-package align-cljlet
   :ensure t
@@ -363,6 +364,9 @@
         org-src-tab-acts-natively nil
         org-babel-hash-show-time t
         org-src-preserve-indentation nil
+        org-startup-with-inline-images t
+
+        org-clock-display-default-range 'untilnow
 
         org-time-clocksum-format
         (quote
@@ -756,6 +760,9 @@
 
 (define-key lisp-interaction-mode-map (kbd "C-x M-e") 'eval-print-last-sexp)
 
+(global-unset-key (kbd "C-x C-d"))
+(global-unset-key (kbd "<f1> <f1>"))
+
 (defun yank-without-moving ()
   (interactive)
   (let ((pos (point)))
@@ -821,6 +828,18 @@
   (insert (if arg
               (format-time-string "%d.%m.%Y")
             (format-time-string "%Y-%m-%d"))))
+
+(defun new-scratch ()
+  "open up a guaranteed new scratch buffer"
+  (interactive)
+  (switch-to-buffer (loop for num from 0
+                          for name = (format "new-%03i" num)
+                          while (get-buffer name)
+                          finally return name)))
+
+;;shell stuff
+(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 ;;super-slow-scroll
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))) ;; one two lines at a time
