@@ -23,7 +23,7 @@
                    (clojure.pprint/pprint added)))]
   :test-refresh {;;:notify-command ["tmux" "display-message"]
                  :notify-on-success true}
-  :plugins [[cider/cider-nrepl "0.13.0"]
+  :plugins [[cider/cider-nrepl "0.14.0"]
             [lein-pprint "1.1.2"]
             [refactor-nrepl "2.2.0"]
             [lein-ancient "0.6.10"]
