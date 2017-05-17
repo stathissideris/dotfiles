@@ -337,12 +337,22 @@
   (ido-ubiquitous)
   (setq ido-enable-flex-matching t))
 
+(defun org-clocktable-try-shift-left ()
+  (interactive)
+  (org-clocktable-try-shift 'left 1))
+
+(defun org-clocktable-try-shift-right ()
+  (interactive)
+  (org-clocktable-try-shift 'right 1))
+
 (use-package org
   :ensure t
   :pin org
   :defer t
   :bind (("<S-insert>" . org-complete)
-         ("<S-return>" . org-insert-subheading))
+         ("<S-return>" . org-insert-subheading)
+         ("<S-left>" . org-clocktable-try-shift-left)
+         ("<S-right>" . org-clocktable-try-shift-right))
   :init
   (font-lock-add-keywords 'org-mode
                           '(("^ +\\([-*]\\) "
@@ -433,7 +443,9 @@
    '(org-block-begin-line ((t (:foreground "#008ED1" :background "#002E41" :slant normal))))
    '(org-block-background ((t (:background "grey10"))))
    '(org-block ((t (:background "#grey10"))))
-   '(org-block-end-line ((t (:foreground "#008ED1" :background "#002E41"))))))
+   '(org-block-end-line ((t (:foreground "#008ED1" :background "#002E41"))))
+   '(org-block-begin-line ((t (:foreground "#008ED1" :slant normal))))
+   '(org-block-end-line ((t (:foreground "#008ED1"))))))
 
 (use-package org-bullets
   :ensure t
@@ -757,6 +769,7 @@
 (global-set-key (kbd "C-c ;") 'comment-or-uncomment-region)
 (global-set-key [f7] 'toggle-truncate-lines)
 (global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (define-key lisp-interaction-mode-map (kbd "C-x M-e") 'eval-print-last-sexp)
 

@@ -26,6 +26,9 @@
 (set-face-attribute 'default nil :family "Monaco")
 (set-face-attribute 'default nil :height 120)
 (set-face-attribute 'fixed-pitch nil :family "Monaco")
+(set-face-attribute 'font-lock-builtin-face nil :weight 'semi-bold)
+(set-face-attribute 'font-lock-constant-face nil :weight 'semi-bold)
+(set-face-attribute 'font-lock-keyword-face nil :weight 'semi-bold)
 
 (global-set-key [kp-delete] 'paredit-forward-delete)
 (global-set-key [home] 'beginning-of-line)
