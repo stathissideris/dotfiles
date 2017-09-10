@@ -18,8 +18,6 @@
 (add-to-list 'package-archives
              '("org" . "http://orgmode.org/elpa/") t)
 
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-
 (package-initialize)
 
 (when (not package-archive-contents)
@@ -882,8 +880,9 @@
 ;; ========================================
 ;; Machine-specific config
 
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (if (string-equal system-type "darwin")
-    (require 'mac))
+    (require 'octavia))
 (if (string-equal system-name "MUCHA")
     (require 'mucha))
 (if (not window-system)
