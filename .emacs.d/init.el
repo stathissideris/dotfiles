@@ -9,8 +9,8 @@
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
-;; (add-to-list 'package-archives
-;;              '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
 
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
@@ -36,21 +36,6 @@
 ;; ERC config
 
 (require 'ss-erc)
-
-;; ========================================
-;; Machine-specific config
-
-(use-package mac
- :if (string-equal system-type "darwin")
- :load-path "lisp")
-
-(use-package mucha
-  :if (string-equal system-name "MUCHA")
-  :load-path "lisp")
-
-(use-package no-window
-  :if (not window-system)
-  :load-path "lisp")
 
 ;; ========================================
 ;; Modes
@@ -208,6 +193,7 @@
   :init
   (add-hook 'cider-mode-hook #'eldoc-mode)
   :config
+  (set-face-attribute 'cider-test-failure-face nil :background "#8c2020")
   (setq cider-prompt-for-symbol nil)
   (setq cider-repl-history-file "~/.emacs.d/cider-history")
   (setq cider-font-lock-dynamically '(macro core function var))
@@ -610,7 +596,12 @@
                (sql-server "localhost")
                (sql-port 5430)
                (sql-user "vittle")
-               (sql-database "bsq"))))
+               (sql-database "bsq"))
+          (bsq-sony (sql-product 'postgres)
+                    (sql-server "sony.ckq81l5ir0z5.eu-west-1.rds.amazonaws.com")
+                    (sql-port 5432)
+                    (sql-user "vittle")
+                    (sql-database "bsq"))))
 
   (defun sql-osio ()
     (interactive)
@@ -887,6 +878,16 @@
 (setq js-indent-level 2)
 (setq lua-indent-level 2)
 (setq css-indent-offset 2)
+
+;; ========================================
+;; Machine-specific config
+
+(if (string-equal system-type "darwin")
+    (require 'mac))
+(if (string-equal system-name "MUCHA")
+    (require 'mucha))
+(if (not window-system)
+    (require 'no-window))
 
 ;;custom-scratch-message
 (defun get-string-from-file (filePath)
