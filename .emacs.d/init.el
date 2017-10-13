@@ -33,7 +33,7 @@
 
 ;; ERC config
 
-(require 'ss-erc)
+;;(require 'ss-erc)
 
 ;; ========================================
 ;; Modes
@@ -47,6 +47,9 @@
          ("C-c C-w" . cider-eval-last-sexp-and-replace))
   :mode (("\\.edn$" . clojure-mode))
   :config
+  (custom-set-faces
+   '(font-lock-doc-face ((t (:foreground "dark slate gray" :slant normal)))))
+
   (defun ss/string-join (sep s)
     (mapconcat 'identity s sep))
 
@@ -361,12 +364,12 @@
         org-startup-with-inline-images t
 
         org-clock-display-default-range 'untilnow
+        org-clock-into-drawer nil
 
-        org-time-clocksum-format
-        (quote
-         (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
+        org-duration-format
+        '(setq org-duration-format '(("h" . t) ("min" . t))))
   (org-babel-do-load-languages 'org-babel-load-languages
-                               '((sh         . t)
+                               '((shell      . t)
                                  (js         . t)
                                  (emacs-lisp . t)
                                  (perl       . t)
