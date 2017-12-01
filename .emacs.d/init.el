@@ -1,6 +1,7 @@
 ;;early background to prevent white emacs blinding me
 (custom-set-faces
- '(default ((t (:background "#022b35")))))
+ '(default ((t (:background "#022b35"))))
+ '(bold ((t (:foreground "gold" :weight bold)))))
 
 ;; ========================================
 ;; package
@@ -31,9 +32,12 @@
 (require 'diminish)                ;; if you use :diminish
 (require 'bind-key)                ;; if you use any :bind variant
 
+(setenv "bsq" "/Volumes/work/bsq/")
+(setenv "osio" "~/devel/work/osio/")
+
 ;; ERC config
 
-;;(require 'ss-erc)
+(require 'ss-erc)
 
 ;; ========================================
 ;; Modes
@@ -278,6 +282,13 @@
       (goto-char p)
 
       (mark-sexp)
+      (indent-region (region-beginning) (region-end))
+
+      (mark-sexp)
+      (replace-not-in-strings (region-beginning) (region-end) "} {" "}\n{")
+      (goto-char p)
+
+      (mark-sexp)
       (indent-region (region-beginning) (region-end)))))
 
 (use-package projectile
@@ -366,8 +377,7 @@
         org-clock-display-default-range 'untilnow
         org-clock-into-drawer nil
 
-        org-duration-format
-        '(setq org-duration-format '(("h" . t) ("min" . t))))
+        org-duration-format '(("h" . t) ("min" . t)))
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((shell      . t)
                                  (js         . t)
@@ -502,7 +512,12 @@
   (global-set-key (kbd "<f1> ,") 'highlight-symbol-prev)
   (global-set-key (kbd "C-.") 'highlight-symbol-next)
   (global-set-key (kbd "<f1> .") 'highlight-symbol-next)
+  (defun highlight-symbol-count (&optional symbol)
+    "(Do not) Print the number of occurrences of symbol at point."
+    (interactive))
   :config
+  (setq highlight-symbol-idle-delay 1)
+  (setq highlight-symbol-on-navigation-p 't)
   (custom-set-faces
    '(highlight-symbol-face ((t (:foreground "gray100" :background "#9c7618" :weight semi-bold))))))
 
@@ -560,7 +575,7 @@
    '(bm-face ((t (:background "#007994"))))))
 
 (use-package tiling
-  :config
+  :init
   (global-set-key (kbd "C-\\") 'tiling-cycle))
 
 (use-package uniquify

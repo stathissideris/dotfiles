@@ -45,4 +45,21 @@
 
 (setq exec-path (append exec-path '("/usr/local/bin")))
 
+(defun clean-AS-result (str)
+  (substring str 1 -1))
+
+(defun onetab ()
+  "Inserts a list of Chrome tabs in buffer as an org bullet-point list"
+  (interactive)
+  (find-file "~/notes/tabs.org")
+  (beginning-of-buffer)
+  (insert "* Chrome tabs ")
+  (org-time-stamp '(16) t)
+  (insert "\n")
+  (insert
+   (clean-AS-result
+    (do-applescript
+     (get-string-from-file "~/.emacs.d/applescript/onetab-chrome.applescript"))))
+  (beginning-of-buffer))
+
 (provide 'octavia)
