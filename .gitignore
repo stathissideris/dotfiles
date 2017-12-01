@@ -4,6 +4,7 @@
 !.gitconfig
 !.emacs.d
 !.emacs.d/*
+!.emacs.d/applescript/*
 !.emacs.d/lisp/*
 !.tmux.conf
 !.lein
