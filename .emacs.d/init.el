@@ -45,12 +45,6 @@
 ;; ========================================
 ;; Modes
 
-(use-package hl-line-mode
-  :init
-  (global-hl-line-mode)
-  (set-face-attribute 'hl-line nil
-                      :background "#032830"))
-
 (use-package log4j-mode
   :ensure t
   :disabled t
@@ -75,33 +69,6 @@
                   (emacs-lisp-mode "\(" "\)" "#" nil nil)
                   (json-mode "{" "}" "/[*/]" nil)
                   (javascript-mode  "{" "}" "/[*/]" nil)))))
-
-(use-package powerline
-  :ensure t
-  :config
-  (powerline-default-theme)
-  (set-face-attribute 'mode-line nil
-                      :foreground "black"
-                      :background "tomato3"
-                      :box nil
-                      :overline nil
-                      :underline nil
-                      :height 1)
-  (set-face-attribute 'mode-line-inactive nil
-                      :overline nil
-                      :underline nil
-                      :foreground "#002b36"
-                      :background "tomato4"
-                      :height 1)
-  (set-face-attribute 'mode-line-buffer-id nil
-                      :foreground "black")
-  (set-face-attribute 'mode-line-buffer-id-inactive nil
-                      :foreground "#002b36")
-  (set-face-attribute 'powerline-active1 nil :background "grey10")
-  (set-face-attribute 'powerline-inactive1 nil :background "grey20")
-  (set-face-attribute 'powerline-inactive2 nil :background "grey25")
-  (setq powerline-default-separator 'utf-8)
-  (setq x-underline-at-descent-line t))
 
 (use-package clojure-mode
   :ensure t
@@ -838,8 +805,44 @@
       (tool-bar-mode -1)
       (set-default 'cursor-type 'bar)
       (set-cursor-color "yellow")
+      (set-face-foreground 'vertical-border "#1a1a1a")
+      (set-face-background 'vertical-border "#1a1a1a")
       (setq x-underline-at-descent-line t))
     (load-theme 'zenburn t)))
+
+(use-package powerline
+  :ensure t
+  :config
+  (powerline-default-theme)
+  (set-face-attribute 'mode-line nil
+                      :foreground "black"
+                      :background "#34503e"
+                      :box nil
+                      :overline nil
+                      :underline nil
+                      :height 1)
+  (set-face-attribute 'mode-line-inactive nil
+                      :overline nil
+                      :underline nil
+                      :foreground "black"
+                      :background "#282828"
+                      :height 1)
+  (set-face-attribute 'mode-line-buffer-id nil
+                      :foreground "black")
+  (set-face-attribute 'mode-line-buffer-id-inactive nil
+                      :foreground "black")
+  (set-face-attribute 'powerline-active1 nil :background "#1a1a1a" :foreground "#667b7c")
+  (set-face-attribute 'powerline-active2 nil :background "#0a3641" :foreground "#647b7c")
+  (set-face-attribute 'powerline-inactive1 nil :background "#0f0f0f" :foreground "#494949")
+  (set-face-attribute 'powerline-inactive2 nil :background "#161616" :foreground "#444444")
+  (setq powerline-default-separator 'utf-8)
+  (setq x-underline-at-descent-line t))
+
+(use-package hl-line-mode
+  :init
+  (global-hl-line-mode)
+  (set-face-attribute 'hl-line nil
+                      :background "#032830"))
 
 ;; ========================================
 ;; Misc
