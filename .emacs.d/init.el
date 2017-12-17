@@ -803,8 +803,8 @@
       (load-theme 'solarized-dark t)
       (scroll-bar-mode -1)
       (tool-bar-mode -1)
-      (set-default 'cursor-type 'bar)
-      (set-cursor-color "yellow")
+      ;;(set-default 'cursor-type 'bar)
+      (set-cursor-color "#6ab889")
       (set-face-foreground 'vertical-border "#1a1a1a")
       (set-face-background 'vertical-border "#1a1a1a")
       (setq x-underline-at-descent-line t))
@@ -812,7 +812,7 @@
 
 (use-package powerline
   :ensure t
-  :config
+  :init
   (powerline-default-theme)
   (set-face-attribute 'mode-line nil
                       :foreground "black"
@@ -827,6 +827,7 @@
                       :foreground "black"
                       :background "#282828"
                       :height 1)
+  :config
   (set-face-attribute 'mode-line-buffer-id nil
                       :foreground "black")
   (set-face-attribute 'mode-line-buffer-id-inactive nil
@@ -835,8 +836,7 @@
   (set-face-attribute 'powerline-active2 nil :background "#0a3641" :foreground "#647b7c")
   (set-face-attribute 'powerline-inactive1 nil :background "#0f0f0f" :foreground "#494949")
   (set-face-attribute 'powerline-inactive2 nil :background "#161616" :foreground "#444444")
-  (setq powerline-default-separator 'utf-8)
-  (setq x-underline-at-descent-line t))
+  (setq powerline-default-separator 'utf-8))
 
 (use-package hl-line-mode
   :init
