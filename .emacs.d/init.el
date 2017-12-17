@@ -19,6 +19,9 @@
 (add-to-list 'package-archives
              '("org" . "http://orgmode.org/elpa/") t)
 
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
 (package-initialize)
 
 (when (not package-archive-contents)
@@ -37,10 +40,68 @@
 
 ;; ERC config
 
-(require 'ss-erc)
+;;(require 'ss-erc)
 
 ;; ========================================
 ;; Modes
+
+(use-package hl-line-mode
+  :init
+  (global-hl-line-mode)
+  (set-face-attribute 'hl-line nil
+                      :background "#032830"))
+
+(use-package log4j-mode
+  :ensure t
+  :disabled t
+  :init
+  (add-hook #'log4j-mode-hook #'view-mode)
+  (add-hook #'log4j-mode-hook #'read-only-mode))
+
+(use-package hideshow
+  :bind (("C-c TAB" . hs-toggle-hiding)
+         ("C-\\" . hs-toggle-hiding)
+         ("M-+" . hs-show-all))
+  :init (add-hook #'prog-mode-hook #'hs-minor-mode)
+  :diminish hs-minor-mode
+  :config
+  (setq hs-special-modes-alist
+        (mapcar 'purecopy
+                '((c-mode "{" "}" "/[*/]" nil nil)
+                  (c++-mode "{" "}" "/[*/]" nil nil)
+                  (java-mode "{" "}" "/[*/]" nil nil)
+                  (js-mode "{" "}" "/[*/]" nil)
+                  (clojure-mode "[\(\[{]" "[\)\]}]" "#" nil nil)
+                  (emacs-lisp-mode "\(" "\)" "#" nil nil)
+                  (json-mode "{" "}" "/[*/]" nil)
+                  (javascript-mode  "{" "}" "/[*/]" nil)))))
+
+(use-package powerline
+  :ensure t
+  :config
+  (powerline-default-theme)
+  (set-face-attribute 'mode-line nil
+                      :foreground "black"
+                      :background "tomato3"
+                      :box nil
+                      :overline nil
+                      :underline nil
+                      :height 1)
+  (set-face-attribute 'mode-line-inactive nil
+                      :overline nil
+                      :underline nil
+                      :foreground "#002b36"
+                      :background "tomato4"
+                      :height 1)
+  (set-face-attribute 'mode-line-buffer-id nil
+                      :foreground "black")
+  (set-face-attribute 'mode-line-buffer-id-inactive nil
+                      :foreground "#002b36")
+  (set-face-attribute 'powerline-active1 nil :background "grey10")
+  (set-face-attribute 'powerline-inactive1 nil :background "grey20")
+  (set-face-attribute 'powerline-inactive2 nil :background "grey25")
+  (setq powerline-default-separator 'utf-8)
+  (setq x-underline-at-descent-line t))
 
 (use-package clojure-mode
   :ensure t
@@ -48,7 +109,8 @@
   :diminish (clojure-mode . "clj")
   :defines clojure-mode-map
   :bind (("C-x t" . clojure-jump-to-test)
-         ("C-c C-w" . cider-eval-last-sexp-and-replace))
+         ("C-c C-w" . cider-eval-last-sexp-and-replace)
+         ("C-c M-e" . cider-eval-print-last-sexp))
   :mode (("\\.edn$" . clojure-mode))
   :config
   (custom-set-faces
@@ -90,6 +152,19 @@
 		(template
 		 (quote defun)))))))
 
+(use-package clj-refactor
+  :ensure t
+  :pin melpa-stable
+  :diminish clj-refactor-mode
+  :init
+  (add-hook 'clojure-mode-hook (lambda ()
+                                 (clj-refactor-mode 1)
+                                 (cljr-add-keybindings-with-prefix "C-c C-v")))
+  :config
+  (setq cljr-clojure-test-declaration "[clojure.test :refer :all]")
+  (setq cljr-cljc-clojure-test-declaration
+        "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
+  (setq cljr-warn-on-eval nil))
 (use-package clj-refactor
   :ensure t
   :pin melpa-stable
@@ -350,12 +425,15 @@
   :bind (("<S-insert>" . org-complete)
          ("<S-return>" . org-insert-subheading)
          ("<S-left>" . org-clocktable-try-shift-left)
-         ("<S-right>" . org-clocktable-try-shift-right))
+         ("<S-right>" . org-clocktable-try-shift-right)
+         ("<f12>" . org-tree-slide-mode)
+         ("<S-f12>" . org-tree-slide-skip-done-toggle))
   :init
   (font-lock-add-keywords 'org-mode
                           '(("^ +\\([-*]\\) "
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
   :config
+  (org-tree-slide-simple-profile)
   (setq org-ellipsis "…" ;;"↴"
         org-todo-keywords '((sequence "TODO" "PROG" "BLOK" "DONE"))
         org-todo-keyword-faces
@@ -376,8 +454,9 @@
 
         org-clock-display-default-range 'untilnow
         org-clock-into-drawer nil
+        org-duration-format '(("h" . t) ("min" . t))
 
-        org-duration-format '(("h" . t) ("min" . t)))
+        org-image-actual-width nil)
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((shell      . t)
                                  (js         . t)
@@ -420,8 +499,8 @@
                       `(org-table ((t (:inherit 'fixed-pitched))))
                       `(org-block ((t (:inherit 'fixed-pitched))))
                       `(org-block-background ((t (:inherit 'fixed-pitched))))
-                      `(org-block-begin-line ((t (:inherit 'fixed-pitched))))
-                      `(org-block-end-line ((t (:inherit 'fixed-pitched))))
+                      `(org-block-begin-line ((t (:background "gray15" :foreground "gray22" :slant normal))))
+                      `(org-block-end-line ((t (:background "gray15" :foreground "gray22" :slant normal))))
                       `(org-level-8 ((t (,@headline ,@ss/variable-font-tuple))))
                       `(org-level-7 ((t (,@headline ,@ss/variable-font-tuple))))
                       `(org-level-6 ((t (,@headline ,@ss/variable-font-tuple))))
@@ -434,15 +513,13 @@
                                                     :height ,(round (* 1.5 base-height))))))
                       `(org-level-1 ((t (,@headline ,@ss/variable-font-tuple
                                                     :height ,(round (* 1.75 base-height))))))
-                      `(org-document-title ((t (,@headline ,@ss/variable-font-tuple :height 1.5 :underline nil))))))
+                      `(org-document-title ((t (,@headline ,@ss/variable-font-tuple :height 1.5 :underline nil)))))))
 
-  (custom-set-faces
-   '(org-block-begin-line ((t (:foreground "#008ED1" :background "#002E41" :slant normal))))
-   '(org-block-background ((t (:background "grey10"))))
-   '(org-block ((t (:background "#grey10"))))
-   '(org-block-end-line ((t (:foreground "#008ED1" :background "#002E41"))))
-   '(org-block-begin-line ((t (:foreground "#008ED1" :slant normal))))
-   '(org-block-end-line ((t (:foreground "#008ED1"))))))
+(use-package org-page
+  :ensure t
+  :init
+  (setq op/repository-directory ""
+        op/site-domain "http://your.personal.site.com/"))
 
 (use-package org-bullets
   :ensure t
@@ -574,9 +651,10 @@
   (custom-set-faces
    '(bm-face ((t (:background "#007994"))))))
 
-(use-package tiling
-  :init
-  (global-set-key (kbd "C-\\") 'tiling-cycle))
+;; (use-package tiling
+;;   :ensure t
+;;   :init
+;;   (global-set-key (kbd "C-\\") 'tiling-cycle))
 
 (use-package uniquify
   :config
