@@ -17,7 +17,8 @@
   (setq mac-command-key-is-meta nil)
   (setq mac-option-modifier 'meta))
 
-(setq inferior-lisp-program "/Users/sideris/devel-tools/ccl/dx86cl64")
+;;(setq inferior-lisp-program "/Users/sideris/devel-tools/ccl/dx86cl64")
+(setq inferior-lisp-program "sbcl")
 (global-set-key [f8] `(lambda () (interactive) (find-file "/Users/sideris/notes/notes.org")))
 
 ;;for debugging:
@@ -30,6 +31,13 @@
 (set-face-attribute 'font-lock-constant-face nil :weight 'semi-bold)
 (set-face-attribute 'font-lock-keyword-face nil :weight 'semi-bold)
 
+;;typeset 'Greek and Coptic' unicode block using Menlo font
+(set-fontset-font
+ "fontset-default"
+ (cons (decode-char 'ucs #x0370)
+       (decode-char 'ucs #x03FF))
+ "Menlo")
+
 (global-set-key [kp-delete] 'paredit-forward-delete)
 (global-set-key [home] 'beginning-of-line)
 (global-set-key [end] 'end-of-line)
@@ -37,7 +45,8 @@
 (defun finder ()
   "Opens file directory in Finder."
   (interactive)
-  (let ((file (buffer-file-name)))
+  (let ((file (or (buffer-file-name)
+                  (expand-file-name dired-directory))))
     (if file
         (shell-command
          (format "%s %s" (executable-find "open") (file-name-directory file)))

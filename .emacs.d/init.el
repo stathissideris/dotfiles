@@ -40,7 +40,8 @@
 
 ;; ERC config
 
-;;(require 'ss-erc)
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(require 'ss-erc)
 
 ;; ========================================
 ;; Modes
@@ -256,7 +257,7 @@
   (bind-key "C-c M-o" 'cider-repl-clear-buffer cider-repl-mode-map)
 
   (setq clojure-quick-sexp
-        '("(user/refresh)"
+        '("(dev/refresh)"
           "(use 'clojure.repl)"
           "(use 'clojure.tools.trace)"
           "(use 'clojure.pprint)"
@@ -398,9 +399,32 @@
   :init
   (font-lock-add-keywords 'org-mode
                           '(("^ +\\([-*]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "→"))))))
   :config
   (org-tree-slide-simple-profile)
+
+  (defvar yt-iframe-format
+    ;; You may want to change your width and height.
+    (concat "<iframe width=\"440\""
+            " height=\"335\""
+            " src=\"https://www.youtube.com/embed/%s\""
+            " frameborder=\"0\""
+            " allowfullscreen>%s</iframe>"))
+
+  (org-add-link-type
+   "yt"
+   (lambda (handle)
+     (browse-url
+      (concat "https://www.youtube.com/embed/"
+              handle)))
+   (lambda (path desc backend)
+     (cl-case backend
+       (html (format yt-iframe-format
+                     path (or desc "")))
+       (latex (format "\href{%s}{%s}"
+                      path (or desc "video"))))))
+
+
   (setq org-ellipsis "…" ;;"↴"
         org-todo-keywords '((sequence "TODO" "PROG" "BLOK" "DONE"))
         org-todo-keyword-faces
@@ -423,7 +447,11 @@
         org-clock-into-drawer nil
         org-duration-format '(("h" . t) ("min" . t))
 
-        org-image-actual-width nil)
+        org-export-babel-evaluate nil
+
+        org-image-actual-width nil
+
+        org-html-htmlize-output-type 'css)
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((shell      . t)
                                  (js         . t)
@@ -449,11 +477,11 @@
   (set-face-attribute 'org-link nil :underline t)
   (font-lock-add-keywords
    'org-mode `(("^\\*+ \\(TODO\\) " (1 (progn (compose-region (match-beginning 1) (match-end 1) "□") nil)))
-               ("^\\*+ \\(PROG\\) " (1 (progn (compose-region (match-beginning 1) (match-end 1) "▷") nil)))
+               ("^\\*+ \\(PROG\\) " (1 (progn (compose-region (match-beginning 1) (match-end 1) "▶") nil)))
                ("^\\*+ \\(BLOK\\) " (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘") nil)))
                ("^\\*+ \\(DONE\\) " (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔") nil)))))
-  (let* ((ss/variable-font-tuple (list :font "Source Sans Pro"))
-         (ss/fixed-font-tuple    (list :font "Source Code Pro"))
+  (let* ((ss/variable-font-tuple (list :font "Monaco"))
+         (ss/fixed-font-tuple    (list :font "Monaco" :height 1.0))
          (base-font-color        "grey65")
          (background-color       (face-background 'default nil 'default))
          (primary-color          (face-foreground 'mode-line nil))
@@ -468,29 +496,31 @@
                       `(org-block-background ((t (:inherit 'fixed-pitched))))
                       `(org-block-begin-line ((t (:background "gray15" :foreground "gray22" :slant normal))))
                       `(org-block-end-line ((t (:background "gray15" :foreground "gray22" :slant normal))))
-                      `(org-level-8 ((t (,@headline ,@ss/variable-font-tuple))))
-                      `(org-level-7 ((t (,@headline ,@ss/variable-font-tuple))))
-                      `(org-level-6 ((t (,@headline ,@ss/variable-font-tuple))))
-                      `(org-level-5 ((t (,@headline ,@ss/variable-font-tuple))))
-                      `(org-level-4 ((t (,@headline ,@ss/variable-font-tuple
-                                                    :height ,(round (* 1.1 base-height))))))
-                      `(org-level-3 ((t (,@headline ,@ss/variable-font-tuple
-                                                    :height ,(round (* 1.25 base-height))))))
-                      `(org-level-2 ((t (,@headline ,@ss/variable-font-tuple
-                                                    :height ,(round (* 1.5 base-height))))))
-                      `(org-level-1 ((t (,@headline ,@ss/variable-font-tuple
-                                                    :height ,(round (* 1.75 base-height))))))
+
+                      ;;levels
+                      `(org-level-8 ((t (,@headline ,@ss/fixed-font-tuple))))
+                      `(org-level-7 ((t (,@headline ,@ss/fixed-font-tuple))))
+                      `(org-level-6 ((t (,@headline ,@ss/fixed-font-tuple))))
+                      `(org-level-5 ((t (,@headline ,@ss/fixed-font-tuple))))
+                      `(org-level-4 ((t (,@headline ,@ss/fixed-font-tuple))))
+                      `(org-level-3 ((t (,@headline ,@ss/fixed-font-tuple))))
+                      `(org-level-2 ((t (,@headline ,@ss/fixed-font-tuple))))
+                      `(org-level-1 ((t (,@headline ,@ss/fixed-font-tuple))))
+
                       `(org-document-title ((t (,@headline ,@ss/variable-font-tuple :height 1.5 :underline nil)))))))
 
 (use-package org-page
   :ensure t
   :init
-  (setq op/repository-directory ""
-        op/site-domain "http://your.personal.site.com/"))
+  (setq op/repository-directory "/Users/sideris/devel/work/www.pixelated-noise.com/"
+        op/site-domain "http://www.pixelated-noise.com/"
+        op/repository-org-branch "blog-source"
+        op/repository-html-branch "gh-pages"))
 
 (use-package org-bullets
   :ensure t
   :init
+  (setq org-bullets-bullet-list '("●"))
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package magit
@@ -618,10 +648,9 @@
   (custom-set-faces
    '(bm-face ((t (:background "#007994"))))))
 
-;; (use-package tiling
-;;   :ensure t
-;;   :init
-;;   (global-set-key (kbd "C-\\") 'tiling-cycle))
+(use-package tiling
+  :init
+  (global-set-key (kbd "C-\\") 'tiling-cycle))
 
 (use-package uniquify
   :config
@@ -653,23 +682,21 @@
                 (sql-server "localhost")
                 (sql-user "osio_admin")
                 (sql-database "opensensors"))
+          (bsq-local (sql-product 'postgres)
+                     (sql-server "localhost")
+                     (sql-port 5430)
+                     (sql-user "vittle")
+                     (sql-database "bsq")
+                     (sql-password "CL3ar--4n4lus1s@#"))
           (bsq (sql-product 'postgres)
-               (sql-server "localhost")
-               (sql-port 5430)
+               (sql-port 5432)
                (sql-user "vittle")
                (sql-database "bsq"))
-          (bsq-sony (sql-product 'postgres)
-                    (sql-server "sony.ckq81l5ir0z5.eu-west-1.rds.amazonaws.com")
-                    (sql-port 5432)
-                    (sql-user "vittle")
-                    (sql-database "bsq"))))
-
-  (defun sql-osio ()
-    (interactive)
-    (sql-connect 'osio))
-  (defun sql-bsq ()
-    (interactive)
-    (sql-connect 'bsq)))
+          (bsq-personal (sql-product 'postgres)
+                        (sql-port 5432)
+                        (sql-user "stathis")
+                        (sql-database "bsq"))))
+  )
 
 (use-package hydra
   :ensure t
@@ -804,9 +831,9 @@
       (scroll-bar-mode -1)
       (tool-bar-mode -1)
       ;;(set-default 'cursor-type 'bar)
-      (set-cursor-color "#6ab889")
-      (set-face-foreground 'vertical-border "#1a1a1a")
-      (set-face-background 'vertical-border "#1a1a1a")
+      (set-cursor-color "#e3e2d6")
+      (set-face-foreground 'vertical-border "black")
+      (set-face-background 'vertical-border "black")
       (setq x-underline-at-descent-line t))
     (load-theme 'zenburn t)))
 
@@ -815,7 +842,7 @@
   :init
   (powerline-default-theme)
   (set-face-attribute 'mode-line nil
-                      :foreground "black"
+                      :foreground "grey"
                       :background "#34503e"
                       :box nil
                       :overline nil
@@ -824,14 +851,14 @@
   (set-face-attribute 'mode-line-inactive nil
                       :overline nil
                       :underline nil
-                      :foreground "black"
+                      :foreground "grey50"
                       :background "#282828"
                       :height 1)
   :config
   (set-face-attribute 'mode-line-buffer-id nil
-                      :foreground "black")
+                      :foreground "grey")
   (set-face-attribute 'mode-line-buffer-id-inactive nil
-                      :foreground "black")
+                      :foreground "grey50")
   (set-face-attribute 'powerline-active1 nil :background "#1a1a1a" :foreground "#667b7c")
   (set-face-attribute 'powerline-active2 nil :background "#0a3641" :foreground "#647b7c")
   (set-face-attribute 'powerline-inactive1 nil :background "#0f0f0f" :foreground "#494949")
@@ -846,6 +873,8 @@
 
 ;; ========================================
 ;; Misc
+
+(require 'simple-copy)
 
 ;;global-custom-keys
 (global-set-key (kbd "C-=") (lambda () (interactive) (text-scale-increase 0.5)))
@@ -976,10 +1005,24 @@
 (setq lua-indent-level 2)
 (setq css-indent-offset 2)
 
+;;greek support
+(setq default-input-method "greek")
+
+;;"Edit with Emacs" chrome plugin
+(require 'edit-server)
+(setq edit-server-new-frame nil)
+(edit-server-start)
+(require 'edit-server-htmlize)
+(autoload 'edit-server-maybe-dehtmlize-buffer "edit-server-htmlize" "edit-server-htmlize" t)
+(autoload 'edit-server-maybe-htmlize-buffer   "edit-server-htmlize" "edit-server-htmlize" t)
+(add-hook 'edit-server-start-hook 'edit-server-maybe-dehtmlize-buffer)
+(add-hook 'edit-server-done-hook  'edit-server-maybe-htmlize-buffer)
+
 ;; ========================================
 ;; Machine-specific config
 
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(if (string-equal system-type "darwin")
+    (require 'octavia))
 (if (string-equal system-type "darwin")
     (require 'octavia))
 (if (string-equal system-name "MUCHA")
@@ -994,3 +1037,12 @@
     (insert-file-contents filePath)
     (buffer-string)))
 (setq initial-scratch-message (get-string-from-file "~/.emacs.d/logo"))
+
+
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+
+(defun eshell/clear ()
+  "Clear the eshell buffer."
+  (let ((inhibit-read-only t))
+    (erase-buffer)
+    (eshell-send-input)))
