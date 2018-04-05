@@ -77,6 +77,12 @@
                   (json-mode "{" "}" "/[*/]" nil)
                   (javascript-mode  "{" "}" "/[*/]" nil)))))
 
+(use-package emacs-lisp-mode
+  :config
+  (add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (setq mode-name "elisp"))))
+
 (use-package clojure-mode
   :ensure t
   :pin melpa-stable
@@ -87,6 +93,10 @@
          ("C-c M-e" . cider-eval-print-last-sexp))
   :mode (("\\.edn$" . clojure-mode))
   :config
+  (add-hook 'clojure-mode-hook
+          (lambda ()
+            (setq mode-name "λ")))
+
   (custom-set-faces
    '(font-lock-doc-face ((t (:foreground "dark slate gray" :slant normal)))))
 
@@ -151,7 +161,7 @@
 (use-package paredit
   :ensure t
   :pin melpa-stable
-  :diminish (paredit-mode . "Ⓟ")
+  :diminish (paredit-mode . " Ⓟ")
   :bind (("C-d" . duplicate-sexp)
          ("M-{" . paredit-wrap-curly)
          ("M-[" . paredit-wrap-square)
@@ -227,7 +237,7 @@
 (use-package cider
   :ensure t
   :defer t
-  :diminish (cider-mode . "🍺")
+  :diminish (cider-mode . " 🍺")
   :pin melpa-stable
   :bind (("C-c M-o" . cider-repl-clear-buffer)
          ("<f2>" . clojure-quick-eval)
@@ -843,6 +853,9 @@
   (let* ((available-width (- (window-width) (length left) 2)))
     (format (format " %%s %%%ds " available-width) left right)))
 
+(defun remove-vowels (string)
+  (replace-regexp-in-string "a\\|e\\|i\\|o\\|u\\|" "" string))
+
 (use-package all-the-icons
   :demand
   :init
@@ -874,8 +887,8 @@
                              mode-line-frame-identification
                              mode-line-buffer-identification
                              " (%I) "
-                             "proj:"
-                             '(:eval (projectile-project-name))))
+                             "prj:"
+                             '(:eval (remove-vowels (projectile-project-name)))))
                            (format-mode-line
                             (list
                              mode-line-modes
@@ -1043,7 +1056,10 @@
 (setq scroll-conservatively 10000)
 
 ;;misc-custom-vars
-(global-subword-mode 1)
+
+;;global-subword-mode is nice but it adds an annoying comma to modeline
+;;(global-subword-mode 1)
+
 (setq frame-resize-pixelwise t)
 (setq inhibit-splash-screen t)
 (setq comment-empty-lines t)
