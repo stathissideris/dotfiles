@@ -46,6 +46,10 @@
 ;; ========================================
 ;; Modes
 
+(use-package all-the-icons
+  :ensure t)
+;;then run (all-the-icons-install-fonts) once
+
 (use-package log4j-mode
   :ensure t
   :disabled t
@@ -392,6 +396,7 @@
   :defer t
   :bind (("<S-insert>" . org-complete)
          ("<S-return>" . org-insert-subheading)
+         ("<s-return>" . org-insert-subheading)
          ("<S-left>" . org-clocktable-try-shift-left)
          ("<S-right>" . org-clocktable-try-shift-right)
          ("<f12>" . org-tree-slide-mode)
@@ -487,7 +492,7 @@
          (primary-color          (face-foreground 'mode-line nil))
          (secondary-color        (face-background 'secondary-selection nil 'region))
          (base-height            (face-attribute 'default :height))
-         (headline               `(:inherit default :weight semi-bold :foreground ,base-font-color)))
+         (headline               `(:inherit default :weight regular :foreground ,base-font-color)))
 
     (custom-set-faces `(org-agenda-structure ((t (:inherit default :height 2.0 :underline nil))))
                       `(org-verbatim ((t (:inherit 'fixed-pitched :foreground "#aef"))))
@@ -819,51 +824,116 @@
 ;; ========================================
 ;; Colors and looks
 
-(use-package zenburn-theme
-  :ensure t)
-
-(use-package solarized-theme
+(use-package doom-themes
   :ensure t
   :config
+  (require 'doom-themes)
+  (load-theme 'doom-one t)
   (if window-system
     (progn
-      (load-theme 'solarized-dark t)
+      (load-theme 'doom-one t)
+      ;; (load-theme 'solarized-dark t)
       (scroll-bar-mode -1)
       (tool-bar-mode -1)
-      ;;(set-default 'cursor-type 'bar)
-      (set-cursor-color "#e3e2d6")
-      (set-face-foreground 'vertical-border "black")
-      (set-face-background 'vertical-border "black")
-      (setq x-underline-at-descent-line t))
-    (load-theme 'zenburn t)))
+      ;;(fringe-mode '(8 . 8))
+      ;; ;;(set-default 'cursor-type 'bar)
+      ;; (set-cursor-color "#e3e2d6")
+      ;;(set-face-foreground 'vertical-border "black")
+      ;;(set-face-background 'vertical-border "black")
+      ;;(setq x-underline-at-descent-line t)
+      )
+    (load-theme 'zenburn t))
+  (doom-themes-neotree-config)
+  (doom-themes-org-config))
 
-(use-package powerline
-  :ensure t
+(defun justified-mode-line (left right)
+  "Return a string of `window-width' length containing LEFT, and RIGHT
+ aligned respectively."
+  (let* ((available-width (- (window-width) (length left) 2)))
+    (format (format " %%s %%%ds " available-width) left right)))
+
+(use-package all-the-icons
+  :demand
   :init
-  (powerline-default-theme)
-  (set-face-attribute 'mode-line nil
-                      :foreground "grey"
-                      :background "#34503e"
-                      :box nil
-                      :overline nil
-                      :underline nil
-                      :height 1)
-  (set-face-attribute 'mode-line-inactive nil
-                      :overline nil
-                      :underline nil
-                      :foreground "grey50"
-                      :background "#282828"
-                      :height 1)
+  (progn (defun -custom-modeline-github-vc ()
+           (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
+             (concat
+              (propertize (format "%s" (all-the-icons-octicon "git-branch"))
+                          'face `(:height 1 :family ,(all-the-icons-octicon-family))
+                          'display '(raise 0))
+              (propertize (format " %s" branch)))))
+
+         (defvar mode-line-my-vc
+           '(:propertize
+             (:eval (when vc-mode
+                      (cond
+                       ((string-match "Git[:-]" vc-mode) (-custom-modeline-github-vc))
+                       (t (format "%s" vc-mode)))))
+             face mode-line-directory)
+           "Formats the current directory."))
   :config
-  (set-face-attribute 'mode-line-buffer-id nil
-                      :foreground "grey")
-  (set-face-attribute 'mode-line-buffer-id-inactive nil
-                      :foreground "grey50")
-  (set-face-attribute 'powerline-active1 nil :background "#1a1a1a" :foreground "#667b7c")
-  (set-face-attribute 'powerline-active2 nil :background "#0a3641" :foreground "#647b7c")
-  (set-face-attribute 'powerline-inactive1 nil :background "#0f0f0f" :foreground "#494949")
-  (set-face-attribute 'powerline-inactive2 nil :background "#161616" :foreground "#444444")
-  (setq powerline-default-separator 'utf-8))
+  (progn (setq-default mode-line-format
+                       '((:eval
+                          (justified-mode-line
+                           (format-mode-line
+                            (list
+                             ""
+                             mode-line-mule-info
+                             mode-line-modified
+                             mode-line-frame-identification
+                             mode-line-buffer-identification
+                             "(%I)"))
+                           (format-mode-line
+                            (list
+                             mode-line-modes
+                             "  "
+                             mode-line-my-vc
+                             "   "
+                             "☰ %l ‖ %c "))))))))
+
+(set-face-attribute 'mode-line nil
+                    :box '(:line-width 5 :color "#1c1e24")
+                    :overline nil
+                    :underline nil)
+
+(set-face-attribute 'mode-line-inactive nil
+                    :box '(:line-width 5 :color "#1d2026")
+                    :overline nil
+                    :underline nil)
+
+;; (use-package zenburn-theme
+;;   :ensure t)
+
+;; (use-package solarized-theme
+;;   :ensure t)
+
+;; (use-package powerline
+;;   :ensure t
+;;   :init
+;;   (powerline-default-theme)
+;;   (set-face-attribute 'mode-line nil
+;;                       :foreground "grey"
+;;                       :background "#34503e"
+;;                       :box nil
+;;                       :overline nil
+;;                       :underline nil
+;;                       :height 1)
+;;   (set-face-attribute 'mode-line-inactive nil
+;;                       :overline nil
+;;                       :underline nil
+;;                       :foreground "grey50"
+;;                       :background "#282828"
+;;                       :height 1)
+;;   :config
+;;   (set-face-attribute 'mode-line-buffer-id nil
+;;                       :foreground "grey")
+;;   (set-face-attribute 'mode-line-buffer-id-inactive nil
+;;                       :foreground "grey50")
+;;   (set-face-attribute 'powerline-active1 nil :background "#1a1a1a" :foreground "#667b7c")
+;;   (set-face-attribute 'powerline-active2 nil :background "#0a3641" :foreground "#647b7c")
+;;   (set-face-attribute 'powerline-inactive1 nil :background "#0f0f0f" :foreground "#494949")
+;;   (set-face-attribute 'powerline-inactive2 nil :background "#161616" :foreground "#444444")
+;;   (setq powerline-default-separator 'utf-8))
 
 (use-package hl-line-mode
   :init
@@ -1007,6 +1077,7 @@
 
 ;;greek support
 (setq default-input-method "greek")
+(global-set-key (kbd "s-\\") 'toggle-input-method)
 
 ;;"Edit with Emacs" chrome plugin
 (require 'edit-server)
@@ -1029,6 +1100,8 @@
     (require 'mucha))
 (if (not window-system)
     (require 'no-window))
+
+(setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
 
 ;;custom-scratch-message
 (defun get-string-from-file (filePath)
