@@ -78,7 +78,7 @@
                   (javascript-mode  "{" "}" "/[*/]" nil)))))
 
 (use-package emacs-lisp-mode
-  :config
+  :init
   (add-hook 'emacs-lisp-mode-hook
           (lambda ()
             (setq mode-name "elisp"))))
@@ -853,6 +853,10 @@
   (let* ((available-width (- (window-width) (length left) 2)))
     (format (format " %%s %%%ds " available-width) left right)))
 
+;;title bar
+(setq frame-title-format "%f (%m) %n")
+(setq ns-use-proxy-icon nil)
+
 (defun remove-vowels (string)
   (replace-regexp-in-string "a\\|e\\|i\\|o\\|u\\|" "" string))
 
@@ -888,7 +892,10 @@
                              mode-line-buffer-identification
                              " (%I) "
                              "prj:"
-                             '(:eval (remove-vowels (projectile-project-name)))))
+                             '(:eval (let ((proj (projectile-project-name)))
+                                       (if (> (string-width proj) 7)
+                                           (remove-vowels proj)
+                                         proj)))))
                            (format-mode-line
                             (list
                              mode-line-modes
