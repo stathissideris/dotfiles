@@ -32,8 +32,10 @@
 
 (eval-when-compile
   (require 'use-package))
-(require 'diminish)                ;; if you use :diminish
+;;(require 'diminish)                ;; if you use :diminish
 (require 'bind-key)                ;; if you use any :bind variant
+
+(diminish 'eldoc-mode)
 
 (setenv "bsq" "/Volumes/work/bsq/")
 (setenv "osio" "~/devel/work/osio/")
@@ -137,19 +139,6 @@
   (setq cljr-cljc-clojure-test-declaration
         "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
   (setq cljr-warn-on-eval nil))
-(use-package clj-refactor
-  :ensure t
-  :pin melpa-stable
-  :diminish clj-refactor-mode
-  :init
-  (add-hook 'clojure-mode-hook (lambda ()
-                                 (clj-refactor-mode 1)
-                                 (cljr-add-keybindings-with-prefix "C-c C-v")))
-  :config
-  (setq cljr-clojure-test-declaration "[clojure.test :refer :all]")
-  (setq cljr-cljc-clojure-test-declaration
-        "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
-  (setq cljr-warn-on-eval nil))
 
 (use-package align-cljlet
   :ensure t
@@ -162,7 +151,7 @@
 (use-package paredit
   :ensure t
   :pin melpa-stable
-  :diminish (paredit-mode . "prdt")
+  :diminish (paredit-mode . "Ⓟ")
   :bind (("C-d" . duplicate-sexp)
          ("M-{" . paredit-wrap-curly)
          ("M-[" . paredit-wrap-square)
@@ -238,6 +227,7 @@
 (use-package cider
   :ensure t
   :defer t
+  :diminish (cider-mode . "🍺")
   :pin melpa-stable
   :bind (("C-c M-o" . cider-repl-clear-buffer)
          ("<f2>" . clojure-quick-eval)
