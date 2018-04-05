@@ -340,6 +340,7 @@
 
 (use-package projectile
   :pin melpa-stable
+  :diminish projectile-mode
   :config
   (setq projectile-mode-line '(:eval (format " P[%s]" (projectile-project-name)))
     projectile-globally-ignored-files '("TAGS" ".nrepl-port")
@@ -882,10 +883,13 @@
                              mode-line-modified
                              mode-line-frame-identification
                              mode-line-buffer-identification
-                             "(%I)"))
+                             " (%I) "
+                             "proj:"
+                             '(:eval (projectile-project-name))))
                            (format-mode-line
                             (list
                              mode-line-modes
+                             ;;'(:eval (symbol-name major-mode))
                              "  "
                              mode-line-my-vc
                              "   "
