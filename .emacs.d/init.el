@@ -354,7 +354,7 @@
 (use-package yasnippet
   :ensure t
   :pin melpa-stable
-  :diminish (yas-minor-mode . " Y")
+  :diminish yas-minor-mode
   :config
   (yas-global-mode 1)
   (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
