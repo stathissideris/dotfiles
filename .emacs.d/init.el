@@ -3,6 +3,8 @@
  '(default ((t (:background "#022b35"))))
  '(bold ((t (:foreground "gold" :weight bold)))))
 
+(setq mac-use-title-bar 't)
+
 ;; ========================================
 ;; package
 (require 'package)
@@ -860,13 +862,38 @@
 (defun remove-vowels (string)
   (replace-regexp-in-string "a\\|e\\|i\\|o\\|u\\|" "" string))
 
+(defun ss/org-clock-get-clock-string ()
+  "Form a clock-string, that will be shown in the mode line.
+If an effort estimate was defined for the current item, use
+01:30/01:50 format (clocked/estimated).
+If not, show simply the clocked time like 01:50."
+  (let ((clocked-time (org-clock-get-clocked-time)))
+    (if org-clock-effort
+	(let* ((effort-in-minutes (org-duration-to-minutes org-clock-effort))
+	       (work-done-str
+		(propertize
+		 (org-duration-from-minutes clocked-time)
+		 'face (if (and org-clock-task-overrun (not org-clock-task-overrun-text))
+			   'org-mode-line-clock-overrun 'org-mode-line-clock)))
+	       (effort-str (org-duration-from-minutes effort-in-minutes))
+	       (clockstr (propertize
+			  (concat  " [%s/" effort-str
+                 (replace-regexp-in-string "%" "%%" org-clock-heading) "]")
+			  'face 'org-mode-line-clock)))
+	  (format clockstr work-done-str))
+  (propertize (concat " ["
+                      (org-duration-from-minutes clocked-time)
+                      (format ", %s" org-clock-heading)
+                      "]")
+              'face 'org-mode-line-clock))))
+
 (use-package all-the-icons
   :demand
   :init
   (progn (defun -custom-modeline-github-vc ()
            (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
              (concat
-              (propertize (format "%s" (all-the-icons-octicon "git-branch"))
+              (propertize (format "  %s" (all-the-icons-octicon "git-branch"))
                           'face `(:height 1 :family ,(all-the-icons-octicon-family))
                           'display '(raise 0))
               (propertize (format " %s" branch)))))
@@ -900,10 +927,12 @@
                             (list
                              mode-line-modes
                              ;;'(:eval (symbol-name major-mode))
-                             "  "
+                             ""
+                             '(:eval (if (org-clock-is-active)
+                                         (concat " 🕒" (ss/org-clock-get-clock-string))
+                                       ""))
                              mode-line-my-vc
-                             "   "
-                             "☰ %l ‖ %c "))))))))
+                             " ☰ %l ‖ %c "))))))))
 
 (set-face-attribute 'mode-line nil
                     :box '(:line-width 5 :color "#1c1e24")
@@ -1136,3 +1165,7 @@
   (let ((inhibit-read-only t))
     (erase-buffer)
     (eshell-send-input)))
+
+(make-frame)
+(other-frame 0)
+(delete-frame)
