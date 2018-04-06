@@ -869,67 +869,71 @@
 
 (defun ss/org-clock-get-clock-string ()
   (let ((clocked-time (org-clock-get-clocked-time))
+        ;; affects performance, too expensive:
         ;; (clocked-time (save-excursion
         ;;                 (set-buffer "time-tracking.org")
         ;;                 (org-clock-sum-today)))
         )
-    (propertize (concat (org-duration-from-minutes clocked-time)
-                        ", "
-                        (ss/truncate (format "%s" org-clock-heading) 12))
+    ;; (propertize (concat (org-duration-from-minutes clocked-time 'h:mm)
+    ;;                     ", "
+    ;;                     (ss/truncate (format "%s" org-clock-heading) 12))
+    ;;             'face 'org-mode-line-clock)
+    (propertize (ss/truncate (format "%s" org-clock-heading) 12)
                 'face 'org-mode-line-clock)))
 
 
 (use-package all-the-icons
   :demand
   :init
-  (progn (defun -custom-modeline-github-vc ()
+  (progn (defun ss/custom-modeline-github-vc ()
            (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
              (concat
               (propertize (format "  %s" (all-the-icons-octicon "git-branch"))
-                          'face `(:height 1 :family ,(all-the-icons-octicon-family))
-                          'display '(raise 0))
-              (propertize (format " %s" branch)))))
+                          'face `(:height 1 :family ,(all-the-icons-octicon-family)))
+              (propertize " " 'display '(space-width 0.6)) ;;narrow space
+              (propertize (format "%s " branch)))))
 
-         (defvar mode-line-my-vc
+         (defvar ss/mode-line-my-vc
            '(:propertize
              (:eval (when vc-mode
                       (cond
-                       ((string-match "Git[:-]" vc-mode) (-custom-modeline-github-vc))
+                       ((string-match "Git[:-]" vc-mode) (ss/custom-modeline-github-vc))
                        (t (format "%s" vc-mode)))))
              face mode-line-directory)
            "Formats the current directory."))
   :config
-  (progn (setq-default mode-line-format
-                       '((:eval
-                          (justified-mode-line
-                           (format-mode-line
-                            (list
-                             ""
-                             mode-line-mule-info
-                             mode-line-modified
-                             mode-line-frame-identification
-                             mode-line-buffer-identification
-                             " (%I) "
-                             "prj:"
-                             '(:eval (let ((proj (projectile-project-name)))
-                                       (if (> (string-width proj) 7)
-                                           (remove-vowels proj)
-                                         proj)))))
-                           (format-mode-line
-                            (list
-                             mode-line-modes
-                             ;;'(:eval (symbol-name major-mode))
-                             ""
-                             '(:eval (if (org-clock-is-active)
-                                         (concat "  "
-                                                 (propertize (format "%s" (all-the-icons-material "schedule"))
-                                                             'face `(:family ,(all-the-icons-material-family))
-                                                             'display '(raise -0.24))
-                                                 " "
-                                                 (propertize (format "%s" (ss/org-clock-get-clock-string))))
-                                       ""))
-                             mode-line-my-vc
-                             " ☰ %l ‖ %c "))))))))
+  (progn
+    (setq-default
+     mode-line-format
+     '((:eval
+        (justified-mode-line
+         (format-mode-line
+          (list
+           ""
+           mode-line-mule-info
+           mode-line-modified
+           mode-line-frame-identification
+           mode-line-buffer-identification
+           " (%I) "
+           "prj:"
+           '(:eval (let ((proj (projectile-project-name)))
+                     (if (> (string-width proj) 7)
+                         (remove-vowels proj)
+                       proj)))))
+         (format-mode-line
+          (list
+           mode-line-modes
+           ;;'(:eval (symbol-name major-mode))
+           '(:eval (when (org-clock-is-active)
+                     (concat "  "
+                             (propertize (format "%s" (all-the-icons-material "schedule"))
+                                         'face `(:family ,(all-the-icons-material-family))
+                                         'display '(raise -0.24))
+                             (propertize " " 'display '(space-width 0.8)) ;;narrow space
+                             (propertize (format "%s" (ss/org-clock-get-clock-string)))
+                             " ")))
+           ss/mode-line-my-vc
+           " ☰ %l ‖ %c "))))))))
 
 (set-face-attribute 'mode-line nil
                     :box '(:line-width 5 :color "#1c1e24")
