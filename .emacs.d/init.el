@@ -694,8 +694,7 @@
                      (sql-server "localhost")
                      (sql-port 5430)
                      (sql-user "vittle")
-                     (sql-database "bsq")
-                     (sql-password "CL3ar--4n4lus1s@#"))
+                     (sql-database "bsq"))
           (bsq (sql-product 'postgres)
                (sql-port 5432)
                (sql-user "vittle")
@@ -983,10 +982,10 @@
   :init
   (global-hl-line-mode)
   (set-face-attribute 'hl-line nil
-                      :background "#032830"))
+                      :background "#02242a"))
 
 ;; ========================================
-;; Misc
+;; misc
 
 (require 'simple-copy)
 
