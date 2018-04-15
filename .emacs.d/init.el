@@ -502,8 +502,8 @@
                       `(org-table ((t (:inherit 'fixed-pitched))))
                       `(org-block ((t (:inherit 'fixed-pitched))))
                       `(org-block-background ((t (:inherit 'fixed-pitched))))
-                      `(org-block-begin-line ((t (:background "gray15" :foreground "gray22" :slant normal))))
-                      `(org-block-end-line ((t (:background "gray15" :foreground "gray22" :slant normal))))
+                      `(org-block-begin-line ((t (:background "gray15" :foreground "gray28" :slant normal))))
+                      `(org-block-end-line ((t (:background "gray15" :foreground "gray28" :slant normal))))
 
                       ;;levels
                       `(org-level-8 ((t (,@headline ,@ss/fixed-font-tuple))))
