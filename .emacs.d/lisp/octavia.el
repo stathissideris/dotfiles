@@ -19,7 +19,7 @@
 
 ;;(setq inferior-lisp-program "/Users/sideris/devel-tools/ccl/dx86cl64")
 (setq inferior-lisp-program "sbcl")
-(global-set-key [f8] `(lambda () (interactive) (find-file "/Users/sideris/notes/notes.org")))
+(global-set-key [f8] `(lambda () (interactive) (find-file "/Users/sideris/notes/personal.org")))
 
 ;;for debugging:
 (setq mac-options-loaded t)

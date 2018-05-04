@@ -403,12 +403,17 @@
          ("<S-left>" . org-clocktable-try-shift-left)
          ("<S-right>" . org-clocktable-try-shift-right)
          ("<f12>" . org-tree-slide-mode)
-         ("<S-f12>" . org-tree-slide-skip-done-toggle))
+         ("<S-f12>" . org-tree-slide-skip-done-toggle)
+         ("C-c a" . org-agenda))
   :init
   (font-lock-add-keywords 'org-mode
                           '(("^ +\\([-*]\\) "
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "→"))))))
   :config
+  (setq  org-agenda-files (list "~/notes/bsq/bsq.org"
+                               "~/notes/gt/gt.org"
+                               "~/notes/personal.org"))
+
   (org-tree-slide-simple-profile)
 
   (defvar yt-iframe-format
@@ -432,6 +437,11 @@
        (latex (format "\href{%s}{%s}"
                       path (or desc "video"))))))
 
+  (org-add-link-type
+   "jr"
+   (lambda (id)
+     (browse-url
+      (concat "https://bare-square.atlassian.net/browse/" id))))
 
   (setq org-ellipsis "…" ;;"↴"
         org-todo-keywords '((sequence "TODO" "PROG" "BLOK" "DONE"))
@@ -504,6 +514,8 @@
                       `(org-block-background ((t (:inherit 'fixed-pitched))))
                       `(org-block-begin-line ((t (:background "gray15" :foreground "gray28" :slant normal))))
                       `(org-block-end-line ((t (:background "gray15" :foreground "gray28" :slant normal))))
+
+                      `(org-ellipsis ((t (:foreground "dim gray"))))
 
                       ;;levels
                       `(org-level-8 ((t (,@headline ,@ss/fixed-font-tuple))))
