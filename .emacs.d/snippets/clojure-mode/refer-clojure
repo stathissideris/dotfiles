@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: refer clojure
+# key: ref
+# --
+(:refer-clojure :exclude [$0])

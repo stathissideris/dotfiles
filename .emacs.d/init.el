@@ -85,6 +85,9 @@
           (lambda ()
             (setq mode-name "elisp"))))
 
+(use-package clojure-snippets
+  :ensure t)
+
 (use-package clojure-mode
   :ensure t
   :pin melpa-stable
@@ -393,6 +396,17 @@
   (interactive)
   (org-clocktable-try-shift 'right 1))
 
+(defun make-doc ()
+  (interactive)
+  (message "Making doc...")
+  (start-process-shell-command
+   "make-doc"
+   "*Messages*"
+   "cd /Users/sideris/devel/work/gt/project-plan && make doc"))
+
+(use-package latex
+  :bind (("<f12>" . make-doc)))
+
 (use-package org
   :ensure t
   :pin org
@@ -438,10 +452,10 @@
                       path (or desc "video"))))))
 
   (org-add-link-type
-   "jr"
+   "vb"
    (lambda (id)
      (browse-url
-      (concat "https://bare-square.atlassian.net/browse/" id))))
+      (concat "https://bare-square.atlassian.net/browse/VB-" id))))
 
   (setq org-ellipsis "…" ;;"↴"
         org-todo-keywords '((sequence "TODO" "PROG" "BLOK" "DONE"))
@@ -579,6 +593,11 @@
   (if window-system
       (set-face-attribute 'dired-directory nil :foreground "#5fd7ff")
     (set-face-attribute 'dired-directory nil :foreground "#0020ff"))
+
+  (defun dired-copy-filename ()
+    (interactive)
+    (setq current-prefix-arg '(0))
+    (call-interactively 'dired-copy-filename-as-kill))
 
   (defun kill-dired-buffers ()
     (interactive)
@@ -910,7 +929,7 @@
                       (cond
                        ((string-match "Git[:-]" vc-mode) (ss/custom-modeline-github-vc))
                        (t (format "%s" vc-mode)))))
-             face mode-line-directory)
+             face default)
            "Formats the current directory."))
   :config
   (progn

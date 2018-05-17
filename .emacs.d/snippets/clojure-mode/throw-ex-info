@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: throw ex-info
+# key: thr
+# --
+(throw (ex-info "$0" {$1} $2))
