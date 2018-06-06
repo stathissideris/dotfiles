@@ -71,4 +71,35 @@
      (get-string-from-file "~/.emacs.d/applescript/onetab-chrome.applescript"))))
   (beginning-of-buffer))
 
+
+(defun ss/extract-org-url (s)
+  (when (string-match "\\[\\[\\(.+\\)\\]\\[.+\\]\\]" s)
+    (match-string 1 s)))
+
+(defun ss/split-lines (s)
+  (split-string s "[\n\r]+"))
+
+(defun ss/region-lines ()
+  (ss/split-lines
+   (buffer-substring-no-properties (region-beginning) (region-end))))
+
+(defun ss/strip-properties (s)
+  (set-text-properties 0 (length s) nil s)
+  s)
+
+(defun ss/browse-region-org-urls ()
+  (interactive)
+  (dolist (line (ss/region-lines))
+    (let ((url (ss/extract-org-url line)))
+      (when url
+        (browse-url (ss/extract-org-url url))))))
+
+(defun ss/open-context ()
+  (interactive)
+  (org-copy-subtree)
+  (dolist (line (ss/split-lines (ss/strip-properties (current-kill 0))))
+    (let ((url (ss/extract-org-url line)))
+      (when url
+        (browse-url url)))))
+
 (provide 'octavia)
