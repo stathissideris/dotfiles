@@ -79,6 +79,11 @@
                   (json-mode "{" "}" "/[*/]" nil)
                   (javascript-mode  "{" "}" "/[*/]" nil)))))
 
+
+(use-package neotree
+  :bind (("^" . neotree-select-up-node))) ;;some day I'm going to figure this out, but for now:
+(define-key neotree-mode-map "^" 'neotree-select-up-node)
+
 (use-package emacs-lisp-mode
   :init
   (add-hook 'emacs-lisp-mode-hook
@@ -152,8 +157,7 @@
   :config
   (setq cljr-clojure-test-declaration "[clojure.test :refer :all]")
   (setq cljr-cljc-clojure-test-declaration
-        "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
-  (setq cljr-warn-on-eval nil))
+        "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])"))
 
 (use-package align-cljlet
   :ensure t
@@ -370,6 +374,14 @@
   :defer t
   :pin melpa-stable)
 
+;; (use-package eshell-mode
+;;   :bind (("<up>" . previous-line)
+;;          ("<down>" . next-line))
+;;   :init
+;;   (define-key eshell-mode-map (kbd "<up>") 'previous-line)
+;;   (bind-key "<up>" 'previous-line eshell-mode-map)
+;;   (bind-key "<down>" 'next-line eshell-mode-map))
+
 (use-package company
   :ensure t
   :pin melpa-stable
@@ -489,7 +501,6 @@
                                  (js         . t)
                                  (emacs-lisp . t)
                                  (perl       . t)
-                                 (scala      . t)
                                  (clojure    . t)
                                  (python     . t)
                                  (ruby       . t)
@@ -1200,3 +1211,24 @@
 (make-frame)
 (other-frame 0)
 (delete-frame)
+
+;; org-jira
+
+(setq jiralib-url "https://bare-square.atlassian.net")
+
+;; see https://github.com/ahungry/org-jira/issues/44
+;; (setq jiralib-token
+;;       `("Cookie" . ""))
+
+
+(defun jira/insert ()
+  "Insert a JIRA link with a description at point"
+  (interactive)
+  (let* ((id (read-string "Issue ID: "))
+         (summary (cdr
+                   (assoc 'summary
+                          (cdr
+                           (assoc 'fields
+                                  (car
+                                   (org-jira-get-issue-by-id id))))))))
+    (insert (format "[%s]: %s" (replace-regexp-in-string "\\-" ":" (downcase id)) summary))))
