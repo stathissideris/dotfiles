@@ -629,12 +629,9 @@
 	      (kill-buffer buffer)))
 	  (buffer-list))))
 
-(use-package linum
+(use-package display-line-numbers
   :init
-  (if window-system
-      (setq linum-format "%3d")
-    (setq linum-format "%3d "))
-  (global-set-key (kbd "<f11>") 'linum-mode))
+  (global-set-key (kbd "<f11>") 'display-line-numbers-mode))
 
 (use-package highlight-symbol
   :diminish highlight-symbol-mode
