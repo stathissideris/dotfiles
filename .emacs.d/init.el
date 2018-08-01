@@ -1,51 +1,49 @@
 ;;early background to prevent white emacs blinding me
 (custom-set-faces
- '(default ((t (:background "#022b35"))))
+ '(default ((t (;;:foreground "white"
+                :background "#022b35"))))
  '(bold ((t (:foreground "gold" :weight bold)))))
 
 (setq mac-use-title-bar 't)
+(make-frame)
+(other-frame 0)
+(delete-frame)
 
 ;; ========================================
 ;; package
-(require 'package)
 
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
-
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/") t)
-
-(add-to-list 'package-archives
-             '("org" . "http://orgmode.org/elpa/") t)
-
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(setq package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")
+		         ("gnu"  . "http://elpa.gnu.org/packages/")))
 
 (package-initialize)
-
-(when (not package-archive-contents)
-  (package-refresh-contents))
 
 (when (not (package-installed-p 'use-package))
   (package-install 'use-package))
 
 (eval-when-compile
   (require 'use-package))
-;;(require 'diminish)                ;; if you use :diminish
 (require 'bind-key)                ;; if you use any :bind variant
 
-(diminish 'eldoc-mode)
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+
+
+(use-package diminish
+  :ensure t
+  :init
+  (diminish 'eldoc-mode))
 
 (setenv "bsq" "/Volumes/work/bsq/")
 (setenv "osio" "~/devel/work/osio/")
 
-;; ERC config
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-(require 'ss-erc)
+
+;; ERC config
+;; (require 'ss-erc)
 
 ;; ========================================
 ;; Modes
@@ -82,9 +80,10 @@
 
 (use-package neotree
   :bind (("^" . neotree-select-up-node))) ;;some day I'm going to figure this out, but for now:
-(define-key neotree-mode-map "^" 'neotree-select-up-node)
+;;(define-key neotree-mode-map "^" 'neotree-select-up-node) ;;TODO fix
 
 (use-package emacs-lisp-mode
+  :no-require t
   :init
   (add-hook 'emacs-lisp-mode-hook
           (lambda ()
@@ -161,7 +160,7 @@
 
 (use-package align-cljlet
   :ensure t
-  :pin marmalade
+  ;;:pin marmalade
   :init
   (add-hook 'clojure-mode-hook
           '(lambda ()
@@ -246,7 +245,7 @@
 (use-package cider
   :ensure t
   :defer t
-  :diminish (cider-mode . " 🍺")
+  :diminish (cider-mode . " ⓒ")
   :pin melpa-stable
   :bind (("C-c M-o" . cider-repl-clear-buffer)
          ("<f2>" . clojure-quick-eval)
@@ -266,6 +265,7 @@
   (setq cider-show-error-buffer 'except-in-repl)
   (setq cider-repl-display-help-banner nil)
   (setq cider-inject-dependencies-at-jack-in nil)
+  (setq nrepl-prompt-to-kill-server-buffer-on-quit nil)
 
   (bind-key "C-c M-o" 'cider-repl-clear-buffer cider-repl-mode-map)
 
@@ -348,8 +348,9 @@
       (indent-region (region-beginning) (region-end)))))
 
 (use-package projectile
-  :pin melpa-stable
   :diminish projectile-mode
+  :ensure t
+  :no-require t
   :config
   (setq projectile-mode-line '(:eval (format " P[%s]" (projectile-project-name)))
     projectile-globally-ignored-files '("TAGS" ".nrepl-port")
@@ -392,13 +393,12 @@
   (setq company-begin-commands
         '(self-insert-command org-self-insert-command orgtbl-self-insert-command c-scope-operator c-electric-colon c-electric-lt-gt c-electric-slash cljr-slash)))
 
-(use-package ido-ubiquitous
-  :ensure t
-  :pin melpa-stable
+(use-package ido
   :init
-  (ido-mode t)
-  (ido-ubiquitous)
-  (setq ido-enable-flex-matching t))
+  (setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
+  (setq ido-file-extensions-order '(".clj" ".cljs" ".tf" ".org" ".el" ".py" ".txt"))
+  (ido-mode t))
 
 (defun org-clocktable-try-shift-left ()
   (interactive)
@@ -428,8 +428,6 @@
          ("<s-return>" . org-insert-subheading)
          ("<S-left>" . org-clocktable-try-shift-left)
          ("<S-right>" . org-clocktable-try-shift-right)
-         ("<f12>" . org-tree-slide-mode)
-         ("<S-f12>" . org-tree-slide-skip-done-toggle)
          ("C-c a" . org-agenda))
   :init
   (font-lock-add-keywords 'org-mode
@@ -439,8 +437,6 @@
   (setq  org-agenda-files (list "~/notes/bsq/bsq.org"
                                "~/notes/gt/gt.org"
                                "~/notes/personal.org"))
-
-  (org-tree-slide-simple-profile)
 
   (defvar yt-iframe-format
     ;; You may want to change your width and height.
@@ -554,6 +550,14 @@
 
                       `(org-document-title ((t (,@headline ,@ss/variable-font-tuple :height 1.5 :underline nil)))))))
 
+
+(use-package org-tree-slide
+  :ensure t
+  :bind (("<f12>" . org-tree-slide-mode)
+	 ("<S-f12>" . org-tree-slide-skip-done-toggle))
+  :init
+  (org-tree-slide-simple-profile))
+
 (use-package org-page
   :ensure t
   :init
@@ -567,6 +571,14 @@
   :init
   (setq org-bullets-bullet-list '("●"))
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+(use-package org-jira
+  :ensure t
+  :init
+  (setq jiralib-url "https://bare-square.atlassian.net"))
+
+;;; end of org
+
 
 (use-package magit
   :ensure t
@@ -626,6 +638,8 @@
 
 (use-package highlight-symbol
   :diminish highlight-symbol-mode
+  :ensure t
+  :no-require t
   :init
   (add-hook 'lisp-mode-hook 'highlight-symbol-mode)
   (add-hook 'emacs-lisp-mode-hook 'highlight-symbol-mode)
@@ -658,7 +672,7 @@
 
 (use-package undo-tree
   :ensure t
-  :pin marmalade
+  :pin gnu
   :diminish undo-tree-mode
   :config
   (global-undo-tree-mode)
@@ -726,7 +740,7 @@
   :load-path "lisp/emacs-open-github-from-here")
 
 (use-package sql
-  :init
+  :config
   (setq sql-connection-alist
         '((osio (sql-product 'postgres)
                 (sql-server "localhost")
@@ -940,7 +954,7 @@
                       (cond
                        ((string-match "Git[:-]" vc-mode) (ss/custom-modeline-github-vc))
                        (t (format "%s" vc-mode)))))
-             face default)
+             face 'mode-line)
            "Formats the current directory."))
   :config
   (progn
@@ -1021,10 +1035,21 @@
 ;;   (setq powerline-default-separator 'utf-8))
 
 (use-package hl-line-mode
+  :no-require t
   :init
   (global-hl-line-mode)
   (set-face-attribute 'hl-line nil
                       :background "#02242a"))
+
+
+(setq elfeed-feeds
+      '("https://news.ycombinator.com/rss"
+        "https://grumpygamer.com/rss"
+        "https://lobste.rs/rss"
+        "https://blog.acolyer.org/feed/"
+        "https://www.retronator.com/rss"
+        "http://feeds.feedburner.com/stevelosh?format=xml"))
+
 
 ;; ========================================
 ;; misc
@@ -1035,6 +1060,9 @@
 (global-set-key (kbd "C-=") (lambda () (interactive) (text-scale-increase 0.5)))
 (global-set-key (kbd "C--") (lambda () (interactive) (text-scale-increase -0.5)))
 (global-set-key (kbd "C-0") (lambda () (interactive) (text-scale-increase 0)))
+
+(require 'deadgrep)
+(global-set-key (kbd "<f9>") #'deadgrep)
 
 (global-set-key (kbd "<f1> SPC") 'mark-sexp)
 
@@ -1208,17 +1236,13 @@
     (erase-buffer)
     (eshell-send-input)))
 
-(make-frame)
-(other-frame 0)
-(delete-frame)
-
-;; org-jira
-
-(setq jiralib-url "https://bare-square.atlassian.net")
+(defun unix-file ()
+  "Change the current buffer to Unix line-ends."
+  (interactive)
+  (set-buffer-file-coding-system 'unix t))
 
 ;; see https://github.com/ahungry/org-jira/issues/44
-;; (setq jiralib-token
-;;       `("Cookie" . ""))
+;;(setq jiralib-token `("Cookie" . ""))
 
 
 (defun jira/insert ()
