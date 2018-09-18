@@ -1,7 +1,8 @@
 ;;early background to prevent white emacs blinding me
 (custom-set-faces
  '(default ((t (;;:foreground "white"
-                :background "#022b35"))))
+                ;;:background "#022b35"
+                ))))
  '(bold ((t (:foreground "gold" :weight bold)))))
 
 (setq mac-use-title-bar 't)
@@ -38,6 +39,7 @@
 
 (setenv "bsq" "/Volumes/work/bsq/")
 (setenv "osio" "~/devel/work/osio/")
+(setenv "gt" "~/devel/work/gt/")
 
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
@@ -61,7 +63,7 @@
 
 (use-package hideshow
   :bind (("C-c TAB" . hs-toggle-hiding)
-         ("C-\\" . hs-toggle-hiding)
+         ("C-;" . hs-toggle-hiding)
          ("M-+" . hs-show-all))
   :init (add-hook #'prog-mode-hook #'hs-minor-mode)
   :diminish hs-minor-mode
@@ -79,8 +81,10 @@
 
 
 (use-package neotree
-  :bind (("^" . neotree-select-up-node))) ;;some day I'm going to figure this out, but for now:
-;;(define-key neotree-mode-map "^" 'neotree-select-up-node) ;;TODO fix
+  ;;:bind (("^" . neotree-select-up-node))
+  :ensure t
+  :config
+  (define-key neotree-mode-map "^" 'neotree-select-up-node)) ;;some day I'm going to figure this out, but for now:
 
 (use-package emacs-lisp-mode
   :no-require t
@@ -156,7 +160,8 @@
   :config
   (setq cljr-clojure-test-declaration "[clojure.test :refer :all]")
   (setq cljr-cljc-clojure-test-declaration
-        "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])"))
+        "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
+  (add-to-list 'cljr-magic-require-namespaces '("s" . "clojure.spec.alpha")))
 
 (use-package align-cljlet
   :ensure t
@@ -270,7 +275,7 @@
   (bind-key "C-c M-o" 'cider-repl-clear-buffer cider-repl-mode-map)
 
   (setq clojure-quick-sexp
-        '("(dev/refresh)"
+        '("(dev/reset)"
           "(use 'clojure.repl)"
           "(use 'clojure.tools.trace)"
           "(use 'clojure.pprint)"
@@ -361,6 +366,9 @@
       "bower_components" ".bundle" ".stack-work"))
   (projectile-global-mode nil))
 
+(use-package terraform-mode
+  :ensure t)
+
 (use-package yasnippet
   :ensure t
   :pin melpa-stable
@@ -399,6 +407,12 @@
   (setq ido-everywhere t)
   (setq ido-file-extensions-order '(".clj" ".cljs" ".tf" ".org" ".el" ".py" ".txt"))
   (ido-mode t))
+
+(use-package ido-completing-read+
+  :ensure t
+  :pin melpa-stable
+  :init
+  (ido-ubiquitous-mode 1))
 
 (defun org-clocktable-try-shift-left ()
   (interactive)
@@ -589,7 +603,8 @@
 
   (setq git-commit-fill-column 3000
         git-commit-finish-query-functions nil
-        git-commit-summary-max-length 120)
+        git-commit-summary-max-length 120
+        magit-log-margin '(t "%Y-%m-%d " magit-log-margin-width t 18))
 
   (custom-set-faces
    '(magit-blame-date ((t (:background "#404040" :foreground "#F2804F"))))
@@ -653,6 +668,7 @@
   :config
   (setq highlight-symbol-idle-delay 1)
   (setq highlight-symbol-on-navigation-p 't)
+  (setq highlight-symbol-occurrence-message (quote (explicit)))
   (custom-set-faces
    '(highlight-symbol-face ((t (:foreground "gray100" :background "#9c7618" :weight semi-bold))))))
 
@@ -730,6 +746,16 @@
 		       (read-from-minibuffer "In filenames matching PCRE: " (ag/buffer-extension-regex))
 		       (read-directory-name "Directory: " (ag/project-root default-directory))))
     (ag/search string directory :file-regex file-regex)))
+
+
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+
 
 (use-package open-github-from-here
   :bind (("M-g M-h" . open-github-from-here))
@@ -883,7 +909,6 @@
   :ensure t
   :config
   (require 'doom-themes)
-  (load-theme 'doom-one t)
   (if window-system
     (progn
       (load-theme 'doom-one t)
@@ -1178,8 +1203,8 @@
 
 ;;spaces-instead-of-tabs
 (setq-default indent-tabs-mode nil)
-(setq default-tab-width 2)
-(setq tab-width 2)
+(setq-default default-tab-width 2)
+(setq-default tab-width 2)
 (setq python-indent 3)
 (setq c-basic-offset 3)
 (setq c-indent-level 3)
@@ -1253,3 +1278,7 @@
                                   (car
                                    (org-jira-get-issue-by-id id))))))))
     (insert (format "[%s]: %s" (replace-regexp-in-string "\\-" ":" (downcase id)) summary))))
+
+(defun ss/copy-file-name ()
+  (interactive)
+  (kill-new (buffer-file-name)))
