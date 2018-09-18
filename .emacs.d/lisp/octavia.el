@@ -66,9 +66,7 @@
   (org-time-stamp '(16) t)
   (insert "\n")
   (insert
-   (clean-AS-result
-    (do-applescript
-     (get-string-from-file "~/.emacs.d/applescript/onetab-chrome.applescript"))))
+   (shell-command-to-string "osascript -l JavaScript ~/.emacs.d/js/onetab.js"))
   (beginning-of-buffer))
 
 
