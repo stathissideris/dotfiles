@@ -168,8 +168,8 @@
   ;;:pin marmalade
   :init
   (add-hook 'clojure-mode-hook
-          '(lambda ()
-             (define-key clojure-mode-map "\C-c\C-a" 'align-cljlet))))
+            '(lambda ()
+               (define-key clojure-mode-map "\C-c\C-a" 'align-cljlet))))
 
 (use-package paredit
   :ensure t
@@ -276,6 +276,7 @@
 
   (setq clojure-quick-sexp
         '("(dev/reset)"
+          "(user/fix)"
           "(use 'clojure.repl)"
           "(use 'clojure.tools.trace)"
           "(use 'clojure.pprint)"
@@ -407,6 +408,12 @@
   (setq ido-everywhere t)
   (setq ido-file-extensions-order '(".clj" ".cljs" ".tf" ".org" ".el" ".py" ".txt"))
   (ido-mode t))
+
+(use-package ido-vertical
+  :init
+  :ensure t
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right))
 
 (use-package ido-completing-read+
   :ensure t
@@ -765,7 +772,12 @@
 (use-package sql
   :config
   (setq sql-connection-alist
-        '((osio (sql-product 'postgres)
+        '((gt (sql-product 'postgres)
+              (sql-server "localhost")
+              (sql-port 5432)
+              (sql-user "test")
+              (sql-database "gt"))
+          (osio (sql-product 'postgres)
                 (sql-server "localhost")
                 (sql-user "osio_admin")
                 (sql-database "opensensors"))
@@ -781,8 +793,11 @@
           (bsq-personal (sql-product 'postgres)
                         (sql-port 5432)
                         (sql-user "stathis")
-                        (sql-database "bsq"))))
-  )
+                        (sql-database "bsq")))))
+
+(use-package restclient
+  :ensure t
+  :mode (("\\.http$" . restclient-mode)))
 
 (use-package hydra
   :ensure t
@@ -976,7 +991,7 @@
                       (cond
                        ((string-match "Git[:-]" vc-mode) (ss/custom-modeline-github-vc))
                        (t (format "%s" vc-mode)))))
-             face 'mode-line)
+             face mode-line)
            "Formats the current directory."))
   :config
   (progn
