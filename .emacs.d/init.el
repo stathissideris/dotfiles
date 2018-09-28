@@ -15,6 +15,7 @@
 
 (setq package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")
+
                          ("org" . "http://orgmode.org/elpa/")
 		         ("gnu"  . "http://elpa.gnu.org/packages/")))
 
@@ -111,7 +112,7 @@
             (setq mode-name "λ")))
 
   (custom-set-faces
-   '(font-lock-doc-face ((t (:foreground "dark slate gray" :slant normal)))))
+   '(font-lock-doc-face ((t (:foreground "#5B6268" :slant normal)))))
 
   (defun ss/string-join (sep s)
     (mapconcat 'identity s sep))
@@ -136,8 +137,7 @@
       (split-string path "/"))))
 
   (defun clojure-jump-to-test ()
-    "Jump to corresponding test buffer (or the corresponding src
-  buffer if you're in a test."
+    "Jump to corresponding test buffer (or the corresponding src buffer if you're in a test.)"
     (interactive)
     (find-file (toggle-test-path buffer-file-name)))
 
@@ -740,20 +740,9 @@
   :config
   (setq uniquify-buffer-name-style 'forward))
 
-;; Silver searcher
-(use-package ag
+(use-package deadgrep
   :ensure t
-  :pin melpa-stable
-  :bind ("C-x M-f" . mt-ag-search)
-  :config
-  (setq ag-highlight-search t)
-  (setq ag-reuse-buffers t)
-  (defun mt-ag-search (string file-regex directory)
-    (interactive (list (read-from-minibuffer "Search string: " (ag/dwim-at-point))
-		       (read-from-minibuffer "In filenames matching PCRE: " (ag/buffer-extension-regex))
-		       (read-directory-name "Directory: " (ag/project-root default-directory))))
-    (ag/search string directory :file-regex file-regex)))
-
+  :bind ("<f9>" . deadgrep))
 
 (use-package markdown-mode
   :ensure t
@@ -1097,9 +1086,6 @@
 (global-set-key (kbd "C-=") (lambda () (interactive) (text-scale-increase 0.5)))
 (global-set-key (kbd "C--") (lambda () (interactive) (text-scale-increase -0.5)))
 (global-set-key (kbd "C-0") (lambda () (interactive) (text-scale-increase 0)))
-
-(require 'deadgrep)
-(global-set-key (kbd "<f9>") #'deadgrep)
 
 (global-set-key (kbd "<f1> SPC") 'mark-sexp)
 
