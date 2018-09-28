@@ -744,6 +744,15 @@
   :ensure t
   :bind ("<f9>" . deadgrep))
 
+(use-package pcre2el
+  :ensure t
+  :pin melpa-stable
+  :init
+  (pcre-mode)) ;;uses Emacs’s advice system to make all commands that
+               ;;read regexps using the minibuffer use emulated PCRE
+               ;;syntax, but it's an EXPERIMENTAL feature, disable if
+               ;;it causes problems
+
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
