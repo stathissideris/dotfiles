@@ -31,13 +31,6 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-
-
-(use-package diminish
-  :ensure t
-  :init
-  (diminish 'eldoc-mode))
-
 (setenv "bsq" "/Volumes/work/bsq/")
 (setenv "osio" "~/devel/work/osio/")
 (setenv "gt" "~/devel/work/gt/")
@@ -261,7 +254,8 @@
   (set-face-attribute 'cider-test-failure-face nil :background "#8c2020")
   (setq cider-prompt-for-symbol nil)
   (setq cider-repl-history-file "~/.emacs.d/cider-history")
-  (setq cider-font-lock-dynamically '(macro core function var))
+  ;;(setq cider-font-lock-dynamically '(macro core function var))
+  (setq cider-font-lock-dynamically nil)
   (setq cider-repl-use-pretty-printing nil)
   (setq cider-repl-use-clojure-font-lock t)
   ;;(setq cider-repl-result-prefix ";; => ")
@@ -409,17 +403,18 @@
   (setq ido-file-extensions-order '(".clj" ".cljs" ".tf" ".org" ".el" ".py" ".txt"))
   (ido-mode t))
 
-(use-package ido-vertical
-  :init
-  :ensure t
-  (ido-vertical-mode 1)
-  (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right))
-
 (use-package ido-completing-read+
   :ensure t
   :pin melpa-stable
   :init
   (ido-ubiquitous-mode 1))
+
+(use-package ido-vertical-mode
+  :ensure t
+  :pin melpa-stable
+  :init
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right))
 
 (defun org-clocktable-try-shift-left ()
   (interactive)
@@ -915,6 +910,14 @@
     ("§" nil "exit")
     ("q" nil "exit")))
 
+
+(use-package diminish
+  :ensure t
+  :init
+  (diminish 'eldoc-mode)
+  (diminish 'pcre-mode))
+
+
 ;; ========================================
 ;; Colors and looks
 
@@ -1133,12 +1136,17 @@
    Default for SEP is a hyphen \"-\".
    If third argument START is non-nil, convert words after that
    index in STRING."
-  (let ((case-fold-search nil))
-    (while (string-match "[A-Z]" s (or start 1))
-      (setq s (replace-match (concat (or sep "-")
-                                     (downcase (match-string 0 s)))
-                             t nil s)))
-    (downcase s)))
+  (let ((done-first nil)
+        (case-fold-search nil))
+    (while (string-match "[A-ZΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ]" s (or start 0))
+      (if done-first
+        (setq s (replace-match (concat (or sep "-")
+                                       (downcase (match-string 0 s)))
+                               t nil s))
+        (progn
+          (setq s (replace-match (downcase (match-string 0 s)) t nil s))
+          (setq done-first 't))))
+    (downcase (s-replace "--" "-" s))))
 
 (defun un-camelcase-region ()
   (interactive)

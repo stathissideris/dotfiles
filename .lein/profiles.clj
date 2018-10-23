@@ -3,7 +3,8 @@
   :dependencies [;;[alembic "0.3.2"]
                  ;;[org.clojure/tools.nrepl "0.2.12"]
                  ;;[im.chit/vinyasa "0.4.7"]
-                 [pjstadig/humane-test-output "0.8.0"]]
+                 [pjstadig/humane-test-output "0.8.3"]
+                 ]
   :injections [#_(require '[vinyasa.inject :as inject])
                (require 'pjstadig.humane-test-output)
                (pjstadig.humane-test-output/activate!)
@@ -29,7 +30,7 @@
             [lein-cloverage "1.0.10"]
             [jonase/eastwood "0.2.5"]
             ;;[lein-pprint "1.1.2"]
-            ;;[refactor-nrepl "2.3.1"]
+            [refactor-nrepl "2.4.0-SNAPSHOT"]
             [lein-ancient "0.6.15"]
             [lein-ns-dep-graph "0.2.0-SNAPSHOT"] ;;run with: lein ns-dep-graph
             [com.jakemccrary/lein-test-refresh "0.16.0"]]}}
