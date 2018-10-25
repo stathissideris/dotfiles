@@ -12,7 +12,7 @@
            (exp (concat "(gt.ingest.translations/translate-key " original ")")))
       (let* ((res (read (nrepl-dict-get (cider-nrepl-sync-request:eval exp) "value")))
              (selected (if (= 1 (length res))
-                           (car res)
+                           (read-string "Translation: " (car res))
                          (ido-completing-read "Possible translations: " res nil t "")))
              (replacement (concat "::" selected)))
         (delete-region (car bounds) (cdr bounds))
