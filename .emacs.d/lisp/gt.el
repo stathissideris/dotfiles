@@ -13,7 +13,8 @@
       (let* ((res (read (nrepl-dict-get (cider-nrepl-sync-request:eval exp) "value")))
              (selected (if (= 1 (length res))
                            (read-string "Translation: " (car res))
-                         (ido-completing-read "Possible translations: " res nil t "")))
+                         (read-string "Translation: "
+                                      (ido-completing-read "Possible translations: " res nil nil ""))))
              (replacement (concat "::" selected)))
         (delete-region (car bounds) (cdr bounds))
         (insert (gt/replacement-text original replacement))
@@ -32,3 +33,7 @@
       (insert " ")
       (insert (nth 1 res))
       (align-cljlet))))
+
+(global-set-key (kbd "<f12>") 'gt/preserve-translate-key)
+
+(provide 'gt)

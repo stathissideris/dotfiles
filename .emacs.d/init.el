@@ -1,3 +1,4 @@
+
 ;;early background to prevent white emacs blinding me
 (custom-set-faces
  '(default ((t (;;:foreground "white"
@@ -12,6 +13,12 @@
 
 ;; ========================================
 ;; package
+
+;;(setq debug-on-error 't)
+
+(defun init ()
+  (interactive)
+  (find-file "~/.emacs.d/init.el"))
 
 (setq package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")
@@ -154,7 +161,8 @@
   (setq cljr-clojure-test-declaration "[clojure.test :refer :all]")
   (setq cljr-cljc-clojure-test-declaration
         "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
-  (add-to-list 'cljr-magic-require-namespaces '("s" . "clojure.spec.alpha")))
+  (add-to-list 'cljr-magic-require-namespaces '("s" . "clojure.spec.alpha"))
+  (add-to-list 'cljr-magic-require-namespaces '("pp" . "clojure.pprint")))
 
 (use-package align-cljlet
   :ensure t
@@ -246,8 +254,10 @@
   :diminish (cider-mode . " ⓒ")
   :pin melpa-stable
   :bind (("C-c M-o" . cider-repl-clear-buffer)
+         ("C-x M-e" . cider-pprint-eval-last-sexp-to-repl)
          ("<f2>" . clojure-quick-eval)
-         ("<f12>" . apply-fix-macro))
+         ;;("<f12>" . apply-fix-macro)
+         )
   :init
   (add-hook 'cider-mode-hook #'eldoc-mode)
   :config
@@ -432,8 +442,9 @@
    "*Messages*"
    "cd /Users/sideris/devel/work/gt/project-plan && make doc"))
 
-(use-package latex
-  :bind (("<f12>" . make-doc)))
+;; (use-package latex
+;;   :bind (("<f12>" . make-doc))
+;;   )
 
 (use-package org
   :ensure t
@@ -569,8 +580,8 @@
 
 (use-package org-tree-slide
   :ensure t
-  :bind (("<f12>" . org-tree-slide-mode)
-	 ("<S-f12>" . org-tree-slide-skip-done-toggle))
+  ;; :bind (("<f12>" . org-tree-slide-mode)
+	;;  ("<S-f12>" . org-tree-slide-skip-done-toggle))
   :init
   (org-tree-slide-simple-profile))
 
@@ -595,6 +606,8 @@
 
 ;;; end of org
 
+(use-package with-editor
+  :ensure t) ;;needed by magit
 
 (use-package magit
   :ensure t
@@ -606,7 +619,40 @@
   (setq git-commit-fill-column 3000
         git-commit-finish-query-functions nil
         git-commit-summary-max-length 120
-        magit-log-margin '(t "%Y-%m-%d " magit-log-margin-width t 18))
+        ;;magit-log-margin '(t "%Y-%m-%d " magit-log-margin-width t 18)
+        )
+
+  (defun ss/current-line ()
+    (let ((start (point-min))
+	        (n (line-number-at-pos)))
+      (if (= start 1)
+	        n
+        (save-excursion
+	        (save-restriction
+	          (widen)
+	          (+ n (line-number-at-pos start) -1))))))
+
+  (defun ss/magit-find-file (rev file)
+    (interactive (magit-find-file-read-args "Find file"))
+    (let ((line (ss/current-line)))
+      (magit-find-file rev (magit-current-file))
+      (goto-line line)
+      (recenter-top-bottom)))
+
+  ;; also see: git log -n 1 --pretty=format:%H -- my/file.c
+  (defun ss/prev-magit-find-file ()
+    (interactive)
+    (let ((rev (if (not magit-buffer-refname)
+                   (car (magit-commit-parents (magit-rev-parse-safe "--branches")))
+                 (car (magit-commit-parents magit-buffer-refname))))
+          (line (ss/current-line)))
+      (if rev
+          (progn
+            (magit-find-file rev (magit-current-file))
+            (goto-line line)
+            (recenter)
+            (message (format "Switched to %s." magit-buffer-refname)))
+        (message "Current file rev cannot be determined"))))
 
   (custom-set-faces
    '(magit-blame-date ((t (:background "#404040" :foreground "#F2804F"))))
@@ -791,6 +837,14 @@
 (use-package restclient
   :ensure t
   :mode (("\\.http$" . restclient-mode)))
+
+;; (use-package python
+;;   :config
+;;   (setq python-shell-interpreter "ipython"))
+
+(setq python-shell-interpreter "python"
+      python-shell-interpreter-args "-i"
+      python-shell-completion-native-enable nil)
 
 (use-package hydra
   :ensure t
@@ -1256,6 +1310,9 @@
     (require 'mucha))
 (if (not window-system)
     (require 'no-window))
+
+;;GT-specific tools
+(require 'gt)
 
 (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
 
