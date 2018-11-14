@@ -62,6 +62,9 @@
   (add-hook #'log4j-mode-hook #'view-mode)
   (add-hook #'log4j-mode-hook #'read-only-mode))
 
+(use-package yaml-mode
+  :ensure t)
+
 (use-package hideshow
   :bind (("C-c TAB" . hs-toggle-hiding)
          ("C-;" . hs-toggle-hiding)
@@ -493,6 +496,7 @@
       (concat "https://bare-square.atlassian.net/browse/VB-" id))))
 
   (setq org-ellipsis "…" ;;"↴"
+        org-confirm-elisp-link-function nil
         org-todo-keywords '((sequence "TODO" "PROG" "BLOK" "DONE"))
         org-todo-keyword-faces
         '(;;("PROG" . "yellow")
@@ -838,13 +842,35 @@
   :ensure t
   :mode (("\\.http$" . restclient-mode)))
 
-;; (use-package python
-;;   :config
-;;   (setq python-shell-interpreter "ipython"))
+(use-package python
+  :bind* (("C-c M-j" . run-python)
+          ("C-M-x" . python-shell-send-def)
+          ("C-c C-v" . ss/python-shell-send-snippet))
 
-(setq python-shell-interpreter "python"
-      python-shell-interpreter-args "-i"
-      python-shell-completion-native-enable nil)
+  :config
+  (setq python-shell-interpreter "/Users/sideris/.pyenv/shims/python")
+
+  :init
+  (defun ss/python-shell-send-snippet ()
+    (interactive)
+    (save-excursion
+      (search-backward "##")
+      (end-of-line)
+      (set-mark-command nil)
+      (search-forward "##")
+      (call-interactively 'python-shell-send-region)
+      (deactivate-mark))))
+
+(use-package inferior-python
+  :bind (("C-c C-q" . ss/python-kill-buffer))
+  :init
+  (defun ss/python-kill-buffer ()
+    (interactive)
+    (kill-buffer (buffer-name (current-buffer)))))
+
+;; (setq python-shell-interpreter "python"
+;;       python-shell-interpreter-args "-i"
+;;       python-shell-completion-native-enable nil)
 
 (use-package hydra
   :ensure t
@@ -1313,6 +1339,9 @@
 
 ;;GT-specific tools
 (require 'gt)
+
+;;BSQ-specific tools
+(require 'bsq)
 
 (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
 
