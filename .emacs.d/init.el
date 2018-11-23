@@ -1406,3 +1406,51 @@
 (defun ss/copy-file-name ()
   (interactive)
   (kill-new (buffer-file-name)))
+
+
+(use-package ibuffer
+  :config
+  (setq ibuffer-saved-filter-groups
+        (quote
+         (("groups"
+	         ("GT" (or (filename . "/Users/sideris/devel/work/gt/*")
+                     (filename . "/Users/sideris/notes/gt/*")))
+           ("BSQ" (or (filename . "/Volumes/work/bsq/*")
+                      (filename . "/Users/sideris/notes/bsq/*")))
+           ("Notes" (filename . "/Users/sideris/notes/*"))
+           ("Emacs Lisp" (mode . emacs-lisp-mode))
+	         ;; ("Magit" (mode . magit-status-mode))
+           ;; ("Help" (or (name . "\*Help\*")
+		       ;;             (name . "\*Apropos\*")
+		       ;;             (name . "\*info\*")))
+	         ("Special" (name . "\*.+\*"))))))
+
+  (add-hook 'ibuffer-mode-hook
+	          (lambda ()
+	            (ibuffer-switch-to-saved-filter-groups "groups")))
+
+  (setq ibuffer-show-empty-filter-groups nil)
+
+  (add-to-list 'ibuffer-never-show-predicates "magit-process")
+
+  (setq ibuffer-expert t)
+
+
+  (define-ibuffer-column size-h
+    (:name "Size" :inline t)
+    (cond
+     ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+     ((> (buffer-size) 100000) (format "%7.0fk" (/ (buffer-size) 1000.0)))
+     ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+     (t (format "%8d" (buffer-size)))))
+
+  ;; Modify the default ibuffer-formats
+  (setq ibuffer-formats
+	      '((mark modified read-only " "
+		            (name 18 18 :left :elide)
+		            " "
+		            (size-h 9 -1 :right)
+		            " "
+		            (mode 16 16 :left :elide)
+		            " "
+		            filename-and-process))))
