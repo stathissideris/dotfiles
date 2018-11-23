@@ -1427,6 +1427,7 @@
 
   (add-hook 'ibuffer-mode-hook
 	          (lambda ()
+              (ibuffer-auto-mode 1)
 	            (ibuffer-switch-to-saved-filter-groups "groups")))
 
   (setq ibuffer-show-empty-filter-groups nil)
@@ -1434,7 +1435,6 @@
   (add-to-list 'ibuffer-never-show-predicates "magit-process")
 
   (setq ibuffer-expert t)
-
 
   (define-ibuffer-column size-h
     (:name "Size" :inline t)
