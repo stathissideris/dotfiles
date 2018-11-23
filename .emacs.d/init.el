@@ -24,7 +24,7 @@
                          ("melpa" . "http://melpa.org/packages/")
 
                          ("org" . "http://orgmode.org/elpa/")
-		         ("gnu"  . "http://elpa.gnu.org/packages/")))
+		                     ("gnu"  . "http://elpa.gnu.org/packages/")))
 
 (package-initialize)
 
@@ -85,7 +85,8 @@
 
 
 (use-package neotree
-  ;;:bind (("^" . neotree-select-up-node))
+  :bind (:map neotree-mode-map
+         ("^" . neotree-select-up-node))
   :ensure t
   :config
   (define-key neotree-mode-map "^" 'neotree-select-up-node)) ;;some day I'm going to figure this out, but for now:
@@ -105,7 +106,8 @@
   :pin melpa-stable
   :diminish (clojure-mode . "clj")
   :defines clojure-mode-map
-  :bind (("C-x t" . clojure-jump-to-test)
+  :bind (:map clojure-mode-map
+         ("C-x t" . clojure-jump-to-test)
          ("C-c C-w" . cider-eval-last-sexp-and-replace)
          ("C-c M-e" . cider-eval-print-last-sexp))
   :mode (("\\.edn$" . clojure-mode))
@@ -179,7 +181,9 @@
   :ensure t
   :pin melpa-stable
   :diminish (paredit-mode . " Ⓟ")
-  :bind (("C-d" . duplicate-sexp)
+  :bind (:map paredit-mode-map
+         ("C-c p" . paredit-mode)
+         ("C-x C-d" . duplicate-sexp)
          ("M-{" . paredit-wrap-curly)
          ("M-[" . paredit-wrap-square)
          ("<C-M-up>" . transpose-sexp-backward)
@@ -256,7 +260,8 @@
   :defer t
   :diminish (cider-mode . " ⓒ")
   :pin melpa-stable
-  :bind (("C-c M-o" . cider-repl-clear-buffer)
+  :bind (:map cider-mode-map
+         ("C-c M-o" . cider-repl-clear-buffer)
          ("C-x M-e" . cider-pprint-eval-last-sexp-to-repl)
          ("<f2>" . clojure-quick-eval)
          ;;("<f12>" . apply-fix-macro)
@@ -453,7 +458,8 @@
   :ensure t
   :pin org
   :defer t
-  :bind (("<S-insert>" . org-complete)
+  :bind (:map org-mode-map
+         ("<S-insert>" . org-complete)
          ("<S-return>" . org-insert-subheading)
          ("<s-return>" . org-insert-subheading)
          ("<S-left>" . org-clocktable-try-shift-left)
@@ -765,12 +771,13 @@
 (use-package expand-region
   :ensure t
   :pin melpa-stable
-  :bind ("M-=" . er/expand-region))
+  :bind (:map clojure-mode-map
+         "M-=" . er/expand-region))
 
 ;; bookmarks
 (use-package bm
   :ensure t
-  :bind (("C-b" . bm-toggle)
+  :bind (("C-c C-b" . bm-toggle)
          ("<s-up>" . bm-previous)
          ("<s-down>" . bm-next))
   :init
@@ -843,14 +850,17 @@
   :mode (("\\.http$" . restclient-mode)))
 
 (use-package python
-  :bind* (("C-c M-j" . run-python)
-          ("C-M-x" . python-shell-send-def)
-          ("C-c C-v" . ss/python-shell-send-snippet))
+  :bind (:map python-mode-map
+         ("C-c M-j" . run-python)
+         ("C-M-x" . python-shell-send-def)
+         ("C-c C-v" . ss/python-shell-send-snippet))
 
   :config
   (setq python-shell-interpreter "/Users/sideris/.pyenv/shims/python")
 
   :init
+  (add-hook 'python-mode-hook 'highlight-symbol-mode)
+
   (defun ss/python-shell-send-snippet ()
     (interactive)
     (save-excursion
@@ -862,7 +872,8 @@
       (deactivate-mark))))
 
 (use-package inferior-python
-  :bind (("C-c C-q" . ss/python-kill-buffer))
+  :bind (:map inferior-python-mode-map
+         ("C-c C-q" . ss/python-kill-buffer))
   :init
   (defun ss/python-kill-buffer ()
     (interactive)
@@ -1369,6 +1380,15 @@
 
 ;; see https://github.com/ahungry/org-jira/issues/44
 ;;(setq jiralib-token `("Cookie" . ""))
+
+(defun google (x)
+  (browse-url (concat "https://www.google.com/search?q=" x)))
+
+(defun google-this ()
+  (interactive)
+  (if (use-region-p)
+      (google (buffer-substring-no-properties (region-beginning) (region-end)))
+    (google (word-at-point))))
 
 
 (defun jira/insert ()
