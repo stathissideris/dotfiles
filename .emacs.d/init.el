@@ -98,6 +98,10 @@
           (lambda ()
             (setq mode-name "elisp"))))
 
+(use-package zprint
+  :bind (:map paredit-mode-map
+              ("s-z" . zprint)))
+
 (use-package clojure-snippets
   :ensure t)
 
@@ -183,7 +187,7 @@
   :diminish (paredit-mode . " Ⓟ")
   :bind (:map paredit-mode-map
          ("C-c p" . paredit-mode)
-         ("C-x C-d" . duplicate-sexp)
+         ("C-c d" . duplicate-sexp)
          ("M-{" . paredit-wrap-curly)
          ("M-[" . paredit-wrap-square)
          ("<C-M-up>" . transpose-sexp-backward)
@@ -462,8 +466,6 @@
          ("<S-insert>" . org-complete)
          ("<S-return>" . org-insert-subheading)
          ("<s-return>" . org-insert-subheading)
-         ("<S-left>" . org-clocktable-try-shift-left)
-         ("<S-right>" . org-clocktable-try-shift-right)
          ("C-c a" . org-agenda))
   :init
   (font-lock-add-keywords 'org-mode
@@ -629,8 +631,7 @@
   (setq git-commit-fill-column 3000
         git-commit-finish-query-functions nil
         git-commit-summary-max-length 120
-        ;;magit-log-margin '(t "%Y-%m-%d " magit-log-margin-width t 18)
-        )
+        magit-log-margin '(t "%Y-%m-%d " magit-log-margin-width t 18))
 
   (defun ss/current-line ()
     (let ((start (point-min))
@@ -772,7 +773,7 @@
   :ensure t
   :pin melpa-stable
   :bind (:map clojure-mode-map
-         "M-=" . er/expand-region))
+              ("M-=" . er/expand-region)))
 
 ;; bookmarks
 (use-package bm
@@ -1098,8 +1099,8 @@
            mode-line-modified
            mode-line-frame-identification
            mode-line-buffer-identification
-           " (%I) "
-           "prj:"
+           " (%I)"
+           " prj:"
            '(:eval (let ((proj (projectile-project-name)))
                      (if (> (string-width proj) 7)
                          (remove-vowels proj)
@@ -1116,7 +1117,7 @@
                              (propertize " " 'display '(space-width 0.8)) ;;narrow space
                              (propertize (format "%s" (ss/org-clock-get-clock-string)))
                              " ")))
-           ss/mode-line-my-vc
+           ;;ss/mode-line-my-vc
            " ☰ %l ‖ %c "))))))))
 
 (set-face-attribute 'mode-line nil
