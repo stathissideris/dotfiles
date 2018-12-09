@@ -79,6 +79,7 @@
                   (java-mode "{" "}" "/[*/]" nil nil)
                   (js-mode "{" "}" "/[*/]" nil)
                   (clojure-mode "[\(\[{]" "[\)\]}]" "#" nil nil)
+                  (cider-repl-mode "[\(\[{]" "[\)\]}]" "#" nil nil)
                   (emacs-lisp-mode "\(" "\)" "#" nil nil)
                   (json-mode "{" "}" "/[*/]" nil)
                   (javascript-mode  "{" "}" "/[*/]" nil)))))
@@ -89,7 +90,7 @@
          ("^" . neotree-select-up-node))
   :ensure t
   :config
-  (define-key neotree-mode-map "^" 'neotree-select-up-node)) ;;some day I'm going to figure this out, but for now:
+  (define-key neotree-mode-map "^" 'neotree-select-up-node))
 
 (use-package emacs-lisp-mode
   :no-require t
@@ -99,7 +100,13 @@
             (setq mode-name "elisp"))))
 
 (use-package zprint
-  :bind (:map paredit-mode-map
+  :bind (:map clojure-mode-map
+              ("s-z" . zprint)
+         :map cider-repl-mode-map
+              ("s-z" . zprint)
+         :map lisp-mode-map
+              ("s-z" . zprint)
+         :map paredit-mode-map
               ("s-z" . zprint)))
 
 (use-package clojure-snippets
@@ -185,8 +192,13 @@
   :ensure t
   :pin melpa-stable
   :diminish (paredit-mode . " Ⓟ")
-  :bind (:map paredit-mode-map
+  :bind (:map clojure-mode-map
          ("C-c p" . paredit-mode)
+
+         :map lisp-mode-map
+         ("C-c p" . paredit-mode)
+
+         :map paredit-mode-map
          ("C-c d" . duplicate-sexp)
          ("M-{" . paredit-wrap-curly)
          ("M-[" . paredit-wrap-square)
@@ -221,10 +233,7 @@
     (interactive)
     (forward-sexp)
     (transpose-sexps -1)
-    (backward-sexp))
-
-  :config
-  (define-key paredit-mode-map "\C-d" 'duplicate-sexp))
+    (backward-sexp)))
 
 (use-package sgml-mode
   :config
@@ -267,7 +276,10 @@
   :bind (:map cider-mode-map
          ("C-c M-o" . cider-repl-clear-buffer)
          ("C-x M-e" . cider-pprint-eval-last-sexp-to-repl)
+         ("C-c C-x" . cider-ns-refresh)
          ("<f2>" . clojure-quick-eval)
+         :map cider-repl-mode-map
+         ("C-c C-x" . cider-ns-refresh)
          ;;("<f12>" . apply-fix-macro)
          )
   :init
@@ -373,6 +385,8 @@
   :diminish projectile-mode
   :ensure t
   :no-require t
+  :bind (:map projectile-mode-map
+              ("C-c C-p" . 'projectile-command-map))
   :config
   (setq projectile-mode-line '(:eval (format " P[%s]" (projectile-project-name)))
     projectile-globally-ignored-files '("TAGS" ".nrepl-port")
@@ -473,8 +487,9 @@
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "→"))))))
   :config
   (setq  org-agenda-files (list "~/notes/bsq/bsq.org"
-                               "~/notes/gt/gt.org"
-                               "~/notes/personal.org"))
+                                "~/notes/gt/gt.org"
+                                "~/notes/personal.org"
+                                "~/notes/pixelated.org"))
 
   (defvar yt-iframe-format
     ;; You may want to change your width and height.
@@ -1433,8 +1448,6 @@
 
   (setq ibuffer-show-empty-filter-groups nil)
 
-  (add-to-list 'ibuffer-never-show-predicates "magit-process")
-
   (setq ibuffer-expert t)
 
   (define-ibuffer-column size-h
@@ -1455,3 +1468,7 @@
 		            (mode 16 16 :left :elide)
 		            " "
 		            filename-and-process))))
+
+(use-package ibuf-ext
+  :config
+  (add-to-list 'ibuffer-never-show-predicates "magit-process"))

@@ -25,7 +25,7 @@
   :test-refresh {;;:notify-command ["tmux" "display-message"]
                  ;;:notify-on-success true
                  }
-  :plugins [[cider/cider-nrepl "0.17.0"]
+  :plugins [[cider/cider-nrepl "0.18.0"]
             [lein-count "1.0.8"]
             [lein-cloverage "1.0.10"]
             [jonase/eastwood "0.2.5"]
