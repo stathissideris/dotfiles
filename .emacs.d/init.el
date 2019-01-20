@@ -6,10 +6,11 @@
                 ))))
  '(bold ((t (:foreground "gold" :weight bold)))))
 
+(global-unset-key (kbd "C-z"))
 (setq mac-use-title-bar 't)
-(make-frame)
-(other-frame 0)
-(delete-frame)
+;;(make-frame)
+;;(other-frame 0)
+;;(delete-frame)
 
 ;; ========================================
 ;; package
@@ -24,7 +25,7 @@
                          ("melpa" . "http://melpa.org/packages/")
 
                          ("org" . "http://orgmode.org/elpa/")
-		                     ("gnu"  . "http://elpa.gnu.org/packages/")))
+		         ("gnu"  . "http://elpa.gnu.org/packages/")))
 
 (package-initialize)
 
@@ -99,18 +100,10 @@
           (lambda ()
             (setq mode-name "elisp"))))
 
-(use-package zprint
-  :bind (:map clojure-mode-map
-              ("s-z" . zprint)
-         :map cider-repl-mode-map
-              ("s-z" . zprint)
-         :map lisp-mode-map
-              ("s-z" . zprint)
-         :map paredit-mode-map
-              ("s-z" . zprint)))
-
 (use-package clojure-snippets
   :ensure t)
+
+(setq clojure-mode-map (make-keymap))
 
 (use-package clojure-mode
   :ensure t
@@ -165,20 +158,30 @@
 		(template
 		 (quote defun)))))))
 
-(use-package clj-refactor
-  :ensure t
-  :pin melpa-stable
-  :diminish clj-refactor-mode
-  :init
-  (add-hook 'clojure-mode-hook (lambda ()
-                                 (clj-refactor-mode 1)
-                                 (cljr-add-keybindings-with-prefix "C-c C-v")))
-  :config
-  (setq cljr-clojure-test-declaration "[clojure.test :refer :all]")
-  (setq cljr-cljc-clojure-test-declaration
-        "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
-  (add-to-list 'cljr-magic-require-namespaces '("s" . "clojure.spec.alpha"))
-  (add-to-list 'cljr-magic-require-namespaces '("pp" . "clojure.pprint")))
+(use-package zprint
+  :bind (:map clojure-mode-map
+              ("s-z" . zprint)
+         :map cider-repl-mode-map
+              ("s-z" . zprint)
+         :map lisp-mode-map
+              ("s-z" . zprint)
+         :map paredit-mode-map
+              ("s-z" . zprint)))
+
+;; (use-package clj-refactor
+;;   :ensure t
+;;   :pin melpa-stable
+;;   :diminish clj-refactor-mode
+;;   :init
+;;   (add-hook 'clojure-mode-hook (lambda ()
+;;                                  (clj-refactor-mode 1)
+;;                                  (cljr-add-keybindings-with-prefix "C-c C-v")))
+;;   :config
+;;   (setq cljr-clojure-test-declaration "[clojure.test :refer :all]")
+;;   (setq cljr-cljc-clojure-test-declaration
+;;         "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
+;;   (add-to-list 'cljr-magic-require-namespaces '("s" . "clojure.spec.alpha"))
+;;   (add-to-list 'cljr-magic-require-namespaces '("pp" . "clojure.pprint")))
 
 (use-package align-cljlet
   :ensure t
@@ -297,7 +300,7 @@
   (setq cider-repl-history-size 3000)
   (setq cider-show-error-buffer 'except-in-repl)
   (setq cider-repl-display-help-banner nil)
-  (setq cider-inject-dependencies-at-jack-in nil)
+  (setq cider-inject-dependencies-at-jack-in t)
   (setq nrepl-prompt-to-kill-server-buffer-on-quit nil)
 
   (bind-key "C-c M-o" 'cider-repl-clear-buffer cider-repl-mode-map)
@@ -386,7 +389,7 @@
   :ensure t
   :no-require t
   :bind (:map projectile-mode-map
-              ("C-c C-p" . 'projectile-command-map))
+              ("C-c p" . 'projectile-command-map))
   :config
   (setq projectile-mode-line '(:eval (format " P[%s]" (projectile-project-name)))
     projectile-globally-ignored-files '("TAGS" ".nrepl-port")
@@ -752,10 +755,16 @@
   (global-set-key (kbd "<H-right>") 'windmove-right)
   (global-set-key (kbd "<H-up>")    'windmove-up)
   (global-set-key (kbd "<H-down>")  'windmove-down)
+
   (global-set-key (kbd "<f1> <left>")  'windmove-left)
   (global-set-key (kbd "<f1> <right>") 'windmove-right)
   (global-set-key (kbd "<f1> <up>")    'windmove-up)
-  (global-set-key (kbd "<f1> <down>")  'windmove-down))
+  (global-set-key (kbd "<f1> <down>")  'windmove-down)
+
+  (global-set-key (kbd "C-x <left>")  'windmove-left)
+  (global-set-key (kbd "C-x <right>") 'windmove-right)
+  (global-set-key (kbd "C-x <up>")    'windmove-up)
+  (global-set-key (kbd "C-x <down>")  'windmove-down))
 
 (use-package undo-tree
   :ensure t
@@ -788,6 +797,10 @@
   :ensure t
   :pin melpa-stable
   :bind (:map clojure-mode-map
+              ("M-=" . er/expand-region)
+         :map cider-repl-mode-map
+              ("M-=" . er/expand-region)
+         :map emacs-lisp-mode-map
               ("M-=" . er/expand-region)))
 
 ;; bookmarks
@@ -1343,14 +1356,14 @@
 (global-set-key (kbd "s-\\") 'toggle-input-method)
 
 ;;"Edit with Emacs" chrome plugin
-(require 'edit-server)
-(setq edit-server-new-frame nil)
-(edit-server-start)
-(require 'edit-server-htmlize)
-(autoload 'edit-server-maybe-dehtmlize-buffer "edit-server-htmlize" "edit-server-htmlize" t)
-(autoload 'edit-server-maybe-htmlize-buffer   "edit-server-htmlize" "edit-server-htmlize" t)
-(add-hook 'edit-server-start-hook 'edit-server-maybe-dehtmlize-buffer)
-(add-hook 'edit-server-done-hook  'edit-server-maybe-htmlize-buffer)
+;; (require 'edit-server)
+;; (setq edit-server-new-frame nil)
+;; (edit-server-start)
+;; (require 'edit-server-htmlize)
+;; (autoload 'edit-server-maybe-dehtmlize-buffer "edit-server-htmlize" "edit-server-htmlize" t)
+;; (autoload 'edit-server-maybe-htmlize-buffer   "edit-server-htmlize" "edit-server-htmlize" t)
+;; (add-hook 'edit-server-start-hook 'edit-server-maybe-dehtmlize-buffer)
+;; (add-hook 'edit-server-done-hook  'edit-server-maybe-htmlize-buffer)
 
 ;; ========================================
 ;; Machine-specific config
@@ -1381,7 +1394,7 @@
 (setq initial-scratch-message (get-string-from-file "~/.emacs.d/logo"))
 
 
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
+;;(load (expand-file-name "~/quicklisp/slime-helper.el"))
 
 (defun eshell/clear ()
   "Clear the eshell buffer."
@@ -1472,3 +1485,5 @@
 (use-package ibuf-ext
   :config
   (add-to-list 'ibuffer-never-show-predicates "magit-process"))
+
+(setq ring-bell-function 'ignore)

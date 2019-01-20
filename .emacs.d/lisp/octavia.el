@@ -62,6 +62,7 @@
   (interactive)
   (find-file "~/notes/tabs.org")
   (beginning-of-buffer)
+  (forward-line 2)
   (insert "* ")
   (org-time-stamp '(16) t)
   (insert "\n")
