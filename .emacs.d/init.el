@@ -1482,8 +1482,8 @@
          (dest-file (concat dest-dir (file-name-nondirectory data)))
          (rel-file (concat "images/" (file-name-nondirectory data))))
 
-    (if (not (= 'org-mode (with-current-buffer buffer major-mode)))
-        (error "Not an org-mode buffer"))
+    ;; (if (not (= 'org-mode (with-current-buffer buffer major-mode)))
+    ;;     (error "Not an org-mode buffer"))
 
     (if (not (file-exists-p dest-dir))
         (make-directory dest-dir))
@@ -1494,3 +1494,10 @@
 
 (define-key org-mode-map [drag-n-drop] 'ss/org-mode-dnd)
 (setq org-startup-with-inline-images t)
+
+
+(pixel-scroll-mode)
+(setq pixel-dead-time 0) ; Never go back to the old scrolling behaviour.
+(setq pixel-resolution-fine-flag t) ; Scroll by number of pixels instead of lines (t = frame-char-height pixels).
+(setq mouse-wheel-scroll-amount '(1)) ; Distance in pixel-resolution to scroll each mouse wheel event.
+(setq mouse-wheel-progressive-speed nil)
