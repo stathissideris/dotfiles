@@ -25,7 +25,7 @@
                          ("melpa" . "http://melpa.org/packages/")
 
                          ("org" . "http://orgmode.org/elpa/")
-		         ("gnu"  . "http://elpa.gnu.org/packages/")))
+		                     ("gnu"  . "http://elpa.gnu.org/packages/")))
 
 (package-initialize)
 
@@ -39,7 +39,7 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(setenv "bsq" "/Volumes/work/bsq/")
+(setenv "bsq" "~/devel/work/bsq/")
 (setenv "osio" "~/devel/work/osio/")
 (setenv "gt" "~/devel/work/gt/")
 
@@ -51,6 +51,12 @@
 
 ;; ========================================
 ;; Modes
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 
 (use-package all-the-icons
   :ensure t)
@@ -293,7 +299,7 @@
   (setq cider-repl-history-file "~/.emacs.d/cider-history")
   ;;(setq cider-font-lock-dynamically '(macro core function var))
   (setq cider-font-lock-dynamically nil)
-  (setq cider-repl-use-pretty-printing nil)
+  (setq cider-repl-use-pretty-printing t)
   (setq cider-repl-use-clojure-font-lock t)
   ;;(setq cider-repl-result-prefix ";; => ")
   (setq cider-repl-wrap-history t)
@@ -361,28 +367,7 @@
                  (setq pos (1+ pos)))
 
                 (:else (setq pos (1+ pos))))))
-      (goto-char p)))
-
-  (defun format-map ()
-    (interactive)
-    (let ((p (point)))
-      (mark-sexp)
-      (replace-not-in-strings (region-beginning) (region-end) "," "\n")
-      (goto-char p)
-
-      (mark-sexp)
-      (replace-not-in-strings (region-beginning) (region-end) "} {" "}\n{")
-      (goto-char p)
-
-      (mark-sexp)
-      (indent-region (region-beginning) (region-end))
-
-      (mark-sexp)
-      (replace-not-in-strings (region-beginning) (region-end) "} {" "}\n{")
-      (goto-char p)
-
-      (mark-sexp)
-      (indent-region (region-beginning) (region-end)))))
+      (goto-char p))))
 
 (use-package projectile
   :diminish projectile-mode
@@ -548,9 +533,12 @@
 
         org-image-actual-width nil
 
-        org-html-htmlize-output-type 'css)
+        org-html-htmlize-output-type 'css
+
+        org-table-convert-region-max-lines 999)
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((shell      . t)
+                                 (http       . t)
                                  (js         . t)
                                  (emacs-lisp . t)
                                  (perl       . t)
@@ -736,9 +724,7 @@
   (add-hook 'cider-repl-mode-hook 'highlight-symbol-mode)
   (add-hook 'clojure-mode-hook 'highlight-symbol-mode)
   (global-set-key (kbd "C-,") 'highlight-symbol-prev)
-  (global-set-key (kbd "<f1> ,") 'highlight-symbol-prev)
   (global-set-key (kbd "C-.") 'highlight-symbol-next)
-  (global-set-key (kbd "<f1> .") 'highlight-symbol-next)
   (defun highlight-symbol-count (&optional symbol)
     "(Do not) Print the number of occurrences of symbol at point."
     (interactive))
@@ -751,15 +737,10 @@
 
 (use-package windmove
   :init
-  (global-set-key (kbd "<H-left>")  'windmove-left)
-  (global-set-key (kbd "<H-right>") 'windmove-right)
-  (global-set-key (kbd "<H-up>")    'windmove-up)
-  (global-set-key (kbd "<H-down>")  'windmove-down)
-
-  (global-set-key (kbd "<f1> <left>")  'windmove-left)
-  (global-set-key (kbd "<f1> <right>") 'windmove-right)
-  (global-set-key (kbd "<f1> <up>")    'windmove-up)
-  (global-set-key (kbd "<f1> <down>")  'windmove-down)
+  (global-set-key (kbd "H-j") 'windmove-left)
+  (global-set-key (kbd "H-l") 'windmove-right)
+  (global-set-key (kbd "H-i") 'windmove-up)
+  (global-set-key (kbd "H-k") 'windmove-down)
 
   (global-set-key (kbd "C-x <left>")  'windmove-left)
   (global-set-key (kbd "C-x <right>") 'windmove-right)
@@ -1442,17 +1423,17 @@
   (setq ibuffer-saved-filter-groups
         (quote
          (("groups"
-	         ("GT" (or (filename . "/Users/sideris/devel/work/gt/*")
-                     (filename . "/Users/sideris/notes/gt/*")))
-           ("BSQ" (or (filename . "/Volumes/work/bsq/*")
-                      (filename . "/Users/sideris/notes/bsq/*")))
-           ("Notes" (filename . "/Users/sideris/notes/*"))
+	         ("GT"         (or (filename . "/Users/sideris/devel/work/gt/*")
+                             (filename . "/Users/sideris/notes/gt/*")))
+           ("BSQ"        (or (filename . "/Users/sideris/devel/work/bsq/*")
+                             (filename . "/Users/sideris/notes/bsq/*")))
+           ("Notes"      (filename . "/Users/sideris/notes/*"))
            ("Emacs Lisp" (mode . emacs-lisp-mode))
 	         ;; ("Magit" (mode . magit-status-mode))
            ;; ("Help" (or (name . "\*Help\*")
 		       ;;             (name . "\*Apropos\*")
 		       ;;             (name . "\*info\*")))
-	         ("Special" (name . "\*.+\*"))))))
+	         ("Special"    (name . "\*.+\*"))))))
 
   (add-hook 'ibuffer-mode-hook
 	          (lambda ()
@@ -1487,3 +1468,29 @@
   (add-to-list 'ibuffer-never-show-predicates "magit-process"))
 
 (setq ring-bell-function 'ignore)
+
+
+(defun ss/org-mode-dnd (event &optional new-frame force-text)
+  (interactive "e")
+  (let* ((window (posn-window (event-start event)))
+         (arg (car (cdr (cdr event))))
+         (type (car arg))
+         (data (car (cdr arg)))
+         (buffer (window-buffer window))
+         (buffer-dir (file-name-directory (buffer-file-name buffer)))
+         (dest-dir (concat buffer-dir "images/"))
+         (dest-file (concat dest-dir (file-name-nondirectory data)))
+         (rel-file (concat "images/" (file-name-nondirectory data))))
+
+    (if (not (= 'org-mode (with-current-buffer buffer major-mode)))
+        (error "Not an org-mode buffer"))
+
+    (if (not (file-exists-p dest-dir))
+        (make-directory dest-dir))
+
+    (rename-file data dest-file t)
+    (insert (concat "[[file:" rel-file "]]"))
+    (org-display-inline-images)))
+
+(define-key org-mode-map [drag-n-drop] 'ss/org-mode-dnd)
+(setq org-startup-with-inline-images t)

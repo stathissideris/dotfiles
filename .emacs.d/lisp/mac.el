@@ -6,6 +6,7 @@
   (setq mac-command-key-is-meta t)
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'super)
+  (setq ns-function-modifier 'hyper)
   (set-keyboard-coding-system nil))
 
 (if window-system
