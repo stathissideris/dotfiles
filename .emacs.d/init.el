@@ -111,6 +111,9 @@
 
 (setq clojure-mode-map (make-keymap))
 
+(use-package flycheck-clj-kondo
+  :ensure t)
+
 (use-package clojure-mode
   :ensure t
   :pin melpa-stable
@@ -122,6 +125,8 @@
          ("C-c M-e" . cider-eval-print-last-sexp))
   :mode (("\\.edn$" . clojure-mode))
   :config
+  (require 'flycheck-clj-kondo)
+
   (add-hook 'clojure-mode-hook
           (lambda ()
             (setq mode-name "λ")))
@@ -309,6 +314,11 @@
   (setq cider-inject-dependencies-at-jack-in t)
   (setq nrepl-prompt-to-kill-server-buffer-on-quit nil)
 
+  ;; Try to replicate this workflow: https://github.com/clojure-emacs/cider/issues/2617
+  (setq cider-invert-insert-eval-p t)
+  (setq cider-switch-to-repl-after-insert-p nil) ;; TODO remove in next version of CIDER
+  ;;(setq cider-switch-to-repl-on-insert nil) ;;TODO enable in next version of CIDER
+
   (bind-key "C-c M-o" 'cider-repl-clear-buffer cider-repl-mode-map)
 
   (setq clojure-quick-sexp
@@ -478,6 +488,12 @@
                                 "~/notes/gt/gt.org"
                                 "~/notes/personal.org"
                                 "~/notes/pixelated.org"))
+
+  (setq org-directory "~/notes")
+  ;; Set to the name of the file where new notes will be stored
+  (setq org-mobile-inbox-for-pull "~/notes/flagged.org")
+  ;; Set to <your Dropbox root directory>/MobileOrg.
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
 
   (defvar yt-iframe-format
     ;; You may want to change your width and height.
@@ -889,6 +905,68 @@
     (interactive)
     (kill-buffer (buffer-name (current-buffer)))))
 
+(use-package wl
+  :init
+  (autoload 'wl "wl" "Wanderlust" t)
+  (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
+  (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
+
+  ;; IMAP
+  (setq elmo-imap4-default-server "imap.gmail.com")
+  (setq elmo-imap4-default-user "sideris@gmail.com")
+  (setq elmo-imap4-default-authenticate-type 'clear)
+  (setq elmo-imap4-default-port '993)
+  (setq elmo-imap4-default-stream-type 'ssl)
+
+  (setq elmo-imap4-use-modified-utf7 t)
+
+  ;; SMTP
+  (setq wl-smtp-connection-type 'starttls)
+  (setq wl-smtp-posting-port 587)
+  (setq wl-smtp-authenticate-type "plain")
+  (setq wl-smtp-posting-user "sideris")
+  (setq wl-smtp-posting-server "smtp.gmail.com")
+  (setq wl-local-domain "gmail.com")
+
+  (setq wl-default-folder "%inbox")
+  (setq wl-default-spec "%")
+  (setq wl-draft-folder "%[Gmail]/Drafts") ; Gmail IMAP
+  (setq wl-trash-folder "%[Gmail]/Trash")
+
+  (setq wl-folder-check-async t)
+
+  (setq elmo-imap4-use-modified-utf7 t)
+
+  (setq
+   wl-message-ignored-field-list '("^.*:")
+   wl-message-visible-field-list
+   '("^\\(To\\|Cc\\):"
+     "^Subject:"
+     "^\\(From\\|Reply-To\\):"
+     "^Organization:"
+     "^Message-Id:"
+     "^\\(Posted\\|Date\\):"
+     )
+   wl-message-sort-field-list
+   '("^From"
+     "^Organization:"
+     "^X-Attribution:"
+     "^Subject"
+     "^Date"
+     "^To"
+     "^Cc"))
+
+  (autoload 'wl-user-agent-compose "wl-draft" nil t)
+  (if (boundp 'mail-user-agent)
+      (setq mail-user-agent 'wl-user-agent))
+  (if (fboundp 'define-mail-user-agent)
+      (define-mail-user-agent
+        'wl-user-agent
+        'wl-user-agent-compose
+        'wl-draft-send
+        'wl-draft-kill
+        'mail-send-hook)))
+
 ;; (setq python-shell-interpreter "python"
 ;;       python-shell-interpreter-args "-i"
 ;;       python-shell-completion-native-enable nil)
@@ -1039,7 +1117,8 @@
       ;;(set-face-background 'vertical-border "black")
       ;;(setq x-underline-at-descent-line t)
       )
-    (load-theme 'zenburn t))
+    ;;(load-theme 'zenburn t)
+    )
   (doom-themes-neotree-config)
   (doom-themes-org-config))
 
@@ -1495,6 +1574,14 @@
 (define-key org-mode-map [drag-n-drop] 'ss/org-mode-dnd)
 (setq org-startup-with-inline-images t)
 
+
+(defun ss/format-json-python (start end)
+  (interactive "r")
+  (shell-command-on-region start end "python -m json.tool" nil 't))
+
+(defun ss/format-json (start end)
+  (interactive "r")
+  (shell-command-on-region start end "jq -r ." nil 't))
 
 (pixel-scroll-mode)
 (setq pixel-dead-time 0) ; Never go back to the old scrolling behaviour.
