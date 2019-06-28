@@ -179,20 +179,20 @@
          :map paredit-mode-map
               ("s-z" . zprint)))
 
-;; (use-package clj-refactor
-;;   :ensure t
-;;   :pin melpa-stable
-;;   :diminish clj-refactor-mode
-;;   :init
-;;   (add-hook 'clojure-mode-hook (lambda ()
-;;                                  (clj-refactor-mode 1)
-;;                                  (cljr-add-keybindings-with-prefix "C-c C-v")))
-;;   :config
-;;   (setq cljr-clojure-test-declaration "[clojure.test :refer :all]")
-;;   (setq cljr-cljc-clojure-test-declaration
-;;         "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
-;;   (add-to-list 'cljr-magic-require-namespaces '("s" . "clojure.spec.alpha"))
-;;   (add-to-list 'cljr-magic-require-namespaces '("pp" . "clojure.pprint")))
+(use-package clj-refactor
+  :ensure t
+  :pin melpa-stable
+  :diminish clj-refactor-mode
+  :init
+  (add-hook 'clojure-mode-hook (lambda ()
+                                 (clj-refactor-mode 1)
+                                 (cljr-add-keybindings-with-prefix "C-c C-v")))
+  :config
+  (setq cljr-clojure-test-declaration "[clojure.test :refer :all]")
+  (setq cljr-cljc-clojure-test-declaration
+        "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
+  (add-to-list 'cljr-magic-require-namespaces '("s" . "clojure.spec.alpha"))
+  (add-to-list 'cljr-magic-require-namespaces '("pp" . "clojure.pprint")))
 
 (use-package align-cljlet
   :ensure t
