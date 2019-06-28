@@ -487,7 +487,8 @@
   (setq  org-agenda-files (list "~/notes/bsq/bsq.org"
                                 "~/notes/gt/gt.org"
                                 "~/notes/personal.org"
-                                "~/notes/pixelated.org"))
+                                "~/notes/pixelated.org"
+                                "~/notes/parents.org"))
 
   (setq org-directory "~/notes")
   ;; Set to the name of the file where new notes will be stored
