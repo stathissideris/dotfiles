@@ -1310,6 +1310,8 @@
 
 (global-unset-key (kbd "C-x C-d"))
 (global-unset-key (kbd "<f1> <f1>"))
+(global-unset-key (kbd "C-x <C-left>"))
+(global-unset-key (kbd "C-x <C-right>"))
 
 (defun yank-without-moving ()
   (interactive)
