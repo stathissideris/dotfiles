@@ -490,7 +490,8 @@
                                 "~/notes/gt/gt.org"
                                 "~/notes/personal.org"
                                 "~/notes/pixelated.org"
-                                "~/notes/parents.org"))
+                                "~/notes/parents.org"
+                                "~/notes/conne.org"))
 
   (setq org-directory "~/notes")
   ;; Set to the name of the file where new notes will be stored
