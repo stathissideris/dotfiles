@@ -1568,6 +1568,12 @@
   :config
   (add-to-list 'ibuffer-never-show-predicates "magit-process"))
 
+(use-package graphviz-dot-mode
+  :ensure t
+  :config
+  (setq graphviz-dot-dot-program "dot")
+  (setq graphviz-dot-auto-indent-on-semi nil))
+
 (setq ring-bell-function 'ignore)
 
 
