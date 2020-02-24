@@ -193,7 +193,8 @@
   (setq cljr-cljc-clojure-test-declaration
         "#?(:clj [clojure.test :refer :all] :cljs [cljs.test :refer :all :include-macros true])")
   (add-to-list 'cljr-magic-require-namespaces '("s" . "clojure.spec.alpha"))
-  (add-to-list 'cljr-magic-require-namespaces '("pp" . "clojure.pprint")))
+  (add-to-list 'cljr-magic-require-namespaces '("pp" . "clojure.pprint"))
+  (add-to-list 'cljr-magic-require-namespaces '("ig" . "integrant.core")))
 
 (use-package align-cljlet
   :ensure t
