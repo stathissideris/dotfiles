@@ -57,7 +57,9 @@
     (insert (read (nrepl-dict-get (cider-nrepl-sync-request:eval last-sexp) "value")))
     (delete-backward-char 1)))
 
-
+(defun graal ()
+  (interactive)
+  (setenv "JAVA_HOME" "/Users/sideris/devel/_tools/graalvm-ce-19.2.0/Contents/Home"))
 
 (fset 'midje-to-test-assertion
    [?\C-s ?= ?> return backspace backspace backspace right C-M-up ?\M-\( C-right ?= ?  left left left ?\M-\( ?i ?s ?  left left left left f1 ?  ?\C-\M-\\])
