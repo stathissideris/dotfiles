@@ -6,8 +6,6 @@ function cleanTitle (s) {
   return s.replace("[", "|").replace("]", "|");
 }
 
-var out = "";
-
 windows = Application("Google Chrome").windows();
 
 for(var i = 0; i < windows.length; i++) {
@@ -17,11 +15,9 @@ for(var i = 0; i < windows.length; i++) {
 		tab = tabs[t];
     title = cleanTitle(tab.title());
     if(title == "") {
-      out += "  * [[" + tab.url() + "]]\n";
+      log("  * [[" + tab.url() + "]]");
     } else {
-		  out += "  * [[" + tab.url() + "][" + title + "]]\n";
+		  log("  * [[" + tab.url() + "][" + title + "]]");
     }
 	}
 }
-
-log(out);
