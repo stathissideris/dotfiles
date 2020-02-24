@@ -526,6 +526,12 @@
      (browse-url
       (concat "https://bare-square.atlassian.net/browse/VB-" id))))
 
+  (org-add-link-type
+   "CVE"
+   (lambda (id)
+     (browse-url
+      (concat "https://nvd.nist.gov/vuln/detail/CVE-" id))))
+
   (setq org-ellipsis "…" ;;"↴"
         org-confirm-elisp-link-function nil
         org-todo-keywords '((sequence "TODO" "PROG" "BLOK" "DONE"))
