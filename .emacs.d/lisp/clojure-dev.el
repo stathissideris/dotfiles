@@ -64,4 +64,15 @@
 (fset 'midje-to-test-assertion
    [?\C-s ?= ?> return backspace backspace backspace right C-M-up ?\M-\( C-right ?= ?  left left left ?\M-\( ?i ?s ?  left left left left f1 ?  ?\C-\M-\\])
 
+(defun jet ()
+  (interactive)
+  (save-excursion
+    (let ((original (buffer-substring (region-beginning) (region-end))))
+      (when (not (zerop (shell-command-on-region
+                         (region-beginning) (region-end)
+                         "jet --pretty --edn-reader-opts '{:default tagged-literal}'"
+                         (current-buffer) t "*jet error buffer*" t)))
+        (insert original)
+        (error "jet error!")))))
+
 (provide 'clojure-dev)
