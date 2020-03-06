@@ -429,6 +429,7 @@
   :bind (("<s-SPC>" . company-complete))
   :init
   (global-company-mode)
+  (setq company-minimum-prefix-length 2)
   (setq company-begin-commands
         '(self-insert-command org-self-insert-command orgtbl-self-insert-command c-scope-operator c-electric-colon c-electric-lt-gt c-electric-slash cljr-slash)))
 
