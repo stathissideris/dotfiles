@@ -124,7 +124,8 @@
          ("C-c C-w" . cider-eval-last-sexp-and-replace)
          ("C-c M-e" . cider-eval-print-last-sexp))
   :mode (("\\.edn$" . clojure-mode)
-         ("\\.repl$" . clojure-mode))
+         ("\\.repl$" . clojure-mode)
+         ("\\.bb$" . clojure-mode))
   :config
   (require 'flycheck-clj-kondo)
 
