@@ -10,6 +10,7 @@
 !.lein
 !.lein/profiles.clj
 !.phoenix.js
+!.clojure/deps.edn
 
 .DS_Store
 /.emacs.d/.mc-lists.el
@@ -17,4 +18,3 @@
 /.emacs.d/ido.last
 /.emacs.d/projectile-bookmarks.eld
 /.emacs.d/recentf
-/.clojure/deps.edn
