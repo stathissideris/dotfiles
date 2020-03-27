@@ -17,3 +17,4 @@
 /.emacs.d/ido.last
 /.emacs.d/projectile-bookmarks.eld
 /.emacs.d/recentf
+/.clojure/deps.edn
