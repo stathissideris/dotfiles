@@ -8,6 +8,7 @@
 
 (global-unset-key (kbd "C-z"))
 (setq mac-use-title-bar 't)
+(setq-default fill-column 80)
 ;;(make-frame)
 ;;(other-frame 0)
 ;;(delete-frame)
