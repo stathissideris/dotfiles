@@ -1630,3 +1630,6 @@
   (org-html-export-to-html)
   (browse-url (org-export-output-file-name ".html"))
   (widen))
+
+;;(setq debug-on-error t)
+(put 'scroll-left 'disabled nil)
