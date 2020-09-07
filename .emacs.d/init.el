@@ -1407,7 +1407,8 @@
 (setq frame-resize-pixelwise t)
 (setq inhibit-splash-screen t)
 (setq comment-empty-lines t)
-(setq visible-bell t)
+(setq visible-bell nil)
+(setq ring-bell-function 'ignore)
 (setq make-backup-files nil) ;; no backups!
 (setq auto-save-default nil) ;; stop creating those #autosave# files
 (setq custom-file "~/.emacs.d/custom.el")
