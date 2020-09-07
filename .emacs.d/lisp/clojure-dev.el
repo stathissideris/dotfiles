@@ -17,6 +17,8 @@
 (global-set-key [M-f1] 'clojuredocs-example)
 (global-set-key [M-f3] 'nrepl-pretty-toggle)
 
+(put-clojure-indent 'match 0)
+
 ;;hide dos new lines in cider help
 (defadvice cider-popup-buffer-display
     (after cider-popup-hide-dos-eol (popup-buffer &optional select))
