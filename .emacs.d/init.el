@@ -1600,11 +1600,11 @@
 (setq org-startup-with-inline-images t)
 
 
-(defun ss/format-json-python (start end)
+(defun ss/json-format-python (start end)
   (interactive "r")
   (shell-command-on-region start end "python -m json.tool" nil 't))
 
-(defun ss/format-json (start end)
+(defun ss/json-format (start end)
   (interactive "r")
   (shell-command-on-region start end "jq -r ." nil 't))
 
@@ -1615,3 +1615,12 @@
 (setq mouse-wheel-progressive-speed nil)
 
 (require 'flycheck-joker)
+
+(defun ss/sql-format (beg end)
+  "Beautify SQL in region between beg and END.
+  Dependency:
+  npm i -g sql-formatter-cli"
+  (interactive "r")
+  (save-excursion
+    (shell-command-on-region beg end "sql-formatter-cli" nil t)))
+
