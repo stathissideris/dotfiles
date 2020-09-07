@@ -1624,3 +1624,9 @@
   (save-excursion
     (shell-command-on-region beg end "sql-formatter-cli" nil t)))
 
+(defun ss/html-from-org (beg end)
+  (interactive "r")
+  (narrow-to-region beg end)
+  (org-html-export-to-html)
+  (browse-url (org-export-output-file-name ".html"))
+  (widen))
