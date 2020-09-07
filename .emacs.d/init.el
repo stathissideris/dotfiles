@@ -290,6 +290,8 @@
          ("<f2>" . clojure-quick-eval)
          :map cider-repl-mode-map
          ("C-c C-x" . cider-ns-refresh)
+         :map cider-start-map
+         ("C-c C-x" . cider-ns-refresh)
          ;;("<f12>" . apply-fix-macro)
          )
   :init
