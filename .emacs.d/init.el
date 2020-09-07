@@ -172,15 +172,7 @@
 		(template
 		 (quote defun)))))))
 
-(use-package zprint
-  :bind (:map clojure-mode-map
-              ("s-z" . zprint)
-         :map cider-repl-mode-map
-              ("s-z" . zprint)
-         :map lisp-mode-map
-              ("s-z" . zprint)
-         :map paredit-mode-map
-              ("s-z" . zprint)))
+(global-set-key (kbd "s-z") 'zprint)
 
 (use-package clj-refactor
   :ensure t
