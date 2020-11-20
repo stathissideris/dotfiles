@@ -529,7 +529,7 @@
      (browse-url
       (concat "https://nvd.nist.gov/vuln/detail/CVE-" id))))
 
-  (setq org-ellipsis "…" ;;"↴"
+  (setq org-ellipsis "..." ;;"↴"
         org-confirm-elisp-link-function nil
         org-todo-keywords '((sequence "TODO" "PROG" "BLOK" "DONE"))
         org-todo-keyword-faces
@@ -604,7 +604,7 @@
                       `(org-block-begin-line ((t (:background "gray15" :foreground "gray28" :slant normal))))
                       `(org-block-end-line ((t (:background "gray15" :foreground "gray28" :slant normal))))
 
-                      `(org-ellipsis ((t (:foreground "dim gray"))))
+                      `(org-ellipsis ((t (:foreground "grey65"))))
 
                       ;;levels
                       `(org-level-8 ((t (,@headline ,@ss/fixed-font-tuple))))
