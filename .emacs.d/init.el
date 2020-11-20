@@ -536,7 +536,7 @@
         '(;;("PROG" . "yellow")
           ("BLOK" . "IndianRed1"))
         org-support-shift-select t
-        org-hide-emphasis-markers t
+        org-hide-emphasis-markers nil
         org-hide-leading-stars t
 
         org-confirm-babel-evaluate nil
@@ -805,6 +805,8 @@
          :map cider-repl-mode-map
               ("M-=" . er/expand-region)
          :map emacs-lisp-mode-map
+              ("M-=" . er/expand-region)
+         :map org-mode-map
               ("M-=" . er/expand-region)))
 
 ;; bookmarks
@@ -1571,3 +1573,4 @@
 
 ;;(setq debug-on-error t)
 (put 'scroll-left 'disabled nil)
+(put 'downcase-region 'disabled nil)
