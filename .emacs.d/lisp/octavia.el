@@ -1,5 +1,7 @@
 ;;mac-specific options
 
+(require 's)
+
 (defun map-mac-keys ()
   (interactive)
   (setq mac-option-key-is-meta nil)
@@ -70,6 +72,12 @@
    (shell-command-to-string "osascript -l JavaScript ~/.emacs.d/js/onetab.js"))
   (beginning-of-buffer))
 
+(defun ss/current-tab ()
+  "Inserts an org link to the current active tab in Chrome"
+  (interactive)
+  (insert
+   (s-trim
+    (shell-command-to-string "osascript -l JavaScript ~/.emacs.d/js/current-tab.js"))))
 
 (defun ss/extract-org-url (s)
   (when (string-match "\\[\\[\\(.+\\)\\]\\[.+\\]\\]" s)
