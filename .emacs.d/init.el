@@ -800,7 +800,8 @@
 (use-package expand-region
   :ensure t
   :pin melpa-stable
-  :bind (:map clojure-mode-map
+  :bind (("M-=" . er/expand-region)
+         :map clojure-mode-map
               ("M-=" . er/expand-region)
          :map cider-repl-mode-map
               ("M-=" . er/expand-region)
@@ -857,33 +858,14 @@
 ;; (use-package sql
 ;;   :config)
 (setq sql-connection-alist
-      '((gt-local-admin (sql-product 'postgres)
-                        (sql-server "localhost")
-                        (sql-port 5432)
-                        (sql-user "test")
-                        (sql-database "postgres"))
-        (gt-local (sql-product 'postgres)
-                  (sql-server "localhost")
-                  (sql-port 5432)
-                  (sql-user "test")
-                  (sql-database "gt"))
-        (gt-prod (sql-product 'postgres)
-                 (sql-server "10.128.38.63")
-                 (sql-port 5432)
-                 (sql-user "taz")
-                 (sql-database "gt"))
-        (osio (sql-product 'postgres)
-              (sql-server "localhost")
-              (sql-user "osio_admin")
-              (sql-database "opensensors"))
-        (bsq-local (sql-product 'postgres)
+      '((bsq-local (sql-product 'postgres)
                    (sql-server "localhost")
                    (sql-port 5430)
                    (sql-user "vittle")
                    (sql-database "bsq"))
         (bsq (sql-product 'postgres)
              (sql-port 5432)
-             (sql-user "vittle")
+             (sql-user "stathis")
              (sql-database "bsq"))
         (bsq-personal (sql-product 'postgres)
                       (sql-port 5432)
@@ -1096,6 +1078,8 @@
       (concat (substring str 0 len) "…")
     str))
 
+(set-face-attribute 'secondary-selection nil :background "#5b2503")
+
 (defun ss/org-clock-get-clock-string ()
   (let ((clocked-time (org-clock-get-clocked-time))
         ;; affects performance, too expensive:
@@ -1107,7 +1091,7 @@
     ;;                     ", "
     ;;                     (ss/truncate (format "%s" org-clock-heading) 12))
     ;;             'face 'org-mode-line-clock)
-    (propertize (ss/truncate (format "%s" org-clock-heading) 12)
+    (propertize (ss/truncate (format "%s" org-clock-heading) 16)
                 'face 'org-mode-line-clock)))
 
 
@@ -1243,6 +1227,7 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (define-key lisp-interaction-mode-map (kbd "C-x M-e") 'eval-print-last-sexp)
+(define-key emacs-lisp-mode-map (kbd "C-x M-e") 'eval-print-last-sexp)
 
 (global-unset-key (kbd "C-x C-d"))
 (global-unset-key (kbd "<f1> <f1>"))
@@ -1387,8 +1372,6 @@
 ;; ========================================
 ;; Machine-specific config
 
-(if (string-equal system-type "darwin")
-    (require 'octavia))
 (if (string-equal system-type "darwin")
     (require 'octavia))
 (if (string-equal system-name "MUCHA")
@@ -1570,6 +1553,17 @@
   (org-html-export-to-html)
   (browse-url (org-export-output-file-name ".html"))
   (widen))
+
+(require 'subr-x)
+(defun jira/summary ()
+  (interactive)
+  (save-excursion
+    (let* ((id (thing-at-point 'symbol 'no-pr))
+           (bounds (bounds-of-thing-at-point 'symbol))
+           (summary (shell-command-to-string (concat "/Users/sideris/devel/work/bsq/systems/apps/get-jira " id " summary"))))
+      (goto-char (cdr bounds))
+      (insert " ")
+      (insert (string-trim-right summary)))))
 
 ;;(setq debug-on-error t)
 (put 'scroll-left 'disabled nil)
