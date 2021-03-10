@@ -1,3 +1,5 @@
+(setenv "bsq" "~/devel/work/bsq/")
+
 (org-add-link-type "j" 'jira-open)
 
 (defun jira-open (id)

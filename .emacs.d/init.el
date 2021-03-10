@@ -23,10 +23,10 @@
   (find-file "~/.emacs.d/init.el"))
 
 (setq package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")
 
-                         ("org" . "http://orgmode.org/elpa/")
-		                     ("gnu"  . "http://elpa.gnu.org/packages/")))
+                         ("org" . "https://orgmode.org/elpa/")
+		                     ("gnu"  . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
 
@@ -39,11 +39,6 @@
 
 (when (not package-archive-contents)
   (package-refresh-contents))
-
-(setenv "bsq" "~/devel/work/bsq/")
-(setenv "osio" "~/devel/work/osio/")
-(setenv "gt" "~/devel/work/gt/")
-
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
@@ -484,7 +479,6 @@
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "→"))))))
   :config
   (setq  org-agenda-files (list "~/notes/bsq/bsq.org"
-                                "~/notes/gt/gt.org"
                                 "~/notes/personal.org"
                                 "~/notes/pixelated.org"
                                 "~/notes/parents.org"
@@ -580,7 +574,7 @@
   ;;   (multiple-cursors-mode))
 
   (set-face-attribute 'org-hide nil :foreground "DarkSlateGray")
-  (set-face-attribute 'org-link nil :foreground "CornflowerBlue")
+  (set-face-attribute 'org-link nil :foreground "Salmon")
   (set-face-attribute 'org-link nil :underline t)
   (font-lock-add-keywords
    'org-mode `(("^\\*+ \\(TODO\\) " (1 (progn (compose-region (match-beginning 1) (match-end 1) "□") nil)))
@@ -849,11 +843,13 @@
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
+(use-package browse-at-remote
+  :ensure t
+  :init
+  (defun open-github-from-here ()
+    (interactive)
+    (browse-at-remote)))
 
-(use-package open-github-from-here
-  :bind (("M-g M-h" . open-github-from-here))
-  :defer t
-  :load-path "lisp/emacs-open-github-from-here")
 
 ;; (use-package sql
 ;;   :config)
@@ -1035,6 +1031,11 @@
   (diminish 'eldoc-mode)
   (diminish 'pcre-mode))
 
+(use-package direnv
+  :ensure t
+  :config
+  (direnv-mode))
+
 
 ;; ========================================
 ;; Colors and looks
@@ -1192,12 +1193,12 @@
 ;;   (set-face-attribute 'powerline-inactive2 nil :background "#161616" :foreground "#444444")
 ;;   (setq powerline-default-separator 'utf-8))
 
-(use-package hl-line-mode
-  :no-require t
-  :init
-  (global-hl-line-mode)
-  (set-face-attribute 'hl-line nil
-                      :background "#02242a"))
+;; (use-package hl-line-mode
+;;   :no-require t
+;;   :init
+;;   (global-hl-line-mode)
+;;   (set-face-attribute 'hl-line nil
+;;                       :background "#02242a"))
 
 
 (setq elfeed-feeds
@@ -1379,11 +1380,9 @@
 (if (not window-system)
     (require 'no-window))
 
-;;GT-specific tools
-(require 'gt)
-
-;;BSQ-specific tools
+;; Company-specific tools
 (require 'bsq)
+(require 'bevuta)
 
 (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
 
@@ -1552,6 +1551,7 @@
   (narrow-to-region beg end)
   (org-html-export-to-html)
   (browse-url (org-export-output-file-name ".html"))
+  ;;(delete-file (org-export-output-file-name ".html")) ;; browse-url fails if you delete too early
   (widen))
 
 (require 'subr-x)
