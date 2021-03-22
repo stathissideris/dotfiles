@@ -910,7 +910,7 @@
   :ensure t
   :pin melpa-stable
   :init
-  (global-set-key (kbd "§") 'hydra-windows/body)
+  (global-set-key (kbd "C-`") 'hydra-windows/body)
 
   (make-face 'move-window-buffer-face)
   (setq ss/window-move-remap-cookie nil)
@@ -1021,7 +1021,7 @@
                 (delete-window)
                 (add-window-move-indicator)) "del")
 
-    ("§" nil "exit")
+    ("C-`" nil "exit")
     ("q" nil "exit")))
 
 
